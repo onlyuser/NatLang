@@ -1,5 +1,5 @@
-// XLang
-// -- A parser framework for language modeling
+// NatLang
+// -- A parser framework for natural language processing
 // Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef XLANG_H_
-#define XLANG_H_
+#ifndef NATLANG_H_
+#define NATLANG_H_
 
 #include "XLangType.h" // uint32_t
 #include "XLangAlloc.h" // Allocator
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "XLang.tab.h" // YYLTYPE (generated)
+#include "NatLang.tab.h" // YYLTYPE (generated)
 #include "XLangTreeContext.h" // TreeContext
 #include <vector> // std::vector
 #include <list> // std::list
@@ -93,16 +93,16 @@ private:
 
 // forward declaration of lexer/parser functions
 // so the compiler shuts up about warnings
-#define _xl(x) _XLANG_##x
-int _xl(lex)(YYSTYPE*, YYLTYPE*, yyscan_t);
-int _xl(lex_init)(yyscan_t*);
-int _xl(lex_destroy)(yyscan_t);
-void _xl(set_extra)(YY_EXTRA_TYPE, yyscan_t);
-int _xl(parse)(ParserContext*, yyscan_t);
-void _xl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s);
-void _xl(error)(const char* s);
-int _xl(lex)(YYSTYPE* yylval_param, YYLTYPE* yylloc_param, yyscan_t yyscanner);
-//#undef _xl
+#define _nl(x) _NATLANG_##x
+int _nl(lex)(YYSTYPE*, YYLTYPE*, yyscan_t);
+int _nl(lex_init)(yyscan_t*);
+int _nl(lex_destroy)(yyscan_t);
+void _nl(set_extra)(YY_EXTRA_TYPE, yyscan_t);
+int _nl(parse)(ParserContext*, yyscan_t);
+void _nl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s);
+void _nl(error)(const char* s);
+int _nl(lex)(YYSTYPE* yylval_param, YYLTYPE* yylloc_param, yyscan_t yyscanner);
+//#undef _nl
 
 std::stringstream &error_messages();
 std::string id_to_name(uint32_t lexer_id);

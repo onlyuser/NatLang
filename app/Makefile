@@ -1,5 +1,5 @@
-# XLang
-# -- A parser framework for language modeling
+# NatLang
+# -- A parser framework for natural language processing
 # Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ LIB_PATH = lib
 SRC_PATH = src
 BUILD_PATH = build
 BIN_PATH = bin
-BINARY = $(BIN_PATH)/XLang
+BINARY = $(BIN_PATH)/NatLang
 
 COMMON = $(PARENT)/libxl
 INCLUDE_PATH_COMMON = $(COMMON)/include
@@ -75,7 +75,7 @@ all : $(BINARY)
 # yacc-gen
 #==================
 
-YACC_STEMS = XLang.tab
+YACC_STEMS = NatLang.tab
 YACC_GEN = \
 		$(patsubst %, $(SRC_PATH)/%.cpp, $(YACC_STEMS)) \
 		$(patsubst %, $(INCLUDE_PATH)/%.h, $(YACC_STEMS))
@@ -94,7 +94,7 @@ clean_yacc :
 # lex-gen
 #==================
 
-LEX_STEMS = lex.XLang
+LEX_STEMS = lex.NatLang
 LEX_GEN = $(patsubst %, $(SRC_PATH)/%.cpp, $(LEX_STEMS))
 .SECONDARY : $(LEX_GEN)
 

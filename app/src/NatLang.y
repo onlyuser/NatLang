@@ -1,5 +1,5 @@
-// XLang
-// -- A parser framework for language modeling
+// NatLang
+// -- A parser framework for natural language processing
 // Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-//%output="XLang.tab.c"
-%name-prefix="_XLANG_"
+//%output="NatLang.tab.c"
+%name-prefix="_NATLANG_"
 
 %{
 
-#include "XLang.h"
+#include "NatLang.h"
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "XLang.tab.h" // ID_XXX (yacc generated)
+#include "NatLang.tab.h" // ID_XXX (yacc generated)
 #include "XLangAlloc.h" // Allocator
 #include "mvc/XLangMVCView.h" // mvc::MVCView
 #include "mvc/XLangMVCModel.h" // mvc::MVCModel
@@ -49,7 +49,7 @@
 #define ERROR_LEXER_NAME_NOT_FOUND "missing lexer name handler, most likely you forgot to register one"
 
 // report error
-void _xl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s)
+void _nl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s)
 {
     if(loc)
     {
@@ -72,9 +72,9 @@ void _xl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s
     }
     error_messages() << s;
 }
-void _xl(error)(const char* s)
+void _nl(error)(const char* s)
 {
-    _xl(error)(NULL, NULL, NULL, s);
+    _nl(error)(NULL, NULL, NULL, s);
 }
 
 // get resource
@@ -340,12 +340,12 @@ uint32_t quick_lex(const char* s)
     xl::Allocator alloc(__FILE__);
     ParserContext parser_context(alloc, s);
     yyscan_t scanner = parser_context.scanner_context().m_scanner;
-    _xl(lex_init)(&scanner);
-    _xl(set_extra)(&parser_context, scanner);
+    _nl(lex_init)(&scanner);
+    _nl(set_extra)(&parser_context, scanner);
     YYSTYPE dummy_sa;
     YYLTYPE dummy_loc;
-    uint32_t lexer_id = _xl(lex)(&dummy_sa, &dummy_loc, scanner); // scanner entry point
-    _xl(lex_destroy)(scanner);
+    uint32_t lexer_id = _nl(lex)(&dummy_sa, &dummy_loc, scanner); // scanner entry point
+    _nl(lex_destroy)(scanner);
     return lexer_id;
 }
 
@@ -357,16 +357,16 @@ xl::node::NodeIdentIFace* make_ast(
     ParserContext parser_context(alloc, s);
     parser_context.scanner_context().m_pos_lexer_id_path = &pos_lexer_id_path;
     yyscan_t scanner = parser_context.scanner_context().m_scanner;
-    _xl(lex_init)(&scanner);
-    _xl(set_extra)(&parser_context, scanner);
-    int error_code = _xl(parse)(&parser_context, scanner); // parser entry point
-    _xl(lex_destroy)(scanner);
+    _nl(lex_init)(&scanner);
+    _nl(set_extra)(&parser_context, scanner);
+    int error_code = _nl(parse)(&parser_context, scanner); // parser entry point
+    _nl(lex_destroy)(scanner);
     return (!error_code && error_messages().str().empty()) ? parser_context.tree_context().root() : NULL;
 }
 
 void display_usage(bool verbose)
 {
-    std::cout << "Usage: XLang [-i] OPTION [-m]" << std::endl;
+    std::cout << "Usage: NatLang [-i] OPTION [-m]" << std::endl;
     if(verbose)
     {
         std::cout << "Parses input and prints a syntax tree to standard out" << std::endl
@@ -384,7 +384,7 @@ void display_usage(bool verbose)
                 << "  -h, --help" << std::endl;
     }
     else
-        std::cout << "Try `XLang --help\' for more information." << std::endl;
+        std::cout << "Try `NatLang --help\' for more information." << std::endl;
 }
 
 struct options_t

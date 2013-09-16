@@ -1,5 +1,5 @@
-// XLang
-// -- A parser framework for language modeling
+// NatLang
+// -- A parser framework for natural language processing
 // Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "TryAllParses.h"
-#include "XLang.h"
+#include "NatLang.h"
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "XLang.tab.h" // ID_XXX (yacc generated)
+#include "NatLang.tab.h" // ID_XXX (yacc generated)
 #include "XLangAlloc.h" // Allocator
 #include "XLangString.h" // xl::tokenize
 #include "XLangSystem.h" // xl::system::shell_capture

@@ -1,5 +1,5 @@
-/* XLang
- * -- A parser framework for language modeling
+/* NatLang
+ * -- A parser framework for natural language processing
  * Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-%option outfile="lex.XLang.c"
-%option prefix="_XLANG_"
+%option outfile="lex.NatLang.c"
+%option prefix="_NATLANG_"
 
 %{
 
-#include "XLang.h"
-#include "XLang.tab.h" // ID_XXX (yacc generated)
+#include "NatLang.h"
+#include "NatLang.tab.h" // ID_XXX (yacc generated)
 #include "XLangString.h" // xl::unescape
 #include <string.h> // memcpy
 #include <stdlib.h> // atoi
@@ -236,7 +236,7 @@ conj3 "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
  /* OTHER */
 
 .           {LOC;
-                _xl(error)("unknown character");
+                _nl(error)("unknown character");
                 YY_FLUSH_BUFFER;
             }
 

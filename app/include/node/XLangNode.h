@@ -1,5 +1,5 @@
-// XLang
-// -- A parser framework for language modeling
+// NatLang
+// -- A parser framework for natural language processing
 // Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #include "visitor/XLangVisitable.h" // visitor::Visitable
 #include "XLangTreeContext.h" // TreeContext
 #include "XLangType.h" // uint32_t
-#include "XLang.tab.h" // YYLTYPE
+#include "NatLang.tab.h" // YYLTYPE
 #include <string> // std::string
 #include <vector> // std::vector
 #include <stdarg.h> // va_list
