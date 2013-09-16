@@ -594,7 +594,6 @@ bool apply_options(options_t &options)
     return true;
 }
 
-// test
 int main(int argc, char** argv)
 {
     options_t options;
