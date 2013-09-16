@@ -1,0 +1,18 @@
+language: cpp
+compiler:
+    - gcc
+    - clang
+before_script:
+    - sudo apt-get install wordnet
+script: make && make test
+after_script: make pure
+after_script: make lint
+branches:
+    only:
+        - master
+notifications:
+    recipients:
+        - onlyuser@gmail.com
+    email:
+        on_success: change
+        on_failure: always

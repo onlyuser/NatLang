@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/onlyuser/NatLang.png)](http://travis-ci.org/onlyuser/NatLang)
+
 NatLang
 =======
 
