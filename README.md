@@ -34,7 +34,7 @@ Requirements
 
 Unix tools and 3rd party components (accessible from $PATH):
 
-    gcc (with -std=c++0x support), flex, bison, valgrind, cppcheck, doxygen, graphviz, ticpp
+    gcc (with -std=c++0x support), flex, bison, wordnet, valgrind, cppcheck, doxygen, graphviz, ticpp
 
 **Environment variables:**
 
