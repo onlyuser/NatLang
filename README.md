@@ -63,9 +63,12 @@ References
 <dl>
     <dt>"Part-of-speech tagging"</dt>
     <dd>http://en.wikipedia.org/wiki/Part-of-speech_tagging</dd>
+
+    <dt>"Princeton WordNet"</dt>
+    <dd>http://wordnet.princeton.edu/</dd>
 </dl>
 
 Keywords
 --------
 
-    Lex, Yacc, Flex, Bison, Parser, Reentrant
+    Lex, Yacc, Flex, Bison, Parser, NLP, WordNet, POS Tagging
