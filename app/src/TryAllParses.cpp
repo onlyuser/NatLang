@@ -60,17 +60,16 @@ bool get_pos_values_from_wordnet(
     {
         std::string wordnet_stdout =
                 xl::system::shell_capture("wn \"" + word + "\" -faml" + wordnet_faml_types[i]);
+        if(!wordnet_stdout.size())
+            continue;
         std::string polysemy_count_str;
         xl::match_regex(wordnet_stdout, "[\(]polysemy count = ([0-9]+)[)]", 2,
                 NULL,
                 &polysemy_count_str);
         int polysemy_count = atoi(polysemy_count_str.c_str());
-        if(wordnet_stdout.size())
-        {
-            pos_value_faml_tuples.push_back(
-                    pos_value_faml_tuples_t::value_type(pos_values_arr[i], polysemy_count));
-            found_match = true;
-        }
+        pos_value_faml_tuples.push_back(
+                pos_value_faml_tuples_t::value_type(pos_values_arr[i], polysemy_count));
+        found_match = true;
     }
     std::sort(pos_value_faml_tuples.begin(), pos_value_faml_tuples.end(),
             pos_value_faml_tuples_greater_than());
@@ -123,11 +122,10 @@ bool get_pos_values(
         {
             for(auto q = pos_values_from_wordnet.begin(); q != pos_values_from_wordnet.end(); q++)
             {
-                if(unique_pos_values.find(*q) == unique_pos_values.end())
-                {
-                    pos_values->push_back(*q);
-                    unique_pos_values.insert(*q);
-                }
+                if(unique_pos_values.find(*q) != unique_pos_values.end())
+                    continue;
+                pos_values->push_back(*q);
+                unique_pos_values.insert(*q);
             }
         }
     }
@@ -138,19 +136,17 @@ bool get_pos_values(
         {
             for(auto p = pos_values_from_lexer.begin(); p != pos_values_from_lexer.end(); p++)
             {
-                if(unique_pos_values.find(*p) == unique_pos_values.end())
-                {
-                    pos_values->push_back(*p);
-                    unique_pos_values.insert(*p);
-                    // consider conjugations at the NP/VP/S' level
-                    if(*p == "Conj")
-                    {
-                        pos_values->push_back("Conj_2");
-                        pos_values->push_back("Conj_3");
-                        unique_pos_values.insert("Conj_2");
-                        unique_pos_values.insert("Conj_3");
-                    }
-                }
+                if(unique_pos_values.find(*p) != unique_pos_values.end())
+                    continue;
+                pos_values->push_back(*p);
+                unique_pos_values.insert(*p);
+                // consider conjugations at the NP/VP/S' level
+                if(*p != "Conj")
+                    continue;
+                pos_values->push_back("Conj_2");
+                pos_values->push_back("Conj_3");
+                unique_pos_values.insert("Conj_2");
+                unique_pos_values.insert("Conj_3");
             }
         }
     }
