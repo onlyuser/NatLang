@@ -252,6 +252,14 @@ void build_pos_value_paths_from_sentence(
 
 void test_build_pos_value_paths()
 {
+    // eats shoots and leaves
+    // V    V      C   V
+    //      N          N
+
+    // flying saucers are dangerous
+    // Adj    N       Aux Adj
+    // V
+
     std::list<std::vector<std::string>> pos_value_paths;
     build_pos_value_paths_from_sentence(&pos_value_paths, "eats shoots and leaves");
     //test_build_pos_paths("flying saucers are dangerous", pos_paths);

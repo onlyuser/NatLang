@@ -25,14 +25,6 @@
 #include <stack> // std::stack
 #include <string> // std::string
 
-// eats shoots and leaves
-// V    V      C   V
-//      N          N
-
-// flying saucers are dangerous
-// Adj    N       Aux Adj
-// V
-
 bool get_pos_values_from_lexer(
         std::string               word,
         std::vector<std::string>* pos_values);
