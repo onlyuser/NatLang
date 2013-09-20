@@ -9,6 +9,40 @@ About
 -----
 
 NatLang is a parser framework for natural language processing.
+It enumerates all grammatical interpretations of a sentence given a grammar specification and a POS database.
+
+For example:
+
+The sentence "eats shoots and leaves" has four interpretations depending on the POS of "shoots" and "leaves".
+
+<pre>
+eats  shoots and leaves
+ |     |      |   |
+(V)---(V)----(C)-(V)
+   \        /   \
+    *-(N)--*     (N)
+
+Path #1: {V V C V}
+Path #2: {V V C N}
+Path #3: {V N C V}
+Path #4: {V N C N}
+</pre>
+
+The sentence "flying saucers are dangerous" has two interpretations depending on the POS of "flying".
+
+<pre>
+flying saucers are    dangerous
+ |      |       |     |
+(Adj)--(N)-----(Aux)-(Adj)
+      /
+(V)--*
+
+Path #1: {Adj N Aux Adj}
+Path #2: {V   N Aux Adj}
+</pre>
+
+NatLang generates a parse tree for all POS paths that result in a successful parse.
+Further analysis passes can be done by visiting the generated parse trees.
 
 A Motivating Example
 --------------------
@@ -66,9 +100,12 @@ References
 
     <dt>"Princeton WordNet"</dt>
     <dd>http://wordnet.princeton.edu/</dd>
+
+    <dt>"Syntactic Theory: A Unified Approach"</dt>
+    <dd>ISBN: 0340706104</dd>
 </dl>
 
 Keywords
 --------
 
-    Lex, Yacc, Flex, Bison, Parser, NLP, WordNet, POS Tagging
+    Lex, Yacc, Flex, Bison, Parser, NLP, WordNet, POS Tagging, How to Parse English
