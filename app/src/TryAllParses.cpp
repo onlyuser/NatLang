@@ -49,7 +49,7 @@ bool get_pos_values_from_wordnet(
     std::string which_wn_stdout = xl::system::shell_capture("which wn");
     if(which_wn_stdout.empty())
     {
-        std::cerr << "ERROR: wordnet not found" << std::endl;
+        std::cerr << "ERROR: WordNet not found" << std::endl;
         return false;
     }
     pos_value_faml_tuples_t pos_value_faml_tuples;
@@ -115,7 +115,7 @@ bool get_pos_values(
         return true;
     }
     std::set<std::string> unique_pos_values;
-    // lookup POS in wordnet and use familiarity score for POS ranking
+    // lookup POS in WordNet and use familiarity score for POS ranking
     {
         std::vector<std::string> pos_values_from_wordnet;
         if(get_pos_values_from_wordnet(word, &pos_values_from_wordnet))
@@ -129,7 +129,7 @@ bool get_pos_values(
             }
         }
     }
-    // lookup POS in lexer hard coded categorizations in case wordnet missed it
+    // lookup POS in lexer hard coded categorizations in case WordNet missed it
     {
         std::vector<std::string> pos_values_from_lexer;
         if(get_pos_values_from_lexer(word, &pos_values_from_lexer))
