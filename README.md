@@ -31,7 +31,7 @@ Path #4: {V N C N}
 The sentence "flying saucers are dangerous" has two interpretations depending on the POS of "flying".
 
 <pre>
-flying saucers are    dangerous
+flying saucers are   dangerous
  |      |       |     |
 (Adj)--(N)-----(Aux)-(Adj)
       /
@@ -41,8 +41,8 @@ Path #1: {Adj N Aux Adj}
 Path #2: {V   N Aux Adj}
 </pre>
 
-NatLang generates a parse tree for all POS paths that result in a successful parse.
-Further analysis passes can be done by visiting the generated parse trees.
+NatLang generates a parse tree for each POS path that result in a successful parse.
+Additional analysis passes can then be implemented on these parse trees.
 
 A Motivating Example
 --------------------
