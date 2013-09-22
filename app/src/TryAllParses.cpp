@@ -133,9 +133,9 @@ bool get_pos_values(
     // lookup POS in lexer hard coded categorizations in case WordNet missed it
     {
         std::vector<std::string> pos_values_from_lexer;
-        bool r1 = get_pos_values_from_lexer(word, &pos_values_from_lexer);
-        bool r2 = get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix");
-        if(r1 || r2)
+        bool alt_match        = get_pos_values_from_lexer(word, &pos_values_from_lexer);
+        bool alt_suffix_match = get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix");
+        if(alt_match || alt_suffix_match)
         {
             for(auto p = pos_values_from_lexer.begin(); p != pos_values_from_lexer.end(); p++)
             {

@@ -65,7 +65,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option noyywrap nounput noyy_top_state
 %option reentrant bison-bridge bison-locations
 %option stack
-%x ST_ALT ST_SUFFIX
+%x ST_ALT ST_ALT_SUFFIX
 
 ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
@@ -151,10 +151,10 @@ suffix_adv  "ly"
             }
 
 "[suffix]<" {
-                PUSH_STATE(ST_SUFFIX);
+                PUSH_STATE(ST_ALT_SUFFIX);
             }
 
-<ST_SUFFIX>">" {
+<ST_ALT_SUFFIX>">" {
                 POP_STATE;
             }
 
@@ -218,22 +218,22 @@ suffix_adv  "ly"
                 return ID_PERIOD;
             }
 
-<ST_SUFFIX>[^>]+{suffix_noun} {LOC;
+<ST_ALT_SUFFIX>[^>]+{suffix_noun} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_NOUN;
             }
 
-<ST_SUFFIX>[^>]+{suffix_verb} {LOC;
+<ST_ALT_SUFFIX>[^>]+{suffix_verb} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
             }
 
-<ST_SUFFIX>[^>]+{suffix_adj} {LOC;
+<ST_ALT_SUFFIX>[^>]+{suffix_adj} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
             }
 
-<ST_SUFFIX>[^>]+{suffix_adv} {LOC;
+<ST_ALT_SUFFIX>[^>]+{suffix_adv} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADV;
             }
