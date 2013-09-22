@@ -65,7 +65,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option noyywrap nounput noyy_top_state
 %option reentrant bison-bridge bison-locations
 %option stack
-%x ST_ALT
+%x ST_ALT ST_SUFFIX
 
 ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
@@ -128,6 +128,11 @@ conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"
 conj2 "for2"|"and2"|"nor2"|"but2"|"or2"|"yet2"|"so2"
 conj3 "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
 
+suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"
+suffix_verb "ate"|"ify"|"ize"|"ise"
+suffix_adj  "able"|"al"|"ful"|"ous"
+suffix_adv  "ly"
+
 %%
 
 {ws}        {LOC;
@@ -137,11 +142,19 @@ conj3 "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
  /*==========================================================================*/
  /* LITERALS */
 
-"<"         {
+"[]<"       {
                 PUSH_STATE(ST_ALT);
             }
 
 <ST_ALT>">" {
+                POP_STATE;
+            }
+
+"[suffix]<" {
+                PUSH_STATE(ST_SUFFIX);
+            }
+
+<ST_SUFFIX>">" {
                 POP_STATE;
             }
 
@@ -203,6 +216,26 @@ conj3 "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
 <ST_ALT>[.] {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_PERIOD;
+            }
+
+<ST_SUFFIX>[^>]+{suffix_noun} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_NOUN;
+            }
+
+<ST_SUFFIX>[^>]+{suffix_verb} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_VERB;
+            }
+
+<ST_SUFFIX>[^>]+{suffix_adj} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_ADJ;
+            }
+
+<ST_SUFFIX>[^>]+{suffix_adv} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_ADV;
             }
 
 <ST_ALT>[^>] {LOC;

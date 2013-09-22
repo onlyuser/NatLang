@@ -80,12 +80,13 @@ bool get_pos_values_from_wordnet(
 
 bool get_pos_values_from_lexer(
         std::string               word,
-        std::vector<std::string>* pos_values)
+        std::vector<std::string>* pos_values,
+        std::string               group)
 {
     if(word.empty() || !pos_values)
         return false;
     std::string pos_value;
-    std::string word_alt = std::string("<") + word + ">";
+    std::string word_alt = std::string("[") + group + "]<" + word + ">";
     try
     {
         uint32_t lexer_id = quick_lex(word_alt.c_str());
@@ -132,7 +133,9 @@ bool get_pos_values(
     // lookup POS in lexer hard coded categorizations in case WordNet missed it
     {
         std::vector<std::string> pos_values_from_lexer;
-        if(get_pos_values_from_lexer(word, &pos_values_from_lexer))
+        bool r1 = get_pos_values_from_lexer(word, &pos_values_from_lexer);
+        bool r2 = get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix");
+        if(r1 || r2)
         {
             for(auto p = pos_values_from_lexer.begin(); p != pos_values_from_lexer.end(); p++)
             {
@@ -150,7 +153,9 @@ bool get_pos_values(
             }
         }
     }
-    return pos_values->size();
+    if(pos_values->empty())
+        pos_values->push_back("Noun"); // if we don't recognize it, it's a noun
+    return true;
 }
 
 void build_pos_paths_from_pos_options(
@@ -252,14 +257,6 @@ void build_pos_value_paths_from_sentence(
 
 void test_build_pos_value_paths()
 {
-    // eats shoots and leaves
-    // V    V      C   V
-    //      N          N
-
-    // flying saucers are dangerous
-    // Adj    N       Aux Adj
-    // V
-
     std::list<std::vector<std::string>> pos_value_paths;
     build_pos_value_paths_from_sentence(&pos_value_paths, "eats shoots and leaves");
     //test_build_pos_paths("flying saucers are dangerous", pos_paths);

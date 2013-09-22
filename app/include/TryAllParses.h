@@ -27,7 +27,8 @@
 
 bool get_pos_values_from_lexer(
         std::string               word,
-        std::vector<std::string>* pos_values);
+        std::vector<std::string>* pos_values,
+        std::string               group = "");
 bool get_pos_values_from_wordnet(
         std::string               word,
         std::vector<std::string>* pos_values);
