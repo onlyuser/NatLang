@@ -65,7 +65,9 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option noyywrap nounput noyy_top_state
 %option reentrant bison-bridge bison-locations
 %option stack
-%x ST_ALT ST_ALT_SUFFIX
+%x ST_ALT
+%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_ADV
+%x ST_ALT_SUFFIX_NOUN ST_ALT_SUFFIX_VERB ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
 
 ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
@@ -142,38 +144,29 @@ suffix_adv  "ly"
  /*==========================================================================*/
  /* LITERALS */
 
-"[]<"       {
-                PUSH_STATE(ST_ALT);
-            }
+"[]<"       { PUSH_STATE(ST_ALT); }
+"[noun]<"   { PUSH_STATE(ST_ALT_NOUN); }
+"[verb]<"   { PUSH_STATE(ST_ALT_VERB); }
+"[adj]<"    { PUSH_STATE(ST_ALT_ADJ); }
+"[adv]<"    { PUSH_STATE(ST_ALT_ADV); }
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV>">" { POP_STATE; }
 
-<ST_ALT>">" {
-                POP_STATE;
-            }
-
-"[suffix]<" {
-                PUSH_STATE(ST_ALT_SUFFIX);
-            }
-
-<ST_ALT_SUFFIX>">" {
-                POP_STATE;
-            }
-
-<ST_ALT>{noun} {LOC;
+<ST_ALT_NOUN>{noun} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_NOUN;
             }
 
-<ST_ALT>{verb} {LOC;
+<ST_ALT_VERB>{verb} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
             }
 
-<ST_ALT>{adj} {LOC;
+<ST_ALT_ADJ>{adj} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
             }
 
-<ST_ALT>{adv} {LOC;
+<ST_ALT_ADV>{adv} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADV;
             }
@@ -218,27 +211,37 @@ suffix_adv  "ly"
                 return ID_PERIOD;
             }
 
-<ST_ALT_SUFFIX>[^>]+{suffix_noun} {LOC;
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV>[^>] {LOC;
+                return 0;
+            }
+
+"[suffix_noun]<" { PUSH_STATE(ST_ALT_SUFFIX_NOUN); }
+"[suffix_verb]<" { PUSH_STATE(ST_ALT_SUFFIX_VERB); }
+"[suffix_adj]<"  { PUSH_STATE(ST_ALT_SUFFIX_ADJ); }
+"[suffix_adv]<"  { PUSH_STATE(ST_ALT_SUFFIX_ADV); }
+<ST_ALT_SUFFIX_NOUN,ST_ALT_SUFFIX_VERB,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>">" { POP_STATE; }
+
+<ST_ALT_SUFFIX_NOUN>[^>]+{suffix_noun} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_NOUN;
             }
 
-<ST_ALT_SUFFIX>[^>]+{suffix_verb} {LOC;
+<ST_ALT_SUFFIX_VERB>[^>]+{suffix_verb} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
             }
 
-<ST_ALT_SUFFIX>[^>]+{suffix_adj} {LOC;
+<ST_ALT_SUFFIX_ADJ>[^>]+{suffix_adj} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
             }
 
-<ST_ALT_SUFFIX>[^>]+{suffix_adv} {LOC;
+<ST_ALT_SUFFIX_ADV>[^>]+{suffix_adv} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADV;
             }
 
-<ST_ALT>[^>] {LOC;
+<ST_ALT_SUFFIX_NOUN,ST_ALT_SUFFIX_VERB,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>[^>] {LOC;
                 return 0;
             }
 
