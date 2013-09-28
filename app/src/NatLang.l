@@ -123,59 +123,59 @@ suffix_adv  "ly"
 "[adv]<"    { PUSH_STATE(ST_ALT_ADV); }
 <ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV>">" { POP_STATE; }
 
-<ST_ALT_NOUN>{noun} {LOC;
+<ST_ALT_NOUN>{noun}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_NOUN;
             }
 
  /*
-<ST_ALT_VERB>{verb} {LOC;
+<ST_ALT_VERB>{verb}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
             }
 
-<ST_ALT_ADJ>{adj} {LOC;
+<ST_ALT_ADJ>{adj}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
             }
  */
 
-<ST_ALT_ADV>{adv} {LOC;
+<ST_ALT_ADV>{adv}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADV;
             }
 
-<ST_ALT>{modal} {LOC;
+<ST_ALT>{modal}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_MODAL;
             }
 
-<ST_ALT>{prep} {LOC;
+<ST_ALT>{prep}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_PREP;
             }
 
-<ST_ALT>{aux} {LOC;
+<ST_ALT>{aux}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_AUX;
             }
 
-<ST_ALT>{det} {LOC;
+<ST_ALT>{det}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_DET;
             }
 
-<ST_ALT>{conj} {LOC;
+<ST_ALT>{conj}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_CONJ;
             }
 
-<ST_ALT>{conj2} {LOC;
+<ST_ALT>{conj2}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_CONJ_2;
             }
 
-<ST_ALT>{conj3} {LOC;
+<ST_ALT>{conj3}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_CONJ_3;
             }
@@ -195,22 +195,22 @@ suffix_adv  "ly"
 "[suffix_adv]<"  { PUSH_STATE(ST_ALT_SUFFIX_ADV); }
 <ST_ALT_SUFFIX_NOUN,ST_ALT_SUFFIX_VERB,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>">" { POP_STATE; }
 
-<ST_ALT_SUFFIX_NOUN>[^>]+{suffix_noun} {LOC;
+<ST_ALT_SUFFIX_NOUN>[^>]+{suffix_noun}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_NOUN;
             }
 
-<ST_ALT_SUFFIX_VERB>[^>]+{suffix_verb} {LOC;
+<ST_ALT_SUFFIX_VERB>[^>]+{suffix_verb}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
             }
 
-<ST_ALT_SUFFIX_ADJ>[^>]+{suffix_adj} {LOC;
+<ST_ALT_SUFFIX_ADJ>[^>]+{suffix_adj}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
             }
 
-<ST_ALT_SUFFIX_ADV>[^>]+{suffix_adv} {LOC;
+<ST_ALT_SUFFIX_ADV>[^>]+{suffix_adv}{ws} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADV;
             }
