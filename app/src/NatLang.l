@@ -78,6 +78,7 @@ lit_ident {id}+({digit}|{id})*
 lit_int   {digit}+
 lit_float {digit}*[.]{digit}+
 
+/*
 noun_pron   "i"|"me"|"you"|"he"|"she"|"him"|"her"|"it"|"them"|"we"|"us"|"here"|"there"|"everywhere"|"nowhere"|"someone"|"somewhere"
 noun_places "house"|"home"|"school"|"library"|"store"
 noun_actors "boy"|"girl"|"man"|"woman"|"fox"|"dog"|"book"|"apple"
@@ -112,6 +113,10 @@ adj_size  "big"|"small"
 adj_color "red"|"orange"|"yellow"|"green"|"blue"|"purple"|"black"|"white"|"brown"
 adj_speed "fast"|"quick"|"slow"
 adj       {adj_size}|{adj_color}|{adj_speed}|"lazy"
+*/
+
+noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"
+noun      {noun_pron}
 
 prep_basic             "to"|"from"|"of"|"in"|"on"|"at"
 prep_spatial_distance  "near"|"far"
@@ -122,15 +127,19 @@ prep_spatial_order     "behind"|"before"|"after"|"beyond"|"around"
 prep_spatial           {prep_spatial_distance}|{prep_spatial_motion}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
 prep                   {prep_basic}|{prep_spatial}
 
-adv   "quickly"|"slowly"
-modal "always"|"must"|"will"|"would"|"may"|"might"|"could"|"can"|"cannot"|"not"|"never"|"very"
-aux   "is"|"was"|"were"
-det   "a"|"the"|"this"|"that"|"these"|"those"
-conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"
-conj2 "for2"|"and2"|"nor2"|"but2"|"or2"|"yet2"|"so2"
-conj3 "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
+adv      "quickly"|"slowly"|"always"|"never"|"sometimes"
+modal    "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
+neg      "not"
+aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
+aux_do   "does"|"do"|"did"
+aux_have "has"|"have"|"had"|"having"
+aux       {aux_be}|{aux_do}|{aux_have}
+det       "a"|"the"|"this"|"that"|"these"|"those"
+conj      "for"|"and"|"nor"|"but"|"or"|"yet"|"so"
+conj2     "for2"|"and2"|"nor2"|"but2"|"or2"|"yet2"|"so2"
+conj3     "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
 
-suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"
+suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_verb "ate"|"ify"|"ize"|"ise"
 suffix_adj  "able"|"al"|"ful"|"ous"
 suffix_adv  "ly"
@@ -156,6 +165,7 @@ suffix_adv  "ly"
                 return ID_NOUN;
             }
 
+ /*
 <ST_ALT_VERB>{verb} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
@@ -165,6 +175,7 @@ suffix_adv  "ly"
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
             }
+ */
 
 <ST_ALT_ADV>{adv} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
