@@ -62,11 +62,10 @@ bool get_pos_values_from_wordnet(
                 xl::system::shell_capture("wn \"" + word + "\" -faml" + wordnet_faml_types[i]);
         if(wordnet_stdout.empty())
             continue;
-        std::string dummy;
         std::string word_base_form;
         xl::match_regex(wordnet_stdout, "Familiarity of ([^ ]+) ([^ \n]+)", 3,
                 NULL,
-                &dummy,
+                NULL,
                 &word_base_form);
         if(word_base_form != word)
             found_match |= get_pos_values_from_wordnet(word_base_form, pos_values);

@@ -78,43 +78,6 @@ lit_ident {id}+({digit}|{id})*
 lit_int   {digit}+
 lit_float {digit}*[.]{digit}+
 
-/*
-noun_pron   "i"|"me"|"you"|"he"|"she"|"him"|"her"|"it"|"them"|"we"|"us"|"here"|"there"|"everywhere"|"nowhere"|"someone"|"somewhere"
-noun_places "house"|"home"|"school"|"library"|"store"
-noun_actors "boy"|"girl"|"man"|"woman"|"fox"|"dog"|"book"|"apple"
-noun        {noun_pron}|{noun_places}|{noun_actors}
-
-verb_motion_move "move"|"moves"|"moving"|"moved"
-verb_motion_come "come"|"comes"|"coming"|"came"
-verb_motion_go   "go"|"goes"|"going"|"went"|"gone"
-verb_motion_run  "run"|"runs"|"running"|"ran"
-verb_motion_jump "jump"|"jumps"|"jumping"|"jumped"
-verb_motion      {verb_motion_move}|{verb_motion_come}|{verb_motion_go}|{verb_motion_run}|{verb_motion_jump}
-
-verb_access_create  "create"|"creates"|"creating"|"created"
-verb_access_destroy "destroy"|"destroys"|"destroying"|"destroyed"
-verb_access_open    "open"|"opens"|"opening"|"opened"
-verb_access_close   "close"|"closes"|"closing"|"closed"
-verb_access_change  "change"|"changes"|"changing"|"changed"
-verb_access         {verb_access_create}|{verb_access_destroy}|{verb_access_open}|{verb_access_close}|{verb_access_change}
-
-verb_misc_do      "do"|"does"|"doing"|"did"|"done"
-verb_misc_make    "make"|"makes"|"making"|"made"
-verb_misc_get     "get"|"gets"|"getting"|"got"|"gotten"
-verb_misc_put     "put"|"puts"|"putting"
-verb_misc_give    "give"|"gives"|"giving"|"gave"|"given"
-verb_misc_take    "take"|"takes"|"taking"|"took"|"taken"
-verb_misc_receive "receive"|"receives"|"receiving"|"received"
-verb_misc         {verb_misc_do}|{verb_misc_make}|{verb_misc_get}|{verb_misc_put}|{verb_misc_give}|{verb_misc_take}|{verb_misc_receive}
-
-verb {verb_motion}|{verb_access}|{verb_misc}
-
-adj_size  "big"|"small"
-adj_color "red"|"orange"|"yellow"|"green"|"blue"|"purple"|"black"|"white"|"brown"
-adj_speed "fast"|"quick"|"slow"
-adj       {adj_size}|{adj_color}|{adj_speed}|"lazy"
-*/
-
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"
 noun      {noun_pron}
 
