@@ -115,6 +115,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_ADJ:    return "Adj";
         case ID_ADV:    return "Adv";
         case ID_MODAL:  return "Modal";
+        case ID_NEG:    return "Neg";
         case ID_PREP:   return "Prep";
         case ID_AUX:    return "Aux";
         case ID_DET:    return "Det";
@@ -146,6 +147,7 @@ uint32_t name_to_id(std::string name)
     if(name == "Adj")    return ID_ADJ;
     if(name == "Adv")    return ID_ADV;
     if(name == "Modal")  return ID_MODAL;
+    if(name == "Neg")    return ID_NEG;
     if(name == "Prep")   return ID_PREP;
     if(name == "Aux")    return ID_AUX;
     if(name == "Det")    return ID_DET;
@@ -190,7 +192,7 @@ static void remap_pos_value_path_to_pos_lexer_id_path(
 
 // lvalues for terminals that don't have rules
 %token<ident_value> ID_N ID_V ID_NOUN ID_VERB
-%token<ident_value> ID_ADJ ID_ADV ID_MODAL ID_PREP
+%token<ident_value> ID_ADJ ID_ADV ID_MODAL ID_NEG ID_PREP
 %token<ident_value> ID_AUX ID_DET ID_CONJ ID_CONJ_2 ID_CONJ_3
 %token<ident_value> ID_PERIOD
 
@@ -200,7 +202,7 @@ static void remap_pos_value_path_to_pos_lexer_id_path(
 
 // lvalues for terminals that have rules
 %type<symbol_value> N V Noun Verb
-%type<symbol_value> Adj Adv Modal Prep
+%type<symbol_value> Adj Adv Modal Neg Prep
 %type<symbol_value> Aux Det Conj Conj_2 Conj_3
 %type<symbol_value> Period
 
@@ -254,9 +256,10 @@ N:
     ;
 
 V:
-      Verb    { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }
-    | Adv V   { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
-    | Modal V { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
+      Verb        { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }
+    | Adv V       { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
+    | Modal V     { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
+    | Modal Neg V { $$ = MAKE_SYMBOL(ID_V, @$, 3, $1, $2, $3); }
     ;
 
 CA:
@@ -287,6 +290,10 @@ Adv:
 
 Modal:
       ID_MODAL { $$ = MAKE_SYMBOL(ID_MODAL, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+Neg:
+      ID_NEG { $$ = MAKE_SYMBOL(ID_NEG, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Prep:

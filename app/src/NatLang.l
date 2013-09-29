@@ -152,6 +152,11 @@ suffix_adv  "ly"
                 return ID_MODAL;
             }
 
+<ST_ALT>{neg}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_NEG;
+            }
+
 <ST_ALT>{prep}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_PREP;
