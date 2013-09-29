@@ -93,7 +93,9 @@ bool get_pos_values_from_lexer(
     if(word.empty() || !pos_values)
         return false;
     std::string pos_value;
-    std::string word_alt = std::string("[") + group + "]<" + word + " >";
+    // whitespace after "word" is intentional delimiter
+    const char eow[] = " ";
+    std::string word_alt = std::string("[") + group + "]<" + word + eow + ">";
     try
     {
         uint32_t lexer_id = quick_lex(word_alt.c_str());
