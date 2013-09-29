@@ -93,7 +93,7 @@ bool get_pos_values_from_lexer(
     if(word.empty() || !pos_values)
         return false;
     std::string pos_value;
-    // whitespace after "word" is intentional delimiter
+    // whitespace is intentional end-of-word delimiter
     const char eow[] = " ";
     std::string word_alt = std::string("[") + group + "]<" + word + eow + ">";
     try
