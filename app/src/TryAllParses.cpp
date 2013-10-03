@@ -160,13 +160,13 @@ bool get_pos_values(
                     continue;
                 pos_values->push_back(*p);
                 unique_pos_values.insert(*p);
-                // consider conjugations at the NP/VP/S' level
+                // consider conjugations at the NP/VP/CS level
                 if(*p == "Conj")
                 {
-                    pos_values->push_back("Conj_2");
-                    pos_values->push_back("Conj_3");
-                    unique_pos_values.insert("Conj_2");
-                    unique_pos_values.insert("Conj_3");
+                    pos_values->push_back("Conj_VP");
+                    pos_values->push_back("Conj_CS");
+                    unique_pos_values.insert("Conj_VP");
+                    unique_pos_values.insert("Conj_CS");
                 }
                 if(*p == "Prep")
                 {

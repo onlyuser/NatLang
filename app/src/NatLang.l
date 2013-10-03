@@ -91,7 +91,6 @@ prep_spatial_vertical  "above"|"below"|"over"|"under"|"underneath"|"beneath"
 prep_spatial_order     "behind"|"before"|"after"|"beyond"|"around"
 prep_spatial           {prep_spatial_distance}|{prep_spatial_motion}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
 prep                   {prep_basic}|{prep_spatial}
-prep2                  "to2"|"from2"|"of2"|"for2"|"in2"|"on2"|"at2"
 
 adv      "quickly"|"slowly"|"always"|"never"|"sometimes"
 modal    "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
@@ -102,8 +101,6 @@ aux_have "has"|"have"|"had"|"having"
 aux       {aux_be}|{aux_do}|{aux_have}
 det       "a"|"an"|"the"|"this"|"that"|"these"|"those"
 conj      "and"|"nor"|"but"|"or"|"yet"|"so"
-conj2     "and2"|"nor2"|"but2"|"or2"|"yet2"|"so2"
-conj3     "and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
 
 suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_verb "ate"|"ify"|"ize"|"ise"
@@ -163,11 +160,6 @@ suffix_adv  "ly"
                 return ID_PREP;
             }
 
-<ST_ALT>{prep2}{eow} {LOC;
-                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_PREP_2;
-            }
-
 <ST_ALT>{aux}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_AUX;
@@ -181,16 +173,6 @@ suffix_adv  "ly"
 <ST_ALT>{conj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_CONJ;
-            }
-
-<ST_ALT>{conj2}{eow} {LOC;
-                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_CONJ_2;
-            }
-
-<ST_ALT>{conj3}{eow} {LOC;
-                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_CONJ_3;
             }
 
 <ST_ALT>[.] {LOC;
