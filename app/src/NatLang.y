@@ -311,7 +311,7 @@ Prep:
     ;
 
 Prep_2:
-      ID_PREP { $$ = MAKE_SYMBOL(ID_PREP_2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_PREP_2 { $$ = MAKE_SYMBOL(ID_PREP_2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Aux:
