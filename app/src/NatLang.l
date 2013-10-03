@@ -83,7 +83,7 @@ eow       {ws}
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"
 noun      {noun_pron}
 
-prep_basic             "to"|"from"|"of"|"in"|"on"|"at"
+prep_basic             "to"|"from"|"of"|"for"|"in"|"on"|"at"
 prep_spatial_distance  "near"|"far"
 prep_spatial_motion    "onto"|"into"|"through"
 prep_spatial_container "inside"|"outside"|"within"|"without"
@@ -91,6 +91,7 @@ prep_spatial_vertical  "above"|"below"|"over"|"under"|"underneath"|"beneath"
 prep_spatial_order     "behind"|"before"|"after"|"beyond"|"around"
 prep_spatial           {prep_spatial_distance}|{prep_spatial_motion}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
 prep                   {prep_basic}|{prep_spatial}
+prep2                  "to2"|"from2"|"of2"|"for2"|"in2"|"on2"|"at2"
 
 adv      "quickly"|"slowly"|"always"|"never"|"sometimes"
 modal    "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
@@ -99,10 +100,10 @@ aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
 aux_do   "does"|"do"|"did"
 aux_have "has"|"have"|"had"|"having"
 aux       {aux_be}|{aux_do}|{aux_have}
-det       "a"|"the"|"this"|"that"|"these"|"those"
-conj      "for"|"and"|"nor"|"but"|"or"|"yet"|"so"
-conj2     "for2"|"and2"|"nor2"|"but2"|"or2"|"yet2"|"so2"
-conj3     "for3"|"and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
+det       "a"|"an"|"the"|"this"|"that"|"these"|"those"
+conj      "and"|"nor"|"but"|"or"|"yet"|"so"
+conj2     "and2"|"nor2"|"but2"|"or2"|"yet2"|"so2"
+conj3     "and3"|"nor3"|"but3"|"or3"|"yet3"|"so3"
 
 suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_verb "ate"|"ify"|"ize"|"ise"
@@ -160,6 +161,11 @@ suffix_adv  "ly"
 <ST_ALT>{prep}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_PREP;
+            }
+
+<ST_ALT>{prep2}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_PREP_2;
             }
 
 <ST_ALT>{aux}{eow} {LOC;
