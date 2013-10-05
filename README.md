@@ -54,7 +54,49 @@ the quick brown fox jumps over the lazy dog
 
 output:
 
-![picture alt](https://sites.google.com/site/onlyuser/files/ast_fox.png "the quick brown fox jumps over the lazy dog")
+<pre>
+                         S'
+                         |
+                         |
+                         |
+                         S
+                         |
+          |---------------------------------------|
+          |                        |              |
+          NP                      VP              $
+          |                        |              |
+  |---------|           |-------------|           |
+  |         |           |             |           |
+ Det        N           V            AP           .
+  |         |           |             |
+  |       |-------|     |             |
+  |       |       |     |             |
+ the     A'      Noun Verb          PP_VP
+          |       |     |             |
+       |-----|    |     |      |----------|
+       |     |    |     |      |          |
+       A     A   fox  jumps Prep_VP      NP
+       |     |                 |          |
+       |     |               |--     |------|
+       |     |               |       |      |
+      Adj   Adj             over    Det     N
+       |     |                       |      |
+       |     |                       |   |----|
+       |     |                       |   |    |
+     quick brown                    the  A'  Noun
+                                         |    |
+                                         |    |
+                                         |    |
+                                         A   dog
+                                         |
+                                         |
+                                         |
+                                        Adj
+                                         |
+                                         |
+                                         |
+                                        lazy
+</pre>
 
 Usage
 -----
