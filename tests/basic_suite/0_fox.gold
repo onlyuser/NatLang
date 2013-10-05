@@ -29,9 +29,69 @@
                         jumps
                     )
                 )
+                (PP
+                    (Prep
+                        over
+                    )
+                    (NP
+                        (Det
+                            the
+                        )
+                        (N
+                            (A'
+                                (A
+                                    (Adj
+                                        lazy
+                                    )
+                                )
+                            )
+                            (Noun
+                                dog
+                            )
+                        )
+                    )
+                )
             )
-            (PP
-                (Prep
+        )
+        ($
+            .
+        )
+    )
+)
+(S'
+    (S
+        (NP
+            (Det
+                the
+            )
+            (N
+                (A'
+                    (A
+                        (Adj
+                            quick
+                        )
+                    )
+                )
+                (Noun
+                    brown
+                )
+            )
+        )
+        (VP
+            (V
+                (Verb
+                    fox
+                )
+            )
+            (NP
+                (N
+                    (Noun
+                        jumps
+                    )
+                )
+            )
+            (PP_VP
+                (Prep_VP
                     over
                 )
                 (NP
@@ -89,8 +149,8 @@
                 )
             )
             (AP
-                (PP
-                    (Prep
+                (PP_VP
+                    (Prep_VP
                         over
                     )
                     (NP
@@ -147,8 +207,8 @@
                 )
             )
             (AP
-                (PP
-                    (Prep
+                (PP_VP
+                    (Prep_VP
                         over
                     )
                     (NP

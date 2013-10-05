@@ -105,8 +105,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_NP:      return "NP";
         case ID_VP:      return "VP";
         case ID_AP:      return "AP";
+        case ID_PP_VP:   return "PP_VP";
         case ID_PP:      return "PP";
-        case ID_PP_2:    return "PP_2";
         case ID_N:       return "N";
         case ID_V:       return "V";
         case ID_CA:      return "A'";
@@ -117,8 +117,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_ADV:     return "Adv";
         case ID_MODAL:   return "Modal";
         case ID_NEG:     return "Neg";
+        case ID_PREP_VP: return "Prep_VP";
         case ID_PREP:    return "Prep";
-        case ID_PREP_2:  return "Prep_2";
         case ID_AUX:     return "Aux";
         case ID_DET:     return "Det";
         case ID_CONJ:    return "Conj";
@@ -139,8 +139,8 @@ uint32_t name_to_id(std::string name)
     if(name == "NP")      return ID_NP;
     if(name == "VP")      return ID_VP;
     if(name == "AP")      return ID_AP;
+    if(name == "PP_VP")   return ID_PP_VP;
     if(name == "PP")      return ID_PP;
-    if(name == "PP_2")    return ID_PP_2;
     if(name == "N")       return ID_N;
     if(name == "V")       return ID_V;
     if(name == "A'")      return ID_CA;
@@ -151,8 +151,8 @@ uint32_t name_to_id(std::string name)
     if(name == "Adv")     return ID_ADV;
     if(name == "Modal")   return ID_MODAL;
     if(name == "Neg")     return ID_NEG;
+    if(name == "Prep_VP") return ID_PREP_VP;
     if(name == "Prep")    return ID_PREP;
-    if(name == "Prep_2")  return ID_PREP_2;
     if(name == "Aux")     return ID_AUX;
     if(name == "Det")     return ID_DET;
     if(name == "Conj")    return ID_CONJ;
@@ -196,22 +196,22 @@ static void remap_pos_value_path_to_pos_lexer_id_path(
 
 // lvalues for terminals that don't have rules
 %token<ident_value> ID_N ID_V ID_NOUN ID_VERB
-%token<ident_value> ID_ADJ ID_ADV ID_MODAL ID_NEG ID_PREP ID_PREP_2
+%token<ident_value> ID_ADJ ID_ADV ID_MODAL ID_NEG ID_PREP_VP ID_PREP
 %token<ident_value> ID_AUX ID_DET ID_CONJ ID_CONJ_VP ID_CONJ_CS
 %token<ident_value> ID_PERIOD
 
 // lvalues for non-terminals that have rules
-%type<symbol_value> CS S NP VP AP PP PP_2
+%type<symbol_value> CS S NP VP AP PP_VP PP
 %type<symbol_value> CA A
 
 // lvalues for terminals that have rules
 %type<symbol_value> N V Noun Verb
-%type<symbol_value> Adj Adv Modal Neg Prep Prep_2
+%type<symbol_value> Adj Adv Modal Neg Prep_VP Prep
 %type<symbol_value> Aux Det Conj Conj_VP Conj_CS
 %type<symbol_value> Period
 
 // lexer IDs non-terminals
-%nonassoc ID_CS ID_S ID_NP ID_VP ID_AP ID_PP ID_PP_2
+%nonassoc ID_CS ID_S ID_NP ID_VP ID_AP ID_PP_VP ID_PP
 %nonassoc ID_CA ID_A
 
 %%
@@ -222,7 +222,7 @@ root:
     ;
 
 CS:
-      S            { $$ = MAKE_SYMBOL(ID_CS, @$, 1, $1); }
+      S             { $$ = MAKE_SYMBOL(ID_CS, @$, 1, $1); }
     | CS Conj_CS CS { $$ = MAKE_SYMBOL(ID_CS, @$, 3, $1, $2, $3); }
     ;
 
@@ -233,31 +233,31 @@ S:
 NP:
       N          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }
     | Det N      { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
-    | NP PP_2    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
+    | NP PP      { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
     | NP Conj NP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }
     ;
 
 VP:
       V             { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
     | V NP          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | V NP PP       { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
+    | V NP PP_VP    { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     | V AP          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | VP Conj_VP VP { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     ;
 
 AP:
-      PP   { $$ = MAKE_SYMBOL(ID_AP, @$, 1, $1); }
-    | A PP { $$ = MAKE_SYMBOL(ID_AP, @$, 2, $1, $2); }
+      PP_VP   { $$ = MAKE_SYMBOL(ID_AP, @$, 1, $1); }
+    | A PP_VP { $$ = MAKE_SYMBOL(ID_AP, @$, 2, $1, $2); }
+    ;
+
+PP_VP:
+      Prep_VP NP    { $$ = MAKE_SYMBOL(ID_PP_VP, @$, 2, $1, $2); }
+    | Prep_VP PP_VP { $$ = MAKE_SYMBOL(ID_PP_VP, @$, 2, $1, $2); }
     ;
 
 PP:
       Prep NP { $$ = MAKE_SYMBOL(ID_PP, @$, 2, $1, $2); }
     | Prep PP { $$ = MAKE_SYMBOL(ID_PP, @$, 2, $1, $2); }
-    ;
-
-PP_2:
-      Prep_2 NP   { $$ = MAKE_SYMBOL(ID_PP_2, @$, 2, $1, $2); }
-    | Prep_2 PP_2 { $$ = MAKE_SYMBOL(ID_PP_2, @$, 2, $1, $2); }
     ;
 
 N:
@@ -306,12 +306,12 @@ Neg:
       ID_NEG { $$ = MAKE_SYMBOL(ID_NEG, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-Prep:
-      ID_PREP { $$ = MAKE_SYMBOL(ID_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Prep_VP:
+      ID_PREP_VP { $$ = MAKE_SYMBOL(ID_PREP_VP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-Prep_2:
-      ID_PREP_2 { $$ = MAKE_SYMBOL(ID_PREP_2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Prep:
+      ID_PREP { $$ = MAKE_SYMBOL(ID_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Aux:

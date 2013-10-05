@@ -170,8 +170,8 @@ bool get_pos_values(
                 }
                 if(*p == "Prep")
                 {
-                    pos_values->push_back("Prep_2");
-                    unique_pos_values.insert("Prep_2");
+                    pos_values->push_back("Prep_VP");
+                    unique_pos_values.insert("Prep_VP");
                 }
             }
         }
