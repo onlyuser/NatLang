@@ -23,17 +23,17 @@
 
 namespace xl {
 
-bool                     read_file(std::string filename, std::string& s);
-std::string              replace(std::string s, const std::string& find_string, const std::string& replace_string);
-std::vector<std::string> tokenize(const std::string& s, const char* delim = " ");
-std::string              escape_xml(std::string s);
-std::string              unescape_xml(std::string s);
-std::string              escape(std::string s);
-std::string              unescape(std::string s);
+bool                     read_file(std::string filename, std::string &s);
+std::string              replace(std::string &s, std::string find_string, std::string replace_string);
+std::vector<std::string> tokenize(const std::string &s, const char* delim = " ");
+std::string              escape_xml(std::string &s);
+std::string              unescape_xml(std::string &s);
+std::string              escape(std::string &s);
+std::string              unescape(std::string &s);
 std::string              escape(char c);
 char                     unescape(char c);
 
-bool match_regex(std::string s, std::string pattern, int nmatch, ...);
+bool match_regex(std::string &s, std::string pattern, int nmatch, ...);
 
 }
 

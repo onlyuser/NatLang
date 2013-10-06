@@ -27,7 +27,7 @@
 
 namespace xl {
 
-bool read_file(std::string filename, std::string& s)
+bool read_file(std::string filename, std::string &s)
 {
     FILE* file = fopen(filename.c_str(), "rb");
     if(!file)
@@ -59,14 +59,15 @@ bool read_file(std::string filename, std::string& s)
     return true;
 }
 
-std::string replace(std::string s, const std::string& find_string, const std::string& replace_string)
+std::string replace(std::string &s, std::string find_string, std::string replace_string)
 {
-    for(size_t p = 0; (p = s.find(find_string, p)) != std::string::npos; p += replace_string.length())
-         s.replace(p, find_string.length(), replace_string);
-    return s;
+    std::string _s(s);
+    for(size_t p = 0; (p = _s.find(find_string, p)) != std::string::npos; p += replace_string.length())
+         _s.replace(p, find_string.length(), replace_string);
+    return _s;
 }
 
-std::vector<std::string> tokenize(const std::string& s, const char* delim)
+std::vector<std::string> tokenize(const std::string &s, const char* delim)
 {
     std::vector<std::string> results;
     size_t prev = 0;
@@ -82,29 +83,29 @@ std::vector<std::string> tokenize(const std::string& s, const char* delim)
     return results;
 }
 
-std::string escape_xml(std::string s)
+std::string escape_xml(std::string &s)
 {
-    std::string xml = s;
-    xml = replace(xml, "&",  "&amp;"); // must replace first
-    xml = replace(xml, "\"", "&quot;");
-    xml = replace(xml, "\'", "&apos;");
-    xml = replace(xml, "<",  "&lt;");
-    xml = replace(xml, ">",  "&gt;");
-    return escape(xml);
+    std::string _s(s);
+    _s = replace(_s, "&",  "&amp;"); // must replace first
+    _s = replace(_s, "\"", "&quot;");
+    _s = replace(_s, "\'", "&apos;");
+    _s = replace(_s, "<",  "&lt;");
+    _s = replace(_s, ">",  "&gt;");
+    return escape(_s);
 }
 
-std::string unescape_xml(std::string s)
+std::string unescape_xml(std::string &s)
 {
-    std::string xml = s;
-    xml = replace(xml, "&quot;", "\"");
-    xml = replace(xml, "&apos;", "\'");
-    xml = replace(xml, "&lt;",   "<");
-    xml = replace(xml, "&gt;",   ">");
-    xml = replace(xml, "&amp;",  "&"); // must replace last
-    return unescape(xml);
+    std::string _s(s);
+    _s = replace(_s, "&quot;", "\"");
+    _s = replace(_s, "&apos;", "\'");
+    _s = replace(_s, "&lt;",   "<");
+    _s = replace(_s, "&gt;",   ">");
+    _s = replace(_s, "&amp;",  "&"); // must replace last
+    return unescape(_s);
 }
 
-std::string escape(std::string s)
+std::string escape(std::string &s)
 {
     std::stringstream ss;
     for(size_t i = 0; i<s.length(); i++)
@@ -112,7 +113,7 @@ std::string escape(std::string s)
     return ss.str();
 }
 
-std::string unescape(std::string s)
+std::string unescape(std::string &s)
 {
     char* buf = new char[s.length()+1]; // can't use allocator for arrays
     strcpy(buf, s.c_str());
@@ -167,7 +168,7 @@ char unescape(char c)
     return c;
 }
 
-bool match_regex(std::string s, std::string pattern, int nmatch, ...)
+bool match_regex(std::string &s, std::string pattern, int nmatch, ...)
 {
     bool result = true;
     regex_t preg;

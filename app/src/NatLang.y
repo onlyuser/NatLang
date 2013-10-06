@@ -27,6 +27,7 @@
 #include "mvc/XLangMVCView.h" // mvc::MVCView
 #include "mvc/XLangMVCModel.h" // mvc::MVCModel
 #include "XLangTreeContext.h" // TreeContext
+#include "XLangString.h" // xl::replace
 #include "XLangType.h" // uint32_t
 #include "TryAllParses.h" // gen_variations
 #include <stdio.h> // size_t
@@ -171,6 +172,14 @@ static void remap_pos_value_path_to_pos_lexer_id_path(
         return;
     for(auto p = pos_value_path.begin(); p != pos_value_path.end(); p++)
         pos_lexer_id_path->push_back(name_to_id(*p));
+}
+
+static std::string expand_contractions(std::string &sentence)
+{
+    std::string s = sentence;
+    s = xl::replace(s, "n't", " not");
+    s = xl::replace(s, "'ve", " have");
+    return s;
 }
 
 %}
@@ -577,7 +586,9 @@ bool apply_options(options_t &options)
         return false;
     }
     std::list<std::vector<std::string>> pos_value_paths;
-    build_pos_value_paths_from_sentence(&pos_value_paths, options.expr);
+    std::string sentence = options.expr;
+    sentence = expand_contractions(sentence);
+    build_pos_value_paths_from_sentence(&pos_value_paths, sentence);
     int path_index = 0;
     std::list<pos_value_path_ast_tuple_t> pos_value_path_ast_tuples;
     for(auto p = pos_value_paths.begin(); p != pos_value_paths.end(); p++)

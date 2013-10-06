@@ -100,7 +100,8 @@ void backtrace_sighandler(int sig, siginfo_t* info, void* secret)
         std::string execname = shell_capture(ss.str());
         std::string exec_basename = get_basename(execname);
         std::string module, mangled_name, offset, address;
-        if(match_regex(symbols[i], "([^ ]+)[\(]([^ ]+)[+]([^ ]+)[)] [\[]([^ ]+)[]]", 5,
+        std::string symbol(symbols[i]);
+        if(match_regex(symbol, "([^ ]+)[\(]([^ ]+)[+]([^ ]+)[)] [\[]([^ ]+)[]]", 5,
                 NULL,
                 &module,
                 &mangled_name,
@@ -128,7 +129,7 @@ void backtrace_sighandler(int sig, siginfo_t* info, void* secret)
                         << " in " << mangled_name << " at " << exec_basename << std::endl;
             }
         }
-        else if(match_regex(symbols[i], "([^ ]+)[\(][)] [\[]([^ ]+)[]]", 3,
+        else if(match_regex(symbol, "([^ ]+)[\(][)] [\[]([^ ]+)[]]", 3,
                 NULL,
                 &module,
                 &address))
@@ -140,7 +141,7 @@ void backtrace_sighandler(int sig, siginfo_t* info, void* secret)
                     << " in ?? at " << exec_basename << std::endl;
         }
         else
-            std::cerr << "#" << i << "  " << symbols[i] << std::endl;
+            std::cerr << "#" << i << "  " << symbol << std::endl;
     }
     free(symbols);
     exit(0);
