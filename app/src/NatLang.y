@@ -179,6 +179,8 @@ static std::string expand_contractions(std::string &sentence)
     std::string s = sentence;
     s = xl::replace(s, "n't", " not");
     s = xl::replace(s, "'ve", " have");
+    s = xl::replace(s, "'m", " am");
+    s = xl::replace(s, "'re", " are");
     return s;
 }
 
