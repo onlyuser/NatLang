@@ -412,6 +412,7 @@ void display_usage(bool verbose)
                 << "  -x, --xml" << std::endl
                 << "  -g, --graph" << std::endl
                 << "  -d, --dot" << std::endl
+                << "  -s, --skip_singleton" << std::endl
                 << "  -m, --memory" << std::endl
                 << "  -h, --help" << std::endl;
     }
@@ -435,9 +436,10 @@ struct options_t
     std::string in_xml;
     std::string expr;
     bool        dump_memory;
+    bool        skip_singleton_nodes;
 
     options_t()
-        : mode(MODE_NONE), dump_memory(false)
+        : mode(MODE_NONE), dump_memory(false), skip_singleton_nodes(false)
     {}
 };
 
@@ -447,17 +449,18 @@ bool extract_options_from_args(options_t* options, int argc, char** argv)
         return false;
     int opt = 0;
     int longIndex = 0;
-    static const char *optString = "i:e:lxgdmh?";
+    static const char *optString = "i:e:lxgdsmh?";
     static const struct option longOpts[] = {
-                { "in-xml", required_argument, NULL, 'i' },
-                { "expr",   required_argument, NULL, 'e' },
-                { "lisp",   no_argument,       NULL, 'l' },
-                { "xml",    no_argument,       NULL, 'x' },
-                { "graph",  no_argument,       NULL, 'g' },
-                { "dot",    no_argument,       NULL, 'd' },
-                { "memory", no_argument,       NULL, 'm' },
-                { "help",   no_argument,       NULL, 'h' },
-                { NULL,     no_argument,       NULL, 0 }
+                { "in-xml",         required_argument, NULL, 'i' },
+                { "expr",           required_argument, NULL, 'e' },
+                { "lisp",           no_argument,       NULL, 'l' },
+                { "xml",            no_argument,       NULL, 'x' },
+                { "graph",          no_argument,       NULL, 'g' },
+                { "dot",            no_argument,       NULL, 'd' },
+                { "skip_singleton", no_argument,       NULL, 's' },
+                { "memory",         no_argument,       NULL, 'm' },
+                { "help",           no_argument,       NULL, 'h' },
+                { NULL,             no_argument,       NULL, 0 }
             };
     opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
     while(opt != -1)
@@ -470,6 +473,7 @@ bool extract_options_from_args(options_t* options, int argc, char** argv)
             case 'x': options->mode = options_t::MODE_XML; break;
             case 'g': options->mode = options_t::MODE_GRAPH; break;
             case 'd': options->mode = options_t::MODE_DOT; break;
+            case 's': options->skip_singleton_nodes = true; break;
             case 'm': options->dump_memory = true; break;
             case 'h':
             case '?': options->mode = options_t::MODE_HELP; break;
@@ -563,8 +567,8 @@ void export_ast(
             ": <" << pos_value_path_str << ">" << std::endl;
     switch(options.mode)
     {
-        case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast); break;
-        case options_t::MODE_XML:   xl::mvc::MVCView::print_xml(ast); break;
+        case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, options.skip_singleton_nodes); break;
+        case options_t::MODE_XML:   xl::mvc::MVCView::print_xml(ast, options.skip_singleton_nodes); break;
         case options_t::MODE_GRAPH: xl::mvc::MVCView::print_graph(ast); break;
         case options_t::MODE_DOT:   xl::mvc::MVCView::print_dot(ast, false, false); break;
         default:

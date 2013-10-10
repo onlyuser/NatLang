@@ -21,6 +21,35 @@
 
 namespace xl { namespace visitor {
 
+void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
+{
+    if(m_skip_singleton)
+    {
+        int index;
+        do
+        {
+            index = get_next_child_index(_node);
+            if(index == -1)
+                return;
+            node::NodeIdentIFace* child = (*_node)[index];
+            if(child->type() != node::NodeIdentIFace::SYMBOL)
+            {
+                dispatch_visit(child);
+                continue;
+            }
+            auto child_symbol = dynamic_cast<const node::SymbolNodeIFace*>(child);
+            if(child_symbol->size() == 1)
+            {
+                dispatch_visit((*child_symbol)[0]);
+                continue;
+            }
+            dispatch_visit(child);
+        } while(index != -1);
+        return;
+    }
+    while(visit_next_child(_node));
+}
+
 void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
 {
     std::cout << _node->value();
@@ -44,11 +73,6 @@ void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _n
 void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
 {
     std::cout << *_node->value();
-}
-
-void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
-{
-    while(visit_next_child(_node));
 }
 
 void VisitorDFS::visit_null()
@@ -127,7 +151,7 @@ void VisitorDFS::abort_visitation(const node::SymbolNodeIFace* _node)
 
 int VisitorDFS::get_next_child_index(const node::SymbolNodeIFace* _node)
 {
-    if(m_visit_state.empty())
+    if(m_visit_state.empty() || m_visit_state.top() == -1)
         return -1;
     if(m_visit_state.top() < static_cast<int>(_node->size()))
         return m_visit_state.top()++;

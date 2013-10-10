@@ -26,30 +26,35 @@ namespace xl { namespace visitor {
 class LispPrinter : public VisitorDFS
 {
 public:
-    LispPrinter() : depth(0)
+    LispPrinter() : m_depth(0)
     {}
+    void visit(const node::SymbolNodeIFace*                             _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
-    void visit(const node::SymbolNodeIFace* _node);
 
 private:
-    size_t depth;
+    size_t m_depth;
 };
 
 struct XMLPrinter : public VisitorDFS
 {
 public:
-    XMLPrinter() : depth(0)
+    XMLPrinter() : m_depth(0)
     {}
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node);
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node);
+    void visit(const node::SymbolNodeIFace*                             _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node);
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
-    void visit(const node::SymbolNodeIFace* _node);
 
 private:
-    size_t depth;
+    size_t m_depth;
 };
 
 struct DotPrinter : public VisitorDFS
@@ -58,13 +63,13 @@ public:
     DotPrinter(bool horizontal = false, bool print_digraph_block = true)
         : m_horizontal(horizontal), m_print_digraph_block(print_digraph_block)
     {}
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node);
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node);
+    void visit(const node::SymbolNodeIFace*                             _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node);
-    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
-    void visit(const node::SymbolNodeIFace* _node);
     static void print_header(bool horizontal);
     static void print_footer();
 

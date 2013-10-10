@@ -27,21 +27,25 @@ namespace xl { namespace visitor {
 
 struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
 {
-    VisitorDFS() : m_allow_visit_null(true)
+    VisitorDFS() : m_allow_visit_null(true), m_skip_singleton(false)
     {}
     virtual ~VisitorDFS()
     {}
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node);
+    virtual void visit(const node::SymbolNodeIFace*                             _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node);
-    virtual void visit(const node::SymbolNodeIFace* _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     virtual void visit_null();
     void dispatch_visit(const node::NodeIdentIFace* unknown);
     void set_allow_visit_null(bool allow_visit_null)
     {
         m_allow_visit_null = allow_visit_null;
+    }
+    void set_skip_singleton(bool skip_singleton)
+    {
+        m_skip_singleton = skip_singleton;
     }
 
 protected:
@@ -51,8 +55,9 @@ protected:
     void abort_visitation(const node::SymbolNodeIFace* _node);
 
 private:
-    bool m_allow_visit_null;
     std::stack<int> m_visit_state;
+    bool            m_allow_visit_null;
+    bool            m_skip_singleton;
 
     int get_next_child_index(const node::SymbolNodeIFace* _node);
 };

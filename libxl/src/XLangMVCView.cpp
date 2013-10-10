@@ -40,22 +40,28 @@
 
 namespace xl { namespace mvc {
 
-void MVCView::print_lisp(const node::NodeIdentIFace* _node)
+void MVCView::print_lisp(
+        const node::NodeIdentIFace* _node,
+        bool                        skip_singleton)
 {
     visitor::LispPrinter v;
+    v.set_skip_singleton(skip_singleton);
     v.dispatch_visit(_node);
 }
 
-void MVCView::print_xml(const node::NodeIdentIFace* _node)
+void MVCView::print_xml(
+        const node::NodeIdentIFace* _node,
+        bool                        skip_singleton)
 {
     visitor::XMLPrinter v;
+    v.set_skip_singleton(skip_singleton);
     v.dispatch_visit(_node);
 }
 
 void MVCView::print_dot(
         const node::NodeIdentIFace* _node,
-        bool horizontal,
-        bool print_digraph_block)
+        bool                        horizontal,
+        bool                        print_digraph_block)
 {
     visitor::DotPrinter v(horizontal, print_digraph_block);
     v.dispatch_visit(_node);

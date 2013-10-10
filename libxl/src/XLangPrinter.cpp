@@ -25,30 +25,69 @@ namespace xl { namespace visitor {
 
 void LispPrinter::visit(const node::SymbolNodeIFace* _node)
 {
-    static size_t depth;
-    std::cout << '(' << _node->name() << std::endl;
-    depth++;
-    bool more;
-    do
-    {
-        std::cout << std::string(depth*4, ' ');
-        more = visit_next_child(_node);
-        std::cout << std::endl;
-    } while(more);
-    depth--;
-    std::cout << std::string(depth*4, ' ') << ')';
-    if(_node->is_root())
-        std::cout << std::endl;
+    std::cout << std::string(m_depth*4, ' ') << '(' << _node->name() << std::endl;
+    m_depth++;
+    VisitorDFS::visit(_node);
+    m_depth--;
+    std::cout << std::string(m_depth*4, ' ') << ')' << std::endl;
+}
+
+void LispPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
+{
+    std::cout << std::string(m_depth*4, ' ');
+    VisitorDFS::visit(_node);
+    std::cout << std::endl;
+}
+
+void LispPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
+{
+    std::cout << std::string(m_depth*4, ' ');
+    VisitorDFS::visit(_node);
+    std::cout << std::endl;
+}
+
+void LispPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
+{
+    std::cout << std::string(m_depth*4, ' ');
+    VisitorDFS::visit(_node);
+    std::cout << std::endl;
+}
+
+void LispPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
+{
+    std::cout << std::string(m_depth*4, ' ');
+    VisitorDFS::visit(_node);
+    std::cout << std::endl;
+}
+
+void LispPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
+{
+    std::cout << std::string(m_depth*4, ' ');
+    VisitorDFS::visit(_node);
+    std::cout << std::endl;
 }
 
 void LispPrinter::visit_null()
 {
-    std::cout << std::string(depth*4, ' ') << "(NULL)" << std::endl;
+    std::cout << std::string(m_depth*4, ' ') << "(NULL)" << std::endl;
+}
+
+void XMLPrinter::visit(const node::SymbolNodeIFace* _node)
+{
+    std::cout << std::string(m_depth*4, ' ') << "<symbol ";
+    #ifdef INCLUDE_NODE_UID
+        std::cout << "id=" << _node->uid() << " ";
+    #endif
+    std::cout << "type=\"" << _node->name() << "\">" << std::endl;
+    m_depth++;
+    VisitorDFS::visit(_node);
+    m_depth--;
+    std::cout << std::string(m_depth*4, ' ') << "</symbol>" << std::endl;
 }
 
 void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
 {
-    std::cout << std::string(depth*4, ' ') << "<term ";
+    std::cout << std::string(m_depth*4, ' ') << "<term ";
     #ifdef INCLUDE_NODE_UID
         std::cout << "id=" << _node->uid() << " ";
     #endif
@@ -59,7 +98,7 @@ void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _no
 
 void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
 {
-    std::cout << std::string(depth*4, ' ') << "<term ";
+    std::cout << std::string(m_depth*4, ' ') << "<term ";
     #ifdef INCLUDE_NODE_UID
         std::cout << "id=" << _node->uid() << " ";
     #endif
@@ -70,7 +109,7 @@ void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _
 
 void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
 {
-    std::cout << std::string(depth*4, ' ') << "<term ";
+    std::cout << std::string(m_depth*4, ' ') << "<term ";
     #ifdef INCLUDE_NODE_UID
         std::cout << "id=" << _node->uid() << " ";
     #endif
@@ -81,7 +120,7 @@ void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* 
 
 void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
 {
-    std::cout << std::string(depth*4, ' ') << "<term ";
+    std::cout << std::string(m_depth*4, ' ') << "<term ";
     #ifdef INCLUDE_NODE_UID
         std::cout << "id=" << _node->uid() << " ";
     #endif
@@ -92,7 +131,7 @@ void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _n
 
 void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
 {
-    std::cout << std::string(depth*4, ' ') << "<term ";
+    std::cout << std::string(m_depth*4, ' ') << "<term ";
     #ifdef INCLUDE_NODE_UID
         std::cout << "id=" << _node->uid() << " ";
     #endif
@@ -103,20 +142,22 @@ void XMLPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _
 
 void XMLPrinter::visit_null()
 {
-    std::cout << std::string(depth*4, ' ') << "<NULL/>" << std::endl;
+    std::cout << std::string(m_depth*4, ' ') << "<NULL/>" << std::endl;
 }
 
-void XMLPrinter::visit(const node::SymbolNodeIFace* _node)
+void DotPrinter::visit(const node::SymbolNodeIFace* _node)
 {
-    std::cout << std::string(depth*4, ' ') << "<symbol ";
-    #ifdef INCLUDE_NODE_UID
-        std::cout << "id=" << _node->uid() << " ";
-    #endif
-    std::cout << "type=\"" << _node->name() << "\">" << std::endl;
-    depth++;
+    if(m_print_digraph_block && _node->is_root())
+        print_header(m_horizontal);
+    std::cout << "\t" << _node->uid() << " [" << std::endl <<
+            "\t\tlabel=\"" << _node->name() << "\"," << std::endl <<
+            "\t\tshape=\"ellipse\"" << std::endl <<
+            "\t];" << std::endl;
     VisitorDFS::visit(_node);
-    depth--;
-    std::cout << std::string(depth*4, ' ') << "</symbol>" << std::endl;
+    if(!_node->is_root())
+        std::cout << '\t' << _node->parent()->uid() << "->" << _node->uid() << ";" << std::endl;
+    if(m_print_digraph_block && _node->is_root())
+        print_footer();
 }
 
 void DotPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
@@ -167,21 +208,6 @@ void DotPrinter::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _
 void DotPrinter::visit_null()
 {
     std::cout << "/* NULL */";
-}
-
-void DotPrinter::visit(const node::SymbolNodeIFace* _node)
-{
-    if(m_print_digraph_block && _node->is_root())
-        print_header(m_horizontal);
-    std::cout << "\t" << _node->uid() << " [" << std::endl <<
-            "\t\tlabel=\"" << _node->name() << "\"," << std::endl <<
-            "\t\tshape=\"ellipse\"" << std::endl <<
-            "\t];" << std::endl;
-    VisitorDFS::visit(_node);
-    if(!_node->is_root())
-        std::cout << '\t' << _node->parent()->uid() << "->" << _node->uid() << ";" << std::endl;
-    if(m_print_digraph_block && _node->is_root())
-        print_footer();
 }
 
 void DotPrinter::print_header(bool horizontal)
