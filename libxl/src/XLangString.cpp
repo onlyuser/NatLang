@@ -168,36 +168,32 @@ char unescape(char c)
     return c;
 }
 
-bool match_regex(std::string &s, std::string pattern, int nmatch, ...)
+bool regex(std::string &s, std::string pattern, int nmatch, ...)
 {
-    bool result = true;
     regex_t preg;
     if(regcomp(&preg, pattern.c_str(), REG_ICASE|REG_EXTENDED))
         return false;
     regmatch_t* pmatch = new regmatch_t[nmatch];
-    if(pmatch)
+    if(!pmatch)
+        return false;
+    if(regexec(&preg, s.c_str(), nmatch, pmatch, 0))
     {
-        int status = regexec(&preg, s.c_str(), nmatch, pmatch, 0);
-        regfree(&preg);
-        if(!status)
-        {
-            va_list ap;
-            va_start(ap, nmatch);
-            for(int i = 0; i<nmatch; i++)
-            {
-                std::string* ptr = va_arg(ap, std::string*);
-                if(ptr)
-                    *ptr = s.substr(pmatch[i].rm_so, pmatch[i].rm_eo-pmatch[i].rm_so);
-            }
-            va_end(ap);
-        }
-        else
-            result = false;
         delete[] pmatch;
+        regfree(&preg);
+        return false;
     }
-    else
-        result = false;
-    return result;
+    regfree(&preg);
+    va_list ap;
+    va_start(ap, nmatch);
+    for(int i = 0; i<nmatch; i++)
+    {
+        std::string* ptr = va_arg(ap, std::string*);
+        if(ptr)
+            *ptr = s.substr(pmatch[i].rm_so, pmatch[i].rm_eo-pmatch[i].rm_so);
+    }
+    va_end(ap);
+    delete[] pmatch;
+    return true;
 }
 
 }

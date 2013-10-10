@@ -27,6 +27,7 @@
 #include "mvc/XLangMVCView.h" // mvc::MVCView
 #include "mvc/XLangMVCModel.h" // mvc::MVCModel
 #include "XLangTreeContext.h" // TreeContext
+#include "XLangSystem.h" // xl::replace
 #include "XLangString.h" // xl::replace
 #include "XLangType.h" // uint32_t
 #include "TryAllParses.h" // gen_variations
@@ -436,10 +437,10 @@ struct options_t
     std::string in_xml;
     std::string expr;
     bool        dump_memory;
-    bool        skip_singleton_nodes;
+    bool        skip_singleton;
 
     options_t()
-        : mode(MODE_NONE), dump_memory(false), skip_singleton_nodes(false)
+        : mode(MODE_NONE), dump_memory(false), skip_singleton(false)
     {}
 };
 
@@ -473,7 +474,7 @@ bool extract_options_from_args(options_t* options, int argc, char** argv)
             case 'x': options->mode = options_t::MODE_XML; break;
             case 'g': options->mode = options_t::MODE_GRAPH; break;
             case 'd': options->mode = options_t::MODE_DOT; break;
-            case 's': options->skip_singleton_nodes = true; break;
+            case 's': options->skip_singleton = true; break;
             case 'm': options->dump_memory = true; break;
             case 'h':
             case '?': options->mode = options_t::MODE_HELP; break;
@@ -567,8 +568,17 @@ void export_ast(
             ": <" << pos_value_path_str << ">" << std::endl;
     switch(options.mode)
     {
-        case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, options.skip_singleton_nodes); break;
-        case options_t::MODE_XML:   xl::mvc::MVCView::print_xml(ast, options.skip_singleton_nodes); break;
+        case options_t::MODE_GRAPH:
+        case options_t::MODE_DOT:
+            if(options.skip_singleton)
+                std::cerr << "ERROR: \"skip_singleton\" not supported for this mode!" << std::endl;
+        default:
+            break;
+    }
+    switch(options.mode)
+    {
+        case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, options.skip_singleton); break;
+        case options_t::MODE_XML:   xl::mvc::MVCView::print_xml(ast, options.skip_singleton); break;
         case options_t::MODE_GRAPH: xl::mvc::MVCView::print_graph(ast); break;
         case options_t::MODE_DOT:   xl::mvc::MVCView::print_dot(ast, false, false); break;
         default:
@@ -632,8 +642,19 @@ bool apply_options(options_t &options)
     return true;
 }
 
+void add_signal_handlers()
+{
+    xl::system::add_sighandler(SIGABRT, xl::system::backtrace_sighandler);
+    xl::system::add_sighandler(SIGINT,  xl::system::backtrace_sighandler);
+    xl::system::add_sighandler(SIGSEGV, xl::system::backtrace_sighandler);
+    xl::system::add_sighandler(SIGFPE,  xl::system::backtrace_sighandler);
+    xl::system::add_sighandler(SIGBUS,  xl::system::backtrace_sighandler);
+    xl::system::add_sighandler(SIGILL,  xl::system::backtrace_sighandler);
+}
+
 int main(int argc, char** argv)
 {
+    add_signal_handlers();
     options_t options;
     if(!extract_options_from_args(&options, argc, argv))
     {
