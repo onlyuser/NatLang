@@ -33,7 +33,7 @@ std::string              unescape(std::string &s);
 std::string              escape(char c);
 char                     unescape(char c);
 
-bool regex(std::string &s, std::string pattern, int nmatch, ...);
+bool regexp(std::string &s, std::string pattern, int nmatch, ...);
 
 }
 

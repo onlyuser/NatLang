@@ -16,7 +16,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "XLangSystem.h" // xl::system::add_sighandler
-#include "XLangString.h" // xl::regex
+#include "XLangString.h" // xl::regexp
 #include <stdio.h> // FILE
 #include <stdlib.h> // free
 #include <string.h> // strdup
@@ -101,7 +101,7 @@ void backtrace_sighandler(int sig, siginfo_t* info, void* secret)
         std::string exec_basename = get_basename(execname);
         std::string module, mangled_name, offset, address;
         std::string symbol(symbols[i]);
-        if(regex(symbol, "([^ ]+)[\(]([^ ]+)[+]([^ ]+)[)] [\[]([^ ]+)[]]", 5,
+        if(regexp(symbol, "([^ ]+)[\(]([^ ]+)[+]([^ ]+)[)] [\[]([^ ]+)[]]", 5,
                 NULL,
                 &module,
                 &mangled_name,
@@ -129,7 +129,7 @@ void backtrace_sighandler(int sig, siginfo_t* info, void* secret)
                         << " in " << mangled_name << " at " << exec_basename << std::endl;
             }
         }
-        else if(regex(symbol, "([^ ]+)[\(][)] [\[]([^ ]+)[]]", 3,
+        else if(regexp(symbol, "([^ ]+)[\(][)] [\[]([^ ]+)[]]", 3,
                 NULL,
                 &module,
                 &address))

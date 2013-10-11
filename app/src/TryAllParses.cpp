@@ -63,14 +63,14 @@ bool get_pos_values_from_wordnet(
         if(wordnet_stdout.empty())
             continue;
         std::string word_base_form;
-        xl::regex(wordnet_stdout, "Familiarity of ([^ ]+) ([^ \n]+)", 3,
+        xl::regexp(wordnet_stdout, "Familiarity of ([^ ]+) ([^ \n]+)", 3,
                 NULL,
                 NULL,
                 &word_base_form);
         if(word_base_form != word)
             found_match |= get_pos_values_from_wordnet(word_base_form, pos_values);
         std::string polysemy_count_str;
-        xl::regex(wordnet_stdout, "[\(]polysemy count = ([0-9]+)[)]", 2,
+        xl::regexp(wordnet_stdout, "[\(]polysemy count = ([0-9]+)[)]", 2,
                 NULL,
                 &polysemy_count_str);
         int polysemy_count = atoi(polysemy_count_str.c_str());

@@ -168,7 +168,7 @@ char unescape(char c)
     return c;
 }
 
-bool regex(std::string &s, std::string pattern, int nmatch, ...)
+bool regexp(std::string &s, std::string pattern, int nmatch, ...)
 {
     regex_t preg;
     if(regcomp(&preg, pattern.c_str(), REG_ICASE|REG_EXTENDED))
