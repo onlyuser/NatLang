@@ -185,6 +185,14 @@ static std::string expand_contractions(std::string &sentence)
     return s;
 }
 
+static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
+{
+    if(_node->type() != xl::node::NodeIdentIFace::SYMBOL)
+        return false;
+    auto symbol = dynamic_cast<const xl::node::SymbolNodeIFace*>(_node);
+    return symbol->size() == 1;
+}
+
 %}
 
 // 'pure_parser' tells bison to use no global variables and create a
@@ -229,8 +237,8 @@ static std::string expand_contractions(std::string &sentence)
 %%
 
 root:
-      CS    { pc->tree_context().root() = $1; YYACCEPT; }
-    | error { yyclearin; /* yyerrok; YYABORT; */ }
+      CS Period { pc->tree_context().root() = $1; YYACCEPT; }
+    | error     { yyclearin; /* yyerrok; YYABORT; */ }
     ;
 
 CS:
@@ -239,7 +247,7 @@ CS:
     ;
 
 S:
-      NP VP Period { $$ = MAKE_SYMBOL(ID_S, @$, 3, $1, $2, $3); }
+      NP VP { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }
     ;
 
 NP:
@@ -566,19 +574,17 @@ void export_ast(
     std::cerr << "INFO: export path #" <<
             pos_value_path_ast_tuple.m_path_index <<
             ": <" << pos_value_path_str << ">" << std::endl;
-    switch(options.mode)
+    xl::visitor::VisitorDFS::filter_cb_t filter_cb = NULL;
+    if(options.skip_singleton)
     {
-        case options_t::MODE_GRAPH:
-        case options_t::MODE_DOT:
-            if(options.skip_singleton)
-                std::cerr << "ERROR: \"skip_singleton\" not supported for this mode!" << std::endl;
-        default:
-            break;
+        filter_cb = filter_singleton;
+        if(options.mode == options_t::MODE_GRAPH || options.mode == options_t::MODE_DOT)
+            std::cerr << "ERROR: \"skip_singleton\" not supported for this mode!" << std::endl;
     }
     switch(options.mode)
     {
-        case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, options.skip_singleton); break;
-        case options_t::MODE_XML:   xl::mvc::MVCView::print_xml(ast, options.skip_singleton); break;
+        case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, filter_cb); break;
+        case options_t::MODE_XML:   xl::mvc::MVCView::print_xml(ast, filter_cb); break;
         case options_t::MODE_GRAPH: xl::mvc::MVCView::print_graph(ast); break;
         case options_t::MODE_DOT:   xl::mvc::MVCView::print_dot(ast, false, false); break;
         default:

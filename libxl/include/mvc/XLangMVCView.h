@@ -18,6 +18,9 @@
 #ifndef XLANG_MVC_VIEW_H_
 #define XLANG_MVC_VIEW_H_
 
+#include "visitor/XLangVisitorDFS.h" // visitor::VisitorDFS
+#include "XLangType.h" // NULL
+
 namespace xl { namespace node { class NodeIdentIFace; } }
 
 namespace xl { namespace mvc {
@@ -25,14 +28,14 @@ namespace xl { namespace mvc {
 struct MVCView
 {
     static void print_lisp(
-            const node::NodeIdentIFace* _node,
-            bool                        skip_singleton_nodes = false);
+            const node::NodeIdentIFace*      _node,
+            visitor::VisitorDFS::filter_cb_t filter_cb = NULL);
     static void print_xml(
-            const node::NodeIdentIFace* _node,
-            bool                        skip_singleton_nodes = false);
+            const node::NodeIdentIFace*      _node,
+            visitor::VisitorDFS::filter_cb_t filter_cb = NULL);
     static void print_dot(
             const node::NodeIdentIFace* _node,
-            bool                        horizontal = false,
+            bool                        horizontal          = false,
             bool                        print_digraph_block = true);
     static void print_dot_header(bool horizontal);
     static void print_dot_footer();

@@ -41,20 +41,20 @@
 namespace xl { namespace mvc {
 
 void MVCView::print_lisp(
-        const node::NodeIdentIFace* _node,
-        bool                        skip_singleton)
+        const node::NodeIdentIFace*      _node,
+        visitor::VisitorDFS::filter_cb_t filter_cb)
 {
     visitor::LispPrinter v;
-    v.set_skip_singleton(skip_singleton);
+    v.set_filter_cb(filter_cb);
     v.dispatch_visit(_node);
 }
 
 void MVCView::print_xml(
-        const node::NodeIdentIFace* _node,
-        bool                        skip_singleton)
+        const node::NodeIdentIFace*      _node,
+        visitor::VisitorDFS::filter_cb_t filter_cb)
 {
     visitor::XMLPrinter v;
-    v.set_skip_singleton(skip_singleton);
+    v.set_filter_cb(filter_cb);
     v.dispatch_visit(_node);
 }
 

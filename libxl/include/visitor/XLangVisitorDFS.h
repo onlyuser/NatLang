@@ -27,7 +27,9 @@ namespace xl { namespace visitor {
 
 struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
 {
-    VisitorDFS() : m_allow_visit_null(true), m_skip_singleton(false)
+    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
+
+    VisitorDFS() : m_allow_visit_null(true), m_skip_singleton(false), m_filter_cb(NULL)
     {}
     virtual ~VisitorDFS()
     {}
@@ -47,6 +49,10 @@ struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
     {
         m_skip_singleton = skip_singleton;
     }
+    void set_filter_cb(filter_cb_t filter_cb)
+    {
+        m_filter_cb = filter_cb;
+    }
 
 protected:
     node::NodeIdentIFace* get_next_child(const node::SymbolNodeIFace* _node);
@@ -58,6 +64,7 @@ private:
     std::stack<int> m_visit_state;
     bool            m_allow_visit_null;
     bool            m_skip_singleton;
+    filter_cb_t     m_filter_cb;
 
     int get_next_child_index(const node::SymbolNodeIFace* _node);
 };

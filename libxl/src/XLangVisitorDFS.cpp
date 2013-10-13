@@ -23,31 +23,35 @@ namespace xl { namespace visitor {
 
 void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
 {
-    if(m_skip_singleton)
+    if(m_filter_cb)
     {
+        m_visit_state.push(0);
         int index;
         do
         {
             index = get_next_child_index(_node);
             if(index == -1)
+            {
+                m_visit_state.pop();
                 return;
-            node::NodeIdentIFace* child = (*_node)[index];
-            if(child->type() != node::NodeIdentIFace::SYMBOL)
-            {
-                dispatch_visit(child);
-                continue;
             }
-            auto child_symbol = dynamic_cast<const node::SymbolNodeIFace*>(child);
-            if(child_symbol->size() == 1)
+            node::NodeIdentIFace* child = (*_node)[index];
+            if(m_filter_cb(child) && child->type() == node::NodeIdentIFace::SYMBOL)
             {
-                dispatch_visit((*child_symbol)[0]);
+                auto child_symbol = dynamic_cast<const node::SymbolNodeIFace*>(child);
+                m_visit_state.push(0);
+                VisitorDFS::visit(child_symbol);
+                m_visit_state.pop();
                 continue;
             }
             dispatch_visit(child);
         } while(index != -1);
+        m_visit_state.pop();
         return;
     }
+    m_visit_state.push(0);
     while(visit_next_child(_node));
+    m_visit_state.pop();
 }
 
 void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
@@ -106,9 +110,7 @@ void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
             visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(unknown));
             break;
         case node::NodeIdentIFace::SYMBOL:
-            m_visit_state.push(0);
             visit(dynamic_cast<const node::SymbolNodeIFace*>(unknown));
-            m_visit_state.pop();
             break;
         default:
             std::cout << "unknown node type" << std::endl;
