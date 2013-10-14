@@ -34,6 +34,8 @@ INPUT_MODE=$3
 INPUT_FILE=$4
 OUTPUT_FILE=$5
 
+EXEC_FLAGS=`echo $EXEC_FLAGS | sed "s/__/ /g"`
+
 if [ ! -f $INPUT_FILE ]; then
     echo "fail! -- INPUT_FILE not found! ==> $INPUT_FILE"
     exit 1

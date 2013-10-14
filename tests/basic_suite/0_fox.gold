@@ -5,12 +5,8 @@
                 the
             )
             (N
-                (A'
-                    (A
-                        (Adj
-                            quick
-                        )
-                    )
+                (Adj
+                    quick
                 )
                 (Noun
                     brown
@@ -18,16 +14,12 @@
             )
         )
         (VP
-            (V
-                (Verb
-                    fox
-                )
+            (Verb
+                fox
             )
             (NP
-                (N
-                    (Noun
-                        jumps
-                    )
+                (Noun
+                    jumps
                 )
                 (PP
                     (Prep
@@ -38,12 +30,8 @@
                             the
                         )
                         (N
-                            (A'
-                                (A
-                                    (Adj
-                                        lazy
-                                    )
-                                )
+                            (Adj
+                                lazy
                             )
                             (Noun
                                 dog
@@ -52,9 +40,6 @@
                     )
                 )
             )
-        )
-        ($
-            .
         )
     )
 )
@@ -65,12 +50,8 @@
                 the
             )
             (N
-                (A'
-                    (A
-                        (Adj
-                            quick
-                        )
-                    )
+                (Adj
+                    quick
                 )
                 (Noun
                     brown
@@ -78,17 +59,11 @@
             )
         )
         (VP
-            (V
-                (Verb
-                    fox
-                )
+            (Verb
+                fox
             )
-            (NP
-                (N
-                    (Noun
-                        jumps
-                    )
-                )
+            (Noun
+                jumps
             )
             (PP_VP
                 (Prep_VP
@@ -99,12 +74,8 @@
                         the
                     )
                     (N
-                        (A'
-                            (A
-                                (Adj
-                                    lazy
-                                )
-                            )
+                        (Adj
+                            lazy
                         )
                         (Noun
                             dog
@@ -113,9 +84,6 @@
                 )
             )
         )
-        ($
-            .
-        )
     )
 )
 (S'
@@ -126,15 +94,11 @@
             )
             (N
                 (A'
-                    (A
-                        (Adj
-                            quick
-                        )
+                    (Adj
+                        quick
                     )
-                    (A
-                        (Adj
-                            brown
-                        )
+                    (Adj
+                        brown
                     )
                 )
                 (Noun
@@ -143,38 +107,27 @@
             )
         )
         (VP
-            (V
-                (Verb
-                    jumps
-                )
+            (Verb
+                jumps
             )
-            (AP
-                (PP_VP
-                    (Prep_VP
-                        over
+            (PP_VP
+                (Prep_VP
+                    over
+                )
+                (NP
+                    (Det
+                        the
                     )
-                    (NP
-                        (Det
-                            the
+                    (N
+                        (Adj
+                            lazy
                         )
-                        (N
-                            (A'
-                                (A
-                                    (Adj
-                                        lazy
-                                    )
-                                )
-                            )
-                            (Noun
-                                dog
-                            )
+                        (Noun
+                            dog
                         )
                     )
                 )
             )
-        )
-        ($
-            .
         )
     )
 )
@@ -185,14 +138,12 @@
                 the
             )
             (N
-                (A'
-                    (A
-                        (Adv
-                            quick
-                        )
-                        (Adj
-                            brown
-                        )
+                (A
+                    (Adv
+                        quick
+                    )
+                    (Adj
+                        brown
                     )
                 )
                 (Noun
@@ -201,38 +152,27 @@
             )
         )
         (VP
-            (V
-                (Verb
-                    jumps
-                )
+            (Verb
+                jumps
             )
-            (AP
-                (PP_VP
-                    (Prep_VP
-                        over
+            (PP_VP
+                (Prep_VP
+                    over
+                )
+                (NP
+                    (Det
+                        the
                     )
-                    (NP
-                        (Det
-                            the
+                    (N
+                        (Adj
+                            lazy
                         )
-                        (N
-                            (A'
-                                (A
-                                    (Adj
-                                        lazy
-                                    )
-                                )
-                            )
-                            (Noun
-                                dog
-                            )
+                        (Noun
+                            dog
                         )
                     )
                 )
             )
-        )
-        ($
-            .
         )
     )
 )

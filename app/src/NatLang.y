@@ -187,9 +187,7 @@ static std::string expand_contractions(std::string &sentence)
 
 static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 {
-    if(_node->type() != xl::node::NodeIdentIFace::SYMBOL)
-        return false;
-    if(_node->height() <= 1)
+    if(_node->type() != xl::node::NodeIdentIFace::SYMBOL || _node->height() <= 1)
         return false;
     auto symbol = dynamic_cast<const xl::node::SymbolNodeIFace*>(_node);
     return symbol->size() == 1;

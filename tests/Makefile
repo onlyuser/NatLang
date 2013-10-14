@@ -63,7 +63,7 @@ TEST_SH := $(SCRIPT_PATH)/test.sh
 
 $(BUILD_PATH)/$(OUT_PREFIX).%.test.pass : $(BINARY) $(TEST_PATH)/%.test
 	-$(TEST_SH) $(BINARY) \
-			--lisp \
+			--lisp__--skip_singleton \
 			$(INPUT_MODE) \
 			$(TEST_PATH)/$*.test \
 			$(TEST_PATH)/$*.gold \
