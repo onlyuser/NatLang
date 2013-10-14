@@ -62,6 +62,18 @@ struct NodeIdentIFace
     {
         return NULL;
     }
+    virtual void set_depth(int depth)
+    {}
+    virtual int depth() const
+    {
+        return -1;
+    }
+    virtual void set_height(int height)
+    {}
+    virtual int height() const
+    {
+        return -1;
+    }
 
     // built-in (part of interface)
     bool is_same_type(const NodeIdentIFace* _node) const

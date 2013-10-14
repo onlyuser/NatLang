@@ -40,6 +40,12 @@
 
 namespace xl { namespace mvc {
 
+void MVCView::annotate_tree(const node::NodeIdentIFace* _node)
+{
+    visitor::TreeAnnotator v;
+    v.dispatch_visit(_node);
+}
+
 void MVCView::print_lisp(
         const node::NodeIdentIFace*      _node,
         visitor::VisitorDFS::filter_cb_t filter_cb)

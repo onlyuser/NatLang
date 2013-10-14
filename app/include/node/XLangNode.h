@@ -33,7 +33,9 @@ class Node : virtual public NodeIdentIFace
 {
 public:
     Node(NodeIdentIFace::type_t _type, uint32_t _lexer_id, YYLTYPE _loc)
-        : m_type(_type), m_lexer_id(_lexer_id), m_parent(NULL), m_original(NULL), m_loc(_loc)
+        : m_type(_type), m_lexer_id(_lexer_id), m_parent(NULL), m_original(NULL),
+          m_depth(-1), m_height(-1),
+          m_loc(_loc)
     {}
 
     // required
@@ -67,6 +69,22 @@ public:
     {
         return m_original ? m_original : this;
     }
+    void set_depth(int depth)
+    {
+        m_depth = depth;
+    }
+    int depth() const
+    {
+        return m_depth;
+    }
+    void set_height(int height)
+    {
+        m_height = height;
+    }
+    int height() const
+    {
+        return m_height;
+    }
 
     // built-in
     YYLTYPE loc() const
@@ -76,10 +94,12 @@ public:
 
 protected:
     NodeIdentIFace::type_t m_type;
-    uint32_t m_lexer_id;
-    NodeIdentIFace* m_parent;
-    const NodeIdentIFace* m_original;
-    YYLTYPE m_loc;
+    uint32_t               m_lexer_id;
+    NodeIdentIFace*        m_parent;
+    const NodeIdentIFace*  m_original;
+    int                    m_depth;
+    int                    m_height;
+    YYLTYPE                m_loc;
 };
 
 template<NodeIdentIFace::type_t _type>

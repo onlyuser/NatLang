@@ -23,6 +23,56 @@
 
 namespace xl { namespace visitor {
 
+void TreeAnnotator::visit(const node::SymbolNodeIFace* _node)
+{
+    m_depth++;
+    VisitorDFS::visit(_node);
+    m_depth--;
+    int max_height = 0;
+    for(int i = 0; i < static_cast<int>(_node->size()); i++)
+    {
+        const node::NodeIdentIFace* child = (*_node)[i];
+        if(child->height() > max_height)
+            max_height = child->height();
+    }
+    const_cast<node::SymbolNodeIFace*>(_node)->set_height(max_height+1);
+    const_cast<node::SymbolNodeIFace*>(_node)->set_depth(m_depth);
+}
+
+void TreeAnnotator::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::INT>*>(_node)->set_height(0);
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::INT>*>(_node)->set_depth(m_depth);
+}
+
+void TreeAnnotator::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(_node)->set_height(0);
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(_node)->set_depth(m_depth);
+}
+
+void TreeAnnotator::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(_node)->set_height(0);
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(_node)->set_depth(m_depth);
+}
+
+void TreeAnnotator::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::CHAR>*>(_node)->set_height(0);
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::CHAR>*>(_node)->set_depth(m_depth);
+}
+
+void TreeAnnotator::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(_node)->set_height(0);
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(_node)->set_depth(m_depth);
+}
+
+void TreeAnnotator::visit_null()
+{
+}
+
 void LispPrinter::visit(const node::SymbolNodeIFace* _node)
 {
     std::cout << std::string(m_depth*4, ' ') << '(' << _node->name() << std::endl;

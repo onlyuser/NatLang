@@ -189,6 +189,8 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 {
     if(_node->type() != xl::node::NodeIdentIFace::SYMBOL)
         return false;
+    if(_node->height() <= 1)
+        return false;
     auto symbol = dynamic_cast<const xl::node::SymbolNodeIFace*>(_node);
     return symbol->size() == 1;
 }
@@ -552,9 +554,10 @@ bool import_ast(
                 std::cerr << "ERROR: " << error_messages().str().c_str() << std::endl;
             #endif
             reset_error_messages();
-            pos_value_path_ast_tuple->m_ast = _ast;
+            pos_value_path_ast_tuple->m_ast = NULL;
             return false;
         }
+        xl::mvc::MVCView::annotate_tree(_ast);
         pos_value_path_ast_tuple->m_ast = _ast;
     }
     return true;
@@ -579,7 +582,10 @@ void export_ast(
     {
         filter_cb = filter_singleton;
         if(options.mode == options_t::MODE_GRAPH || options.mode == options_t::MODE_DOT)
+        {
             std::cerr << "ERROR: \"skip_singleton\" not supported for this mode!" << std::endl;
+            return;
+        }
     }
     switch(options.mode)
     {

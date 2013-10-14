@@ -23,6 +23,23 @@
 
 namespace xl { namespace visitor {
 
+class TreeAnnotator : public VisitorDFS
+{
+public:
+    TreeAnnotator() : m_depth(0)
+    {}
+    void visit(const node::SymbolNodeIFace*                             _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
+    void visit_null();
+
+private:
+    size_t m_depth;
+};
+
 class LispPrinter : public VisitorDFS
 {
 public:

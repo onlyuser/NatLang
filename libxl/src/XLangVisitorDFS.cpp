@@ -19,10 +19,16 @@
 #include "XLangString.h" // xl::escape
 #include <iostream> // std::cout
 
+//#define DEBUG
+
 namespace xl { namespace visitor {
 
 void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
 {
+    #ifdef DEBUG
+        std::cout << "depth: " << _node->depth() << std::endl;
+        std::cout << "height: " << _node->height() << std::endl;
+    #endif
     if(m_filter_cb)
     {
         m_visit_state.push(0);
