@@ -44,10 +44,7 @@ void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
             node::NodeIdentIFace* child = (*_node)[index];
             if(m_filter_cb(child) && child->type() == node::NodeIdentIFace::SYMBOL)
             {
-                auto child_symbol = dynamic_cast<const node::SymbolNodeIFace*>(child);
-                m_visit_state.push(0);
-                VisitorDFS::visit(child_symbol);
-                m_visit_state.pop();
+                VisitorDFS::visit(dynamic_cast<const node::SymbolNodeIFace*>(child));
                 continue;
             }
             dispatch_visit(child);

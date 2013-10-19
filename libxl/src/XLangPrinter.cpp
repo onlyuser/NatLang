@@ -69,6 +69,10 @@ void TreeAnnotator::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>
     const_cast<node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(_node)->set_depth(m_depth);
 }
 
+void TreeAnnotator::visit_null()
+{
+}
+
 void LispPrinter::visit(const node::SymbolNodeIFace* _node)
 {
     std::cout << std::string(m_depth*4, ' ') << '(' << _node->name() << std::endl;

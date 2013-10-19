@@ -34,6 +34,7 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
+    void visit_null();
 
 private:
     size_t m_depth;

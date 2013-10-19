@@ -1,0 +1,31 @@
+(S'
+    (S
+        (NP
+            (Det
+                the
+            )
+            (Noun
+                dog
+            )
+        )
+        (Verb
+            runs
+        )
+    )
+    (Conj_CS
+        and
+    )
+    (S
+        (NP
+            (Det
+                the
+            )
+            (Noun
+                cat
+            )
+        )
+        (Verb
+            jumps
+        )
+    )
+)
