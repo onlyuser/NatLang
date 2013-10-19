@@ -33,7 +33,9 @@ std::string              unescape(std::string &s);
 std::string              escape(char c);
 char                     unescape(char c);
 
+bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_groups);
 bool regexp(std::string &s, std::string pattern, int nmatch, ...);
+bool regsub(std::string &s, std::string pattern, int nmatch, std::string replace_string);
 
 }
 
