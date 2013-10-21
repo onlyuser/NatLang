@@ -176,6 +176,8 @@ bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_
     if(!nmatch)
         return false;
     size_t _start_pos(start_pos ? *start_pos : 0);
+    if(_start_pos >= s.length())
+        return false;
     std::string rest = s.substr(_start_pos, s.length()-_start_pos);
     regex_t preg;
     if(regcomp(&preg, pattern.c_str(), REG_ICASE|REG_EXTENDED))
