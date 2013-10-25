@@ -59,6 +59,7 @@ protected:
 
 private:
     typedef std::stack<std::pair<const node::SymbolNodeIFace*, int>> visit_state_t;
+
     visit_state_t m_visit_state;
     bool          m_allow_visit_null;
     filter_cb_t   m_filter_cb;
