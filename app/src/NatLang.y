@@ -664,7 +664,7 @@ void add_signal_handlers()
 
 int main(int argc, char** argv)
 {
-    //add_signal_handlers();
+    add_signal_handlers();
     options_t options;
     if(!extract_options_from_args(&options, argc, argv))
     {
