@@ -51,17 +51,19 @@ struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
     }
 
 protected:
-    node::NodeIdentIFace* get_next_child(const node::SymbolNodeIFace* _node);
-    bool visit_next_child(const node::SymbolNodeIFace* _node,
+    node::NodeIdentIFace* child_at(int index);
+    node::NodeIdentIFace* next_child(const node::SymbolNodeIFace* _node = NULL);
+    bool visit_next_child(const node::SymbolNodeIFace* _node = NULL,
             node::NodeIdentIFace** ref_node = NULL);
-    void abort_visitation(const node::SymbolNodeIFace* _node);
+    void abort_visitation();
 
 private:
-    std::stack<int> m_visit_state;
-    bool            m_allow_visit_null;
-    filter_cb_t     m_filter_cb;
+    typedef std::stack<std::pair<const node::SymbolNodeIFace*, int>> visit_state_t;
+    visit_state_t m_visit_state;
+    bool          m_allow_visit_null;
+    filter_cb_t   m_filter_cb;
 
-    int get_next_child_index(const node::SymbolNodeIFace* _node);
+    int next_child_index(const node::SymbolNodeIFace* _node = NULL);
 };
 
 } }
