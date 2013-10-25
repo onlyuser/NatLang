@@ -36,7 +36,7 @@ void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
         {
             do
             {
-                node::NodeIdentIFace* child = child_at(index);
+                const node::NodeIdentIFace* child = child_at(index);
                 if(m_filter_cb(child) && child->type() == node::NodeIdentIFace::SYMBOL)
                 {
                     VisitorDFS::visit(dynamic_cast<const node::SymbolNodeIFace*>(child));
@@ -115,7 +115,7 @@ void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
     }
 }
 
-node::NodeIdentIFace* VisitorDFS::next_child(const node::SymbolNodeIFace* _node)
+const node::NodeIdentIFace* VisitorDFS::next_child(const node::SymbolNodeIFace* _node)
 {
     int index = next_child_index(_node);
     if(index == -1)
@@ -123,12 +123,12 @@ node::NodeIdentIFace* VisitorDFS::next_child(const node::SymbolNodeIFace* _node)
     return child_at(index);
 }
 
-bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, node::NodeIdentIFace** ref_node)
+bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_node)
 {
     int index = next_child_index(_node);
     if(index == -1)
         return false;
-    node::NodeIdentIFace* child = child_at(index);
+    const node::NodeIdentIFace* child = child_at(index);
     dispatch_visit(child);
     if(ref_node)
         *ref_node = child;
@@ -155,7 +155,7 @@ int VisitorDFS::next_child_index(const node::SymbolNodeIFace* _node)
     return m_visit_state.top().second++;
 }
 
-node::NodeIdentIFace* VisitorDFS::child_at(int index)
+const node::NodeIdentIFace* VisitorDFS::child_at(int index) const
 {
     return (*m_visit_state.top().first)[index];
 }
