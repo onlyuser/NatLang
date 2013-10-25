@@ -115,11 +115,6 @@ void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
     }
 }
 
-node::NodeIdentIFace* VisitorDFS::child_at(int index)
-{
-    return (*m_visit_state.top().first)[index];
-}
-
 node::NodeIdentIFace* VisitorDFS::next_child(const node::SymbolNodeIFace* _node)
 {
     int index = next_child_index(_node);
@@ -158,6 +153,11 @@ int VisitorDFS::next_child_index(const node::SymbolNodeIFace* _node)
         return -1;
     }
     return m_visit_state.top().second++;
+}
+
+node::NodeIdentIFace* VisitorDFS::child_at(int index)
+{
+    return (*m_visit_state.top().first)[index];
 }
 
 } }

@@ -51,7 +51,6 @@ struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
     }
 
 protected:
-    node::NodeIdentIFace* child_at(int index);
     node::NodeIdentIFace* next_child(const node::SymbolNodeIFace* _node = NULL);
     bool visit_next_child(const node::SymbolNodeIFace* _node = NULL,
             node::NodeIdentIFace** ref_node = NULL);
@@ -65,6 +64,7 @@ private:
     filter_cb_t   m_filter_cb;
 
     int next_child_index(const node::SymbolNodeIFace* _node = NULL);
+    node::NodeIdentIFace* child_at(int index);
 };
 
 } }
