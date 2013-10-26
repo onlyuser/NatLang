@@ -51,12 +51,9 @@ struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
     }
 
 protected:
-    const node::NodeIdentIFace* next_child(const node::SymbolNodeIFace* _node = NULL);
-    bool visit_next_child(const node::SymbolNodeIFace* _node = NULL,
-            const node::NodeIdentIFace** ref_node = NULL);
+    bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
+    bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
     void abort_visitation();
-    int next_child_index(const node::SymbolNodeIFace* _node = NULL);
-    const node::NodeIdentIFace* child_at(int index) const;
 
 private:
     typedef std::pair<const node::SymbolNodeIFace*, int> visit_state_t;
@@ -65,6 +62,9 @@ private:
     visit_state_stack_t m_visit_state_stack;
     bool                m_allow_visit_null;
     filter_cb_t         m_filter_cb;
+
+    int next_child_index(const node::SymbolNodeIFace* _node = NULL);
+    const node::NodeIdentIFace* child_at(int index) const;
 };
 
 } }

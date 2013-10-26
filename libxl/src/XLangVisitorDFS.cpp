@@ -31,19 +31,18 @@ void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
     #endif
     if(m_filter_cb)
     {
-        int index = next_child_index(_node);
-        if(index != -1)
+        const node::NodeIdentIFace* child = NULL;
+        if(next_child(_node, &child))
         {
             do
             {
-                const node::NodeIdentIFace* child = child_at(index);
                 if(m_filter_cb(child) && child->type() == node::NodeIdentIFace::SYMBOL)
                 {
                     VisitorDFS::visit(dynamic_cast<const node::SymbolNodeIFace*>(child));
                     continue;
                 }
                 dispatch_visit(child);
-            } while((index = next_child_index()) != -1);
+            } while(next_child(NULL, &child));
         }
         return;
     }
@@ -115,23 +114,24 @@ void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
     }
 }
 
-const node::NodeIdentIFace* VisitorDFS::next_child(const node::SymbolNodeIFace* _node)
-{
-    int index = next_child_index(_node);
-    if(index == -1)
-        return NULL;
-    return child_at(index);
-}
-
-bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_node)
+bool VisitorDFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
 {
     int index = next_child_index(_node);
     if(index == -1)
         return false;
-    const node::NodeIdentIFace* child = child_at(index);
+    if(ref_child)
+        *ref_child = child_at(index);
+    return true;
+}
+
+bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
+{
+    const node::NodeIdentIFace* child = NULL;
+    if(!next_child(_node, &child))
+        return false;
     dispatch_visit(child);
-    if(ref_node)
-        *ref_node = child;
+    if(ref_child)
+        *ref_child = child;
     return true;
 }
 
