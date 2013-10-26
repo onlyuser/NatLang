@@ -55,16 +55,16 @@ protected:
     bool visit_next_child(const node::SymbolNodeIFace* _node = NULL,
             const node::NodeIdentIFace** ref_node = NULL);
     void abort_visitation();
-
-private:
-    typedef std::stack<std::pair<const node::SymbolNodeIFace*, int>> visit_state_t;
-
-    visit_state_t m_visit_state;
-    bool          m_allow_visit_null;
-    filter_cb_t   m_filter_cb;
-
     int next_child_index(const node::SymbolNodeIFace* _node = NULL);
     const node::NodeIdentIFace* child_at(int index) const;
+
+private:
+    typedef std::pair<const node::SymbolNodeIFace*, int> visit_state_t;
+    typedef std::stack<visit_state_t>                    visit_state_stack_t;
+
+    visit_state_stack_t m_visit_state_stack;
+    bool                m_allow_visit_null;
+    filter_cb_t         m_filter_cb;
 };
 
 } }

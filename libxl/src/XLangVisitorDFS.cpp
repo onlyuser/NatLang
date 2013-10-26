@@ -137,27 +137,27 @@ bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node
 
 void VisitorDFS::abort_visitation()
 {
-    if(m_visit_state.size())
-        m_visit_state.pop();
+    if(m_visit_state_stack.size())
+        m_visit_state_stack.pop();
 }
 
 int VisitorDFS::next_child_index(const node::SymbolNodeIFace* _node)
 {
     if(_node)
-        m_visit_state.push(visit_state_t::value_type(_node, 0));
-    if(m_visit_state.empty())
+        m_visit_state_stack.push(visit_state_t(_node, 0));
+    if(m_visit_state_stack.empty())
         return -1;
-    if(m_visit_state.top().second == static_cast<int>(m_visit_state.top().first->size()))
+    if(m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size()))
     {
-        m_visit_state.pop();
+        m_visit_state_stack.pop();
         return -1;
     }
-    return m_visit_state.top().second++;
+    return m_visit_state_stack.top().second++;
 }
 
 const node::NodeIdentIFace* VisitorDFS::child_at(int index) const
 {
-    return (*m_visit_state.top().first)[index];
+    return (*m_visit_state_stack.top().first)[index];
 }
 
 } }
