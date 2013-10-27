@@ -22,7 +22,6 @@
 #include "visitor/XLangVisitorIFace.h" // visitor::VisitorIFace
 #include <sstream> // std::stringstream
 #include <stack>
-#include <queue>
 
 namespace xl { namespace visitor {
 
