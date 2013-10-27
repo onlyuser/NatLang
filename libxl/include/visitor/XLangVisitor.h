@@ -25,11 +25,11 @@
 
 namespace xl { namespace visitor {
 
-struct VisitorDFS_impl
+struct Visitor
 {
-    VisitorDFS_impl() : m_allow_visit_null(true)
+    Visitor() : m_allow_visit_null(true)
     {}
-    virtual ~VisitorDFS_impl()
+    virtual ~Visitor()
     {}
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
@@ -48,7 +48,7 @@ private:
     bool m_allow_visit_null;
 };
 
-struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>, public VisitorDFS_impl
+struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>, public Visitor
 {
     typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
 
@@ -56,7 +56,7 @@ struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>, public Visi
     {}
     virtual ~VisitorDFS()
     {}
-    using VisitorDFS_impl::visit;
+    using Visitor::visit;
     virtual void visit(const node::SymbolNodeIFace* _node);
     void dispatch_visit(const node::NodeIdentIFace* unknown);
     void set_filter_cb(filter_cb_t filter_cb)

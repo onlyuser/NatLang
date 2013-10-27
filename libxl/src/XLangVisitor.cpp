@@ -23,37 +23,37 @@
 
 namespace xl { namespace visitor {
 
-void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
+void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
 {
     std::cout << _node->value();
 }
 
-void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
+void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
 {
     std::cout << _node->value();
 }
 
-void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
+void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
 {
     std::cout << '\"' << xl::escape(*_node->value()) << '\"';
 }
 
-void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
+void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
 {
     std::cout << '\'' << xl::escape(_node->value()) << '\'';
 }
 
-void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
+void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
 {
     std::cout << *_node->value();
 }
 
-void VisitorDFS_impl::visit_null()
+void Visitor::visit_null()
 {
     std::cout << "NULL";
 }
 
-void VisitorDFS_impl::dispatch_visit(const node::NodeIdentIFace* unknown)
+void Visitor::dispatch_visit(const node::NodeIdentIFace* unknown)
 {
     if(!unknown)
     {
@@ -116,7 +116,7 @@ void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
 
 void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
 {
-    VisitorDFS_impl::dispatch_visit(unknown);
+    Visitor::dispatch_visit(unknown);
 }
 
 bool VisitorDFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
