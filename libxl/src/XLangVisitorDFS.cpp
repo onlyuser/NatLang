@@ -133,15 +133,22 @@ bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node
     return true;
 }
 
+void VisitorDFS::abort_visitation()
+{
+    pop_state();
+}
+
 void VisitorDFS::push_state(const node::SymbolNodeIFace* _node)
 {
     m_visit_state_stack.push(visit_state_t(_node, 0));
 }
 
-void VisitorDFS::pop_state()
+bool VisitorDFS::pop_state()
 {
-    if(m_visit_state_stack.size())
-        m_visit_state_stack.pop();
+    if(m_visit_state_stack.empty())
+        return false;
+    m_visit_state_stack.pop();
+    return true;
 }
 
 bool VisitorDFS::end_of_visitation() const
