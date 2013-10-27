@@ -179,4 +179,46 @@ bool VisitorDFS::end_of_visitation() const
     return m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size());
 }
 
+void VisitorBFS::visit(const node::SymbolNodeIFace* _node)
+{
+}
+
+bool VisitorBFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
+{
+    return false;
+}
+
+bool VisitorBFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
+{
+    return false;
+}
+
+void VisitorBFS::abort_visitation()
+{
+}
+
+void VisitorBFS::push_state(const node::SymbolNodeIFace* _node)
+{
+}
+
+bool VisitorBFS::pop_state()
+{
+    return false;
+}
+
+bool VisitorBFS::next_state()
+{
+    return false;
+}
+
+bool VisitorBFS::get_current_node(const node::NodeIdentIFace** _node) const
+{
+    return false;
+}
+
+bool VisitorBFS::end_of_visitation() const
+{
+    return false;
+}
+
 } }

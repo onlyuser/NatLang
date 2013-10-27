@@ -21,7 +21,8 @@
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
 #include "visitor/XLangVisitorIFace.h" // visitor::VisitorIFace
 #include <sstream> // std::stringstream
-#include <stack>
+#include <stack> // std::stack
+#include <queue> // std::queue
 
 namespace xl { namespace visitor {
 
@@ -74,6 +75,31 @@ private:
 
     visit_state_stack_t m_visit_state_stack;
     filter_cb_t         m_filter_cb;
+
+    void push_state(const node::SymbolNodeIFace* _node);
+    bool pop_state();
+    bool next_state();
+    bool get_current_node(const node::NodeIdentIFace** _node) const;
+    bool end_of_visitation() const;
+};
+
+struct VisitorBFS : public Visitor
+{
+    virtual ~VisitorBFS()
+    {}
+    using Visitor::visit;
+    virtual void visit(const node::SymbolNodeIFace* _node);
+
+protected:
+    bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
+    bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
+    void abort_visitation();
+
+private:
+    typedef std::queue<const node::SymbolNodeIFace*> visit_state_t;
+    typedef std::stack<visit_state_t>                visit_state_stack_t;
+
+    visit_state_stack_t m_visit_state_stack;
 
     void push_state(const node::SymbolNodeIFace* _node);
     bool pop_state();
