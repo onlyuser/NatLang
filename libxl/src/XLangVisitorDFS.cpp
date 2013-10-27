@@ -23,64 +23,37 @@
 
 namespace xl { namespace visitor {
 
-void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
-{
-    #ifdef DEBUG
-        std::cout << "depth: " << _node->depth() << std::endl;
-        std::cout << "height: " << _node->height() << std::endl;
-    #endif
-    if(m_filter_cb)
-    {
-        const node::NodeIdentIFace* child = NULL;
-        if(next_child(_node, &child))
-        {
-            do
-            {
-                if(m_filter_cb(child) && child->type() == node::NodeIdentIFace::SYMBOL)
-                {
-                    VisitorDFS::visit(dynamic_cast<const node::SymbolNodeIFace*>(child));
-                    continue;
-                }
-                dispatch_visit(child);
-            } while(next_child(NULL, &child));
-        }
-        return;
-    }
-    if(visit_next_child(_node))
-        while(visit_next_child());
-}
-
-void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
+void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
 {
     std::cout << _node->value();
 }
 
-void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
+void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
 {
     std::cout << _node->value();
 }
 
-void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
+void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
 {
     std::cout << '\"' << xl::escape(*_node->value()) << '\"';
 }
 
-void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
+void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
 {
     std::cout << '\'' << xl::escape(_node->value()) << '\'';
 }
 
-void VisitorDFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
+void VisitorDFS_impl::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
 {
     std::cout << *_node->value();
 }
 
-void VisitorDFS::visit_null()
+void VisitorDFS_impl::visit_null()
 {
     std::cout << "NULL";
 }
 
-void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
+void VisitorDFS_impl::dispatch_visit(const node::NodeIdentIFace* unknown)
 {
     if(!unknown)
     {
@@ -112,6 +85,38 @@ void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
             std::cout << "unknown node type" << std::endl;
             break;
     }
+}
+
+void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
+{
+    #ifdef DEBUG
+        std::cout << "depth: " << _node->depth() << std::endl;
+        std::cout << "height: " << _node->height() << std::endl;
+    #endif
+    if(m_filter_cb)
+    {
+        const node::NodeIdentIFace* child = NULL;
+        if(next_child(_node, &child))
+        {
+            do
+            {
+                if(m_filter_cb(child) && child->type() == node::NodeIdentIFace::SYMBOL)
+                {
+                    VisitorDFS::visit(dynamic_cast<const node::SymbolNodeIFace*>(child));
+                    continue;
+                }
+                dispatch_visit(child);
+            } while(next_child(NULL, &child));
+        }
+        return;
+    }
+    if(visit_next_child(_node))
+        while(visit_next_child());
+}
+
+void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
+{
+    VisitorDFS_impl::dispatch_visit(unknown);
 }
 
 bool VisitorDFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
@@ -151,13 +156,6 @@ bool VisitorDFS::pop_state()
     return true;
 }
 
-bool VisitorDFS::end_of_visitation() const
-{
-    if(m_visit_state_stack.empty())
-        return true;
-    return m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size());
-}
-
 bool VisitorDFS::next_state()
 {
     if(end_of_visitation())
@@ -177,6 +175,13 @@ bool VisitorDFS::get_current_node(const node::NodeIdentIFace** _node) const
     if(_node)
         *_node = (*visit_state.first)[visit_state.second];
     return true;
+}
+
+bool VisitorDFS::end_of_visitation() const
+{
+    if(m_visit_state_stack.empty())
+        return true;
+    return m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size());
 }
 
 } }

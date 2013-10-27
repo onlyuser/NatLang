@@ -22,29 +22,44 @@
 #include "visitor/XLangVisitorIFace.h" // visitor::VisitorIFace
 #include <sstream> // std::stringstream
 #include <stack>
+#include <queue>
 
 namespace xl { namespace visitor {
 
-struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>
+struct VisitorDFS_impl
 {
-    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
-
-    VisitorDFS() : m_allow_visit_null(true), m_filter_cb(NULL)
+    VisitorDFS_impl() : m_allow_visit_null(true)
     {}
-    virtual ~VisitorDFS()
+    virtual ~VisitorDFS_impl()
     {}
-    virtual void visit(const node::SymbolNodeIFace*                             _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
+    virtual void visit(const node::SymbolNodeIFace* _node) = 0;
     virtual void visit_null();
     void dispatch_visit(const node::NodeIdentIFace* unknown);
     void set_allow_visit_null(bool allow_visit_null)
     {
         m_allow_visit_null = allow_visit_null;
     }
+
+private:
+    bool m_allow_visit_null;
+};
+
+struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>, public VisitorDFS_impl
+{
+    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
+
+    VisitorDFS() : m_filter_cb(NULL)
+    {}
+    virtual ~VisitorDFS()
+    {}
+    using VisitorDFS_impl::visit;
+    virtual void visit(const node::SymbolNodeIFace* _node);
+    void dispatch_visit(const node::NodeIdentIFace* unknown);
     void set_filter_cb(filter_cb_t filter_cb)
     {
         m_filter_cb = filter_cb;
@@ -60,14 +75,13 @@ private:
     typedef std::stack<visit_state_t>                    visit_state_stack_t;
 
     visit_state_stack_t m_visit_state_stack;
-    bool                m_allow_visit_null;
     filter_cb_t         m_filter_cb;
 
     void push_state(const node::SymbolNodeIFace* _node);
     bool pop_state();
-    bool end_of_visitation() const;
     bool next_state();
     bool get_current_node(const node::NodeIdentIFace** _node) const;
+    bool end_of_visitation() const;
 };
 
 } }
