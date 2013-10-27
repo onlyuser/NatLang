@@ -116,12 +116,10 @@ void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
 
 bool VisitorDFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
 {
-    int index = next_child_index(_node);
-    if(index == -1)
-        return false;
-    if(ref_child)
-        *ref_child = child_at(index);
-    return true;
+    if(_node)
+        push_state(_node);
+    get_current_node(ref_child);
+    return next_state();
 }
 
 bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
@@ -135,29 +133,43 @@ bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node
     return true;
 }
 
-void VisitorDFS::abort_visitation()
+void VisitorDFS::push_state(const node::SymbolNodeIFace* _node)
+{
+    m_visit_state_stack.push(visit_state_t(_node, 0));
+}
+
+void VisitorDFS::pop_state()
 {
     if(m_visit_state_stack.size())
         m_visit_state_stack.pop();
 }
 
-int VisitorDFS::next_child_index(const node::SymbolNodeIFace* _node)
+bool VisitorDFS::end_of_visitation() const
 {
-    if(_node)
-        m_visit_state_stack.push(visit_state_t(_node, 0));
     if(m_visit_state_stack.empty())
-        return -1;
-    if(m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size()))
-    {
-        m_visit_state_stack.pop();
-        return -1;
-    }
-    return m_visit_state_stack.top().second++;
+        return true;
+    return m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size());
 }
 
-const node::NodeIdentIFace* VisitorDFS::child_at(int index) const
+bool VisitorDFS::next_state()
 {
-    return (*m_visit_state_stack.top().first)[index];
+    if(end_of_visitation())
+    {
+        pop_state();
+        return false;
+    }
+    m_visit_state_stack.top().second++;
+    return true;
+}
+
+bool VisitorDFS::get_current_node(const node::NodeIdentIFace** _node) const
+{
+    if(end_of_visitation())
+        return false;
+    visit_state_t visit_state = m_visit_state_stack.top();
+    if(_node)
+        *_node = (*visit_state.first)[visit_state.second];
+    return true;
 }
 
 } }
