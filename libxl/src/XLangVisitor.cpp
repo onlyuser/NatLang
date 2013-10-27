@@ -114,11 +114,6 @@ void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
         while(visit_next_child());
 }
 
-void VisitorDFS::dispatch_visit(const node::NodeIdentIFace* unknown)
-{
-    Visitor::dispatch_visit(unknown);
-}
-
 bool VisitorDFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
 {
     if(_node)

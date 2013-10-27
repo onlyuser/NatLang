@@ -25,7 +25,7 @@
 
 namespace xl { namespace visitor {
 
-struct Visitor
+struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
 {
     Visitor() : m_allow_visit_null(true)
     {}
@@ -48,7 +48,7 @@ private:
     bool m_allow_visit_null;
 };
 
-struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>, public Visitor
+struct VisitorDFS : public Visitor
 {
     typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
 
@@ -58,7 +58,6 @@ struct VisitorDFS : public VisitorIFace<const node::NodeIdentIFace>, public Visi
     {}
     using Visitor::visit;
     virtual void visit(const node::SymbolNodeIFace* _node);
-    void dispatch_visit(const node::NodeIdentIFace* unknown);
     void set_filter_cb(filter_cb_t filter_cb)
     {
         m_filter_cb = filter_cb;
