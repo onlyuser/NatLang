@@ -19,7 +19,7 @@
 #define XLANG_PRINTER_H_
 
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "visitor/XLangVisitorDFS.h" // visitor::VisitorDFS
+#include "visitor/XLangVisitor.h" // visitor::VisitorDFS
 
 namespace xl { namespace visitor {
 

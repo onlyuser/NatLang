@@ -116,7 +116,7 @@ CPP_STEMS_COMMON = \
 		XLangPrinter \
 		XLangString \
 		XLangSystem \
-		XLangVisitorDFS \
+		XLangVisitor \
 		XLangTreeContext #\
 		XLangMVCModel \
 		XLangNode
