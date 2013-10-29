@@ -185,40 +185,75 @@ void VisitorBFS::visit(const node::SymbolNodeIFace* _node)
 
 bool VisitorBFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
 {
-    return false;
+    if(_node)
+        push_state(_node);
+    get_current_node(ref_child);
+    return next_state();
 }
 
 bool VisitorBFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
 {
-    return false;
+    const node::NodeIdentIFace* child = NULL;
+    if(!next_child(_node, &child))
+        return false;
+    dispatch_visit(child);
+    if(ref_child)
+        *ref_child = child;
+    return true;
 }
 
 void VisitorBFS::abort_visitation()
 {
+    pop_state();
 }
 
 void VisitorBFS::push_state(const node::SymbolNodeIFace* _node)
 {
+    m_visit_state_stack.push(visit_state_t());
+    m_visit_state_stack.top().push(_node);
 }
 
 bool VisitorBFS::pop_state()
 {
-    return false;
+    if(m_visit_state_stack.empty())
+        return false;
+    m_visit_state_stack.pop();
+    return true;
 }
 
 bool VisitorBFS::next_state()
 {
-    return false;
+    if(end_of_visitation())
+        return false;
+    visit_state_t &visit_state = m_visit_state_stack.top();
+    const node::NodeIdentIFace* _node = visit_state.front();
+    if(!_node)
+        return false;
+    if(_node->type() == node::NodeIdentIFace::SYMBOL)
+    {
+        auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
+        for(int i = 0; i<symbol->size(); i++)
+            visit_state.push((*symbol)[i]);
+    }
+    visit_state.pop();
+    return true;
 }
 
 bool VisitorBFS::get_current_node(const node::NodeIdentIFace** _node) const
 {
-    return false;
+    if(end_of_visitation())
+        return false;
+    visit_state_t visit_state = m_visit_state_stack.top();
+    if(_node)
+        *_node = visit_state.front();
+    return true;
 }
 
 bool VisitorBFS::end_of_visitation() const
 {
-    return false;
+    if(m_visit_state_stack.empty())
+        return true;
+    return m_visit_state_stack.top().empty();
 }
 
 } }

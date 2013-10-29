@@ -96,8 +96,8 @@ protected:
     void abort_visitation();
 
 private:
-    typedef std::queue<const node::SymbolNodeIFace*> visit_state_t;
-    typedef std::stack<visit_state_t>                visit_state_stack_t;
+    typedef std::queue<const node::NodeIdentIFace*> visit_state_t;
+    typedef std::stack<visit_state_t>               visit_state_stack_t;
 
     visit_state_stack_t m_visit_state_stack;
 
