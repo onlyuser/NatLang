@@ -90,7 +90,6 @@ struct VisitorBFS : public Visitor
     using Visitor::visit;
     virtual void visit(const node::SymbolNodeIFace* _node);
 
-protected:
     bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
     bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
     void abort_visitation();

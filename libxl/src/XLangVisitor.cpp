@@ -166,7 +166,7 @@ bool VisitorDFS::get_current_node(const node::NodeIdentIFace** _node) const
 {
     if(end_of_visitation())
         return false;
-    visit_state_t visit_state = m_visit_state_stack.top();
+    const visit_state_t &visit_state = m_visit_state_stack.top();
     if(_node)
         *_node = (*visit_state.first)[visit_state.second];
     return true;
@@ -232,7 +232,7 @@ bool VisitorBFS::next_state()
     if(_node->type() == node::NodeIdentIFace::SYMBOL)
     {
         auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
-        for(int i = 0; i<symbol->size(); i++)
+        for(int i = 0; i<static_cast<int>(symbol->size()); i++)
             visit_state.push((*symbol)[i]);
     }
     visit_state.pop();
@@ -243,7 +243,7 @@ bool VisitorBFS::get_current_node(const node::NodeIdentIFace** _node) const
 {
     if(end_of_visitation())
         return false;
-    visit_state_t visit_state = m_visit_state_stack.top();
+    const visit_state_t &visit_state = m_visit_state_stack.top();
     if(_node)
         *_node = visit_state.front();
     return true;
