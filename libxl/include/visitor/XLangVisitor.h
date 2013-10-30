@@ -44,6 +44,10 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     {
         m_allow_visit_null = allow_visit_null;
     }
+    virtual bool is_printer()
+    {
+        return false;
+    }
 
 private:
     bool m_allow_visit_null;

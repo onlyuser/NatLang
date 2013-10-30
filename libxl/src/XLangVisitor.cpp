@@ -61,6 +61,14 @@ void Visitor::dispatch_visit(const node::NodeIdentIFace* unknown)
             visit_null();
         return;
     }
+    #ifdef DEBUG
+        if(is_printer())
+        {
+            std::cout << "{depth=" << unknown->depth()
+                      << ", height=" << unknown->height()
+                      << ", bfs_index=" << unknown->bfs_index() << "}" << std::endl;
+        }
+    #endif
     switch(unknown->type())
     {
         case node::NodeIdentIFace::INT:
@@ -89,10 +97,6 @@ void Visitor::dispatch_visit(const node::NodeIdentIFace* unknown)
 
 void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
 {
-    #ifdef DEBUG
-        std::cout << "depth: " << _node->depth() << std::endl;
-        std::cout << "height: " << _node->height() << std::endl;
-    #endif
     if(m_filter_cb)
     {
         const node::NodeIdentIFace* child = NULL;

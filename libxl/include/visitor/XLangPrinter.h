@@ -40,6 +40,23 @@ private:
     size_t m_depth;
 };
 
+class TreeAnnotatorBFS : public VisitorBFS
+{
+public:
+    TreeAnnotatorBFS() : m_bfs_index(0)
+    {}
+    void visit(const node::SymbolNodeIFace*                             _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
+    void visit_null();
+
+private:
+    size_t m_bfs_index;
+};
+
 class LispPrinter : public VisitorDFS
 {
 public:
@@ -52,6 +69,10 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
+    virtual bool is_printer()
+    {
+        return true;
+    }
 
 private:
     size_t m_depth;
@@ -69,6 +90,10 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
+    virtual bool is_printer()
+    {
+        return true;
+    }
 
 private:
     size_t m_depth;
@@ -89,6 +114,10 @@ public:
     void visit_null();
     static void print_header(bool horizontal);
     static void print_footer();
+    virtual bool is_printer()
+    {
+        return true;
+    }
 
 private:
     bool m_horizontal;

@@ -73,6 +73,41 @@ void TreeAnnotator::visit_null()
 {
 }
 
+void TreeAnnotatorBFS::visit(const node::SymbolNodeIFace* _node)
+{
+    const_cast<node::SymbolNodeIFace*>(_node)->set_bfs_index(m_bfs_index++);
+}
+
+void TreeAnnotatorBFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::INT>*>(_node)->set_bfs_index(m_bfs_index++);
+}
+
+void TreeAnnotatorBFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(_node)->set_bfs_index(m_bfs_index++);
+}
+
+void TreeAnnotatorBFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(_node)->set_bfs_index(m_bfs_index++);
+}
+
+void TreeAnnotatorBFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::CHAR>*>(_node)->set_bfs_index(m_bfs_index++);
+}
+
+void TreeAnnotatorBFS::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
+{
+    const_cast<node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(_node)->set_bfs_index(m_bfs_index++);
+}
+
+void TreeAnnotatorBFS::visit_null()
+{
+    m_bfs_index++;
+}
+
 void LispPrinter::visit(const node::SymbolNodeIFace* _node)
 {
     std::cout << std::string(m_depth*4, ' ') << '(' << _node->name() << std::endl;

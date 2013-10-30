@@ -44,16 +44,12 @@ void MVCView::annotate_tree(const node::NodeIdentIFace* _node)
 {
     visitor::TreeAnnotator v;
     v.dispatch_visit(_node);
-}
-
-void MVCView::visit_bfs(const node::NodeIdentIFace* _node)
-{
     auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
     if(!symbol)
         return;
-    visitor::VisitorBFS v;
-    if(v.visit_next_child(symbol))
-        while(v.visit_next_child());
+    visitor::TreeAnnotatorBFS v2;
+    if(v2.visit_next_child(symbol))
+        while(v2.visit_next_child());
 }
 
 void MVCView::print_lisp(

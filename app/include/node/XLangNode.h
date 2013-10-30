@@ -34,7 +34,7 @@ class Node : virtual public NodeIdentIFace
 public:
     Node(NodeIdentIFace::type_t _type, uint32_t _lexer_id, YYLTYPE _loc)
         : m_type(_type), m_lexer_id(_lexer_id), m_parent(NULL), m_original(NULL),
-          m_depth(-1), m_height(-1),
+          m_depth(-1), m_height(-1), m_bfs_index(-1),
           m_loc(_loc)
     {}
 
@@ -85,6 +85,14 @@ public:
     {
         return m_height;
     }
+    void set_bfs_index(int bfs_index)
+    {
+        m_bfs_index = bfs_index;
+    }
+    int bfs_index() const
+    {
+        return m_bfs_index;
+    }
 
     // built-in
     YYLTYPE loc() const
@@ -99,6 +107,7 @@ protected:
     const NodeIdentIFace*  m_original;
     int                    m_depth;
     int                    m_height;
+    int                    m_bfs_index;
     YYLTYPE                m_loc;
 };
 

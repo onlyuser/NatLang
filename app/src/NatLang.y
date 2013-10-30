@@ -594,7 +594,6 @@ void export_ast(
         default:
             break;
     }
-    xl::mvc::MVCView::visit_bfs(ast);
 }
 
 bool apply_options(options_t &options)
