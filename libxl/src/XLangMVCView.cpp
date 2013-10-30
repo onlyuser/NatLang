@@ -40,21 +40,25 @@
 
 namespace xl { namespace mvc {
 
-void MVCView::annotate_tree(const node::NodeIdentIFace* _node)
+void MVCView::annotate_tree(
+        const node::NodeIdentIFace*   _node,
+        visitor::Visitor::filter_cb_t filter_cb)
 {
     visitor::TreeAnnotator v;
+    v.set_filter_cb(filter_cb);
     v.dispatch_visit(_node);
     auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
     if(!symbol)
         return;
-    visitor::TreeAnnotatorBFS v2;
-    if(v2.visit_next_child(symbol))
-        while(v2.visit_next_child());
+    visitor::TreeAnnotatorBFS v_bfs;
+    v_bfs.set_filter_cb(filter_cb);
+    if(v_bfs.visit_next_child(symbol))
+        while(v_bfs.visit_next_child());
 }
 
 void MVCView::print_lisp(
-        const node::NodeIdentIFace*      _node,
-        visitor::VisitorDFS::filter_cb_t filter_cb)
+        const node::NodeIdentIFace*   _node,
+        visitor::Visitor::filter_cb_t filter_cb)
 {
     visitor::LispPrinter v;
     v.set_filter_cb(filter_cb);
@@ -62,8 +66,8 @@ void MVCView::print_lisp(
 }
 
 void MVCView::print_xml(
-        const node::NodeIdentIFace*      _node,
-        visitor::VisitorDFS::filter_cb_t filter_cb)
+        const node::NodeIdentIFace*   _node,
+        visitor::Visitor::filter_cb_t filter_cb)
 {
     visitor::XMLPrinter v;
     v.set_filter_cb(filter_cb);

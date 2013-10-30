@@ -27,13 +27,15 @@ namespace xl { namespace mvc {
 
 struct MVCView
 {
-    static void annotate_tree(const node::NodeIdentIFace* _node);
+    static void annotate_tree(
+            const node::NodeIdentIFace*   _node,
+            visitor::Visitor::filter_cb_t filter_cb = NULL);
     static void print_lisp(
-            const node::NodeIdentIFace*      _node,
-            visitor::VisitorDFS::filter_cb_t filter_cb = NULL);
+            const node::NodeIdentIFace*   _node,
+            visitor::Visitor::filter_cb_t filter_cb = NULL);
     static void print_xml(
-            const node::NodeIdentIFace*      _node,
-            visitor::VisitorDFS::filter_cb_t filter_cb = NULL);
+            const node::NodeIdentIFace*   _node,
+            visitor::Visitor::filter_cb_t filter_cb = NULL);
     static void print_dot(
             const node::NodeIdentIFace* _node,
             bool                        horizontal          = false,

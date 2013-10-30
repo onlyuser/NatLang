@@ -585,6 +585,8 @@ void export_ast(
             return;
         }
     }
+    // TODO: fix-me!
+    //xl::mvc::MVCView::annotate_tree(ast, filter_cb);
     switch(options.mode)
     {
         case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, filter_cb); break;

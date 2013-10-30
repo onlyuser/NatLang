@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef XLANG_VISITOR_DFS_H_
-#define XLANG_VISITOR_DFS_H_
+#ifndef XLANG_VISITOR_H_
+#define XLANG_VISITOR_H_
 
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
 #include "visitor/XLangVisitorIFace.h" // visitor::VisitorIFace
@@ -28,7 +28,9 @@ namespace xl { namespace visitor {
 
 struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
 {
-    Visitor() : m_allow_visit_null(true)
+    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
+
+    Visitor() : m_filter_cb(NULL), m_allow_visit_null(true)
     {}
     virtual ~Visitor()
     {}
@@ -44,10 +46,17 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     {
         m_allow_visit_null = allow_visit_null;
     }
+    void set_filter_cb(filter_cb_t filter_cb)
+    {
+        m_filter_cb = filter_cb;
+    }
     virtual bool is_printer()
     {
         return false;
     }
+
+protected:
+    filter_cb_t m_filter_cb;
 
 private:
     bool m_allow_visit_null;
@@ -55,18 +64,12 @@ private:
 
 struct VisitorDFS : public Visitor
 {
-    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
-
-    VisitorDFS() : m_filter_cb(NULL)
+    VisitorDFS()
     {}
     virtual ~VisitorDFS()
     {}
     using Visitor::visit;
     virtual void visit(const node::SymbolNodeIFace* _node);
-    void set_filter_cb(filter_cb_t filter_cb)
-    {
-        m_filter_cb = filter_cb;
-    }
 
 protected:
     bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
@@ -78,7 +81,6 @@ private:
     typedef std::stack<visit_state_t>                    visit_state_stack_t;
 
     visit_state_stack_t m_visit_state_stack;
-    filter_cb_t         m_filter_cb;
 
     void push_state(const node::SymbolNodeIFace* _node);
     bool pop_state();

@@ -237,7 +237,12 @@ bool VisitorBFS::next_state()
     {
         auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
         for(int i = 0; i<static_cast<int>(symbol->size()); i++)
-            visit_state.push((*symbol)[i]);
+        {
+            const node::NodeIdentIFace* child = (*symbol)[i];
+            if(m_filter_cb && m_filter_cb(child))
+                continue;
+            visit_state.push(child);
+        }
     }
     visit_state.pop();
     return true;
