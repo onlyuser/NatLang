@@ -42,13 +42,13 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     virtual void visit(const node::SymbolNodeIFace* _node) = 0;
     virtual void visit_null();
     void dispatch_visit(const node::NodeIdentIFace* unknown);
-    void set_allow_visit_null(bool allow_visit_null)
-    {
-        m_allow_visit_null = allow_visit_null;
-    }
     void set_filter_cb(filter_cb_t filter_cb)
     {
         m_filter_cb = filter_cb;
+    }
+    void set_allow_visit_null(bool allow_visit_null)
+    {
+        m_allow_visit_null = allow_visit_null;
     }
     virtual bool is_printer()
     {
@@ -64,8 +64,6 @@ private:
 
 struct VisitorDFS : public Visitor
 {
-    VisitorDFS()
-    {}
     virtual ~VisitorDFS()
     {}
     using Visitor::visit;
