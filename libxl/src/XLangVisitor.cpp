@@ -137,11 +137,6 @@ bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node
     return true;
 }
 
-void VisitorDFS::abort_visitation()
-{
-    pop_state();
-}
-
 void VisitorDFS::push_state(const node::SymbolNodeIFace* _node)
 {
     m_visit_state_stack.push(visit_state_t(_node, 0));
@@ -206,11 +201,6 @@ bool VisitorBFS::visit_next_child(const node::SymbolNodeIFace* _node, const node
     return true;
 }
 
-void VisitorBFS::abort_visitation()
-{
-    pop_state();
-}
-
 void VisitorBFS::push_state(const node::SymbolNodeIFace* _node)
 {
     m_visit_state_stack.push(visit_state_t());
@@ -228,23 +218,23 @@ bool VisitorBFS::pop_state()
 bool VisitorBFS::next_state()
 {
     if(end_of_visitation())
-        return false;
-    visit_state_t &visit_state = m_visit_state_stack.top();
-    const node::NodeIdentIFace* _node = visit_state.front();
-    if(!_node)
-        return false;
-    if(_node->type() == node::NodeIdentIFace::SYMBOL)
     {
-        auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
-        for(int i = 0; i<static_cast<int>(symbol->size()); i++)
-        {
-            const node::NodeIdentIFace* child = (*symbol)[i];
-            if(m_filter_cb && m_filter_cb(child))
-                continue;
-            visit_state.push(child);
-        }
+        pop_state();
+        return false;
     }
-    visit_state.pop();
+    visit_state_t &visit_state = m_visit_state_stack.top();
+    const node::NodeIdentIFace* _node = NULL;
+    do
+    {
+        _node = visit_state.front();
+        if(_node && _node->type() == node::NodeIdentIFace::SYMBOL)
+        {
+            auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
+            for(int i = 0; i<static_cast<int>(symbol->size()); i++)
+                visit_state.push((*symbol)[i]);
+        }
+        visit_state.pop();
+    } while(m_filter_cb && m_filter_cb(_node) && visit_state.size());
     return true;
 }
 

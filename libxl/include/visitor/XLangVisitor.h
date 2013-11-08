@@ -72,7 +72,10 @@ struct VisitorDFS : public Visitor
 protected:
     bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
     bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    void abort_visitation();
+    void abort_visitation()
+    {
+        pop_state();
+    }
 
 private:
     typedef std::pair<const node::SymbolNodeIFace*, int> visit_state_t;
@@ -96,7 +99,10 @@ struct VisitorBFS : public Visitor
 
     bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
     bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    void abort_visitation();
+    void abort_visitation()
+    {
+        pop_state();
+    }
 
 private:
     typedef std::queue<const node::NodeIdentIFace*> visit_state_t;

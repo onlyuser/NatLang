@@ -45,13 +45,15 @@ void MVCView::annotate_tree(
         visitor::Visitor::filter_cb_t filter_cb)
 {
     visitor::TreeAnnotator v;
-    v.set_filter_cb(filter_cb);
+    if(filter_cb)
+        v.set_filter_cb(filter_cb);
     v.dispatch_visit(_node);
     auto symbol = dynamic_cast<const node::SymbolNodeIFace*>(_node);
     if(!symbol)
         return;
     visitor::TreeAnnotatorBFS v_bfs;
-    v_bfs.set_filter_cb(filter_cb);
+    if(filter_cb)
+        v_bfs.set_filter_cb(filter_cb);
     if(v_bfs.visit_next_child(symbol))
         while(v_bfs.visit_next_child());
 }
@@ -61,7 +63,8 @@ void MVCView::print_lisp(
         visitor::Visitor::filter_cb_t filter_cb)
 {
     visitor::LispPrinter v;
-    v.set_filter_cb(filter_cb);
+    if(filter_cb)
+        v.set_filter_cb(filter_cb);
     v.dispatch_visit(_node);
 }
 
@@ -70,7 +73,8 @@ void MVCView::print_xml(
         visitor::Visitor::filter_cb_t filter_cb)
 {
     visitor::XMLPrinter v;
-    v.set_filter_cb(filter_cb);
+    if(filter_cb)
+        v.set_filter_cb(filter_cb);
     v.dispatch_visit(_node);
 }
 

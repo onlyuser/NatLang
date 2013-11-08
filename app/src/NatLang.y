@@ -555,6 +555,7 @@ bool import_ast(
             pos_value_path_ast_tuple->m_ast = NULL;
             return false;
         }
+        xl::mvc::MVCView::annotate_tree(_ast);
         pos_value_path_ast_tuple->m_ast = _ast;
     }
     return true;
@@ -584,7 +585,6 @@ void export_ast(
             return;
         }
     }
-    xl::mvc::MVCView::annotate_tree(ast, filter_cb);
     switch(options.mode)
     {
         case options_t::MODE_LISP:  xl::mvc::MVCView::print_lisp(ast, filter_cb); break;
