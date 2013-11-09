@@ -15,109 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "visitor/XLangVisitor.h" // visitor::VisitorDFS
-#include "XLangString.h" // xl::escape
-#include <iostream> // std::cout
+#include "visitor/XLangVisitor.h" // visitor::Visitor
 
 //#define DEBUG
 
 namespace xl { namespace visitor {
-
-void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
-{
-    std::cout << _node->value();
-}
-
-void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
-{
-    std::cout << _node->value();
-}
-
-void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
-{
-    std::cout << '\"' << xl::escape(*_node->value()) << '\"';
-}
-
-void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
-{
-    std::cout << '\'' << xl::escape(_node->value()) << '\'';
-}
-
-void Visitor::visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
-{
-    std::cout << *_node->value();
-}
-
-void Visitor::visit_null()
-{
-    std::cout << "NULL";
-}
-
-void Visitor::dispatch_visit(const node::NodeIdentIFace* unknown)
-{
-    if(!unknown)
-    {
-        if(m_allow_visit_null)
-            visit_null();
-        return;
-    }
-    #ifdef DEBUG
-        if(is_printer())
-        {
-            std::cout << "{depth=" << unknown->depth()
-                      << ", height=" << unknown->height()
-                      << ", bfs_index=" << unknown->bfs_index() << "}" << std::endl;
-        }
-    #endif
-    switch(unknown->type())
-    {
-        case node::NodeIdentIFace::INT:
-            visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::INT>*>(unknown));
-            break;
-        case node::NodeIdentIFace::FLOAT:
-            visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(unknown));
-            break;
-        case node::NodeIdentIFace::STRING:
-            visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(unknown));
-            break;
-        case node::NodeIdentIFace::CHAR:
-            visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*>(unknown));
-            break;
-        case node::NodeIdentIFace::IDENT:
-            visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(unknown));
-            break;
-        case node::NodeIdentIFace::SYMBOL:
-            visit(dynamic_cast<const node::SymbolNodeIFace*>(unknown));
-            break;
-        default:
-            std::cout << "unknown node type" << std::endl;
-            break;
-    }
-}
-
-bool Visitor::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
-{
-    if(_node)
-        push_state(_node);
-    get_current_node(ref_child);
-    return next_state();
-}
-
-bool Visitor::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
-{
-    const node::NodeIdentIFace* child = NULL;
-    if(!next_child(_node, &child))
-        return false;
-    dispatch_visit(child);
-    if(ref_child)
-        *ref_child = child;
-    return true;
-}
-
-void Visitor::abort_visitation()
-{
-    pop_state();
-}
 
 void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
 {
@@ -181,10 +83,6 @@ bool VisitorDFS::end_of_visitation() const
     if(m_visit_state_stack.empty())
         return true;
     return m_visit_state_stack.top().second == static_cast<int>(m_visit_state_stack.top().first->size());
-}
-
-void VisitorBFS::visit(const node::SymbolNodeIFace* _node)
-{
 }
 
 void VisitorBFS::push_state(const node::SymbolNodeIFace* _node)

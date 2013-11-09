@@ -20,41 +20,117 @@
 
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
 #include "visitor/XLangVisitorIFace.h" // visitor::VisitorIFace
+#include "visitor/XLangFilterable.h" // visitor::Filterable
+#include "XLangString.h" // xl::escape
 #include <sstream> // std::stringstream
 #include <stack> // std::stack
 #include <queue> // std::queue
+#include <iostream> // std::cout
+
+//#define DEBUG
 
 namespace xl { namespace visitor {
 
-struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
+template<class T>
+struct Visitor : public VisitorIFace<const node::NodeIdentIFace>, Filterable
 {
-    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
-
-    Visitor() : m_filter_cb(NULL), m_allow_visit_null(true)
+    Visitor() : m_allow_visit_null(true)
     {}
     virtual ~Visitor()
     {}
 
     // required
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
+    {
+        std::cout << _node->value();
+    }
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
+    {
+        std::cout << _node->value();
+    }
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
+    {
+        std::cout << '\"' << xl::escape(*_node->value()) << '\"';
+    }
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
+    {
+        std::cout << '\'' << xl::escape(_node->value()) << '\'';
+    }
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
+    {
+        std::cout << *_node->value();
+    }
     virtual void visit(const node::SymbolNodeIFace* _node) = 0;
-    virtual void visit_null();
-    void dispatch_visit(const node::NodeIdentIFace* unknown);
+    virtual void visit_null()
+    {
+        std::cout << "NULL";
+    }
+    void dispatch_visit(const node::NodeIdentIFace* unknown)
+    {
+        if(!unknown)
+        {
+            if(m_allow_visit_null)
+                visit_null();
+            return;
+        }
+        #ifdef DEBUG
+            if(is_printer())
+            {
+                std::cout << "{depth=" << unknown->depth()
+                          << ", height=" << unknown->height()
+                          << ", bfs_index=" << unknown->bfs_index() << "}" << std::endl;
+            }
+        #endif
+        switch(unknown->type())
+        {
+            case node::NodeIdentIFace::INT:
+                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::INT>*>(unknown));
+                break;
+            case node::NodeIdentIFace::FLOAT:
+                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(unknown));
+                break;
+            case node::NodeIdentIFace::STRING:
+                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(unknown));
+                break;
+            case node::NodeIdentIFace::CHAR:
+                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*>(unknown));
+                break;
+            case node::NodeIdentIFace::IDENT:
+                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(unknown));
+                break;
+            case node::NodeIdentIFace::SYMBOL:
+                visit(dynamic_cast<const node::SymbolNodeIFace*>(unknown));
+                break;
+            default:
+                std::cout << "unknown node type" << std::endl;
+                break;
+        }
+    }
     bool next_child(
-            const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
+            const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL)
+    {
+        if(_node)
+            push_state(_node);
+        get_current_node(ref_child);
+        return next_state();
+    }
     bool visit_next_child(
-            const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    void abort_visitation();
+            const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL)
+    {
+        const node::NodeIdentIFace* child = NULL;
+        if(!next_child(_node, &child))
+            return false;
+        dispatch_visit(child);
+        if(ref_child)
+            *ref_child = child;
+        return true;
+    }
+    void abort_visitation()
+    {
+        pop_state();
+    }
 
     // optional
-    void set_filter_cb(filter_cb_t filter_cb)
-    {
-        m_filter_cb = filter_cb;
-    }
     void set_allow_visit_null(bool allow_visit_null)
     {
         m_allow_visit_null = allow_visit_null;
@@ -62,7 +138,10 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     virtual bool is_printer() const = 0;
 
 protected:
-    filter_cb_t m_filter_cb;
+    typedef T                         visit_state_t;
+    typedef std::stack<visit_state_t> visit_state_stack_t;
+
+    visit_state_stack_t m_visit_state_stack;
 
     virtual void push_state(const node::SymbolNodeIFace* _node) = 0;
     virtual bool pop_state() = 0;
@@ -73,17 +152,12 @@ private:
     bool m_allow_visit_null;
 };
 
-struct VisitorDFS : public Visitor
+struct VisitorDFS : public Visitor<std::pair<const node::SymbolNodeIFace*, int>>
 {
     using Visitor::visit;
     void visit(const node::SymbolNodeIFace* _node);
 
 private:
-    typedef std::pair<const node::SymbolNodeIFace*, int> visit_state_t;
-    typedef std::stack<visit_state_t>                    visit_state_stack_t;
-
-    visit_state_stack_t m_visit_state_stack;
-
     void push_state(const node::SymbolNodeIFace* _node);
     bool pop_state();
     bool next_state();
@@ -91,17 +165,11 @@ private:
     bool end_of_visitation() const;
 };
 
-struct VisitorBFS : public Visitor
+struct VisitorBFS : public Visitor<std::queue<const node::NodeIdentIFace*>>
 {
     using Visitor::visit;
-    void visit(const node::SymbolNodeIFace* _node);
 
 private:
-    typedef std::queue<const node::NodeIdentIFace*> visit_state_t;
-    typedef std::stack<visit_state_t>               visit_state_stack_t;
-
-    visit_state_stack_t m_visit_state_stack;
-
     void push_state(const node::SymbolNodeIFace* _node);
     bool pop_state();
     bool next_state();

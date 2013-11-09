@@ -41,8 +41,8 @@
 namespace xl { namespace mvc {
 
 void MVCView::annotate_tree(
-        const node::NodeIdentIFace*   _node,
-        visitor::Visitor::filter_cb_t filter_cb)
+        const node::NodeIdentIFace*      _node,
+        visitor::Filterable::filter_cb_t filter_cb)
 {
     visitor::TreeAnnotator v;
     if(filter_cb)
@@ -59,8 +59,8 @@ void MVCView::annotate_tree(
 }
 
 void MVCView::print_lisp(
-        const node::NodeIdentIFace*   _node,
-        visitor::Visitor::filter_cb_t filter_cb)
+        const node::NodeIdentIFace*      _node,
+        visitor::Filterable::filter_cb_t filter_cb)
 {
     visitor::LispPrinter v;
     if(filter_cb)
@@ -69,8 +69,8 @@ void MVCView::print_lisp(
 }
 
 void MVCView::print_xml(
-        const node::NodeIdentIFace*   _node,
-        visitor::Visitor::filter_cb_t filter_cb)
+        const node::NodeIdentIFace*      _node,
+        visitor::Filterable::filter_cb_t filter_cb)
 {
     visitor::XMLPrinter v;
     if(filter_cb)

@@ -15,19 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef XLANG_VISIT_STATE_IFACE_H_
-#define XLANG_VISIT_STATE_IFACE_H_
+#ifndef XLANG_FILTERABLE_H_
+#define XLANG_FILTERABLE_H_
+
+#include "node/XLangNodeIFace.h" // node::NodeIdentIFace
 
 namespace xl { namespace visitor {
 
-class VisitStateIFace
+struct Filterable
 {
-public:
-    typedef void* state_t;
+    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
 
-    virtual ~VisitStateIFace()
+    Filterable() : m_filter_cb(NULL)
     {}
-    virtual state_t &visit_state() = 0;
+    void set_filter_cb(filter_cb_t filter_cb)
+    {
+        m_filter_cb = filter_cb;
+    }
+
+protected:
+    filter_cb_t m_filter_cb;
 };
 
 } }
