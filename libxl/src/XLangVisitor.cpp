@@ -17,8 +17,6 @@
 
 #include "visitor/XLangVisitor.h" // visitor::Visitor
 
-//#define DEBUG
-
 namespace xl { namespace visitor {
 
 void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
