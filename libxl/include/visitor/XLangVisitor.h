@@ -34,6 +34,8 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     {}
     virtual ~Visitor()
     {}
+
+    // required
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
@@ -42,6 +44,13 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     virtual void visit(const node::SymbolNodeIFace* _node) = 0;
     virtual void visit_null();
     void dispatch_visit(const node::NodeIdentIFace* unknown);
+    bool next_child(
+            const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
+    bool visit_next_child(
+            const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
+    void abort_visitation();
+
+    // optional
     void set_filter_cb(filter_cb_t filter_cb)
     {
         m_filter_cb = filter_cb;
@@ -50,13 +59,15 @@ struct Visitor : public VisitorIFace<const node::NodeIdentIFace>
     {
         m_allow_visit_null = allow_visit_null;
     }
-    virtual bool is_printer()
-    {
-        return false;
-    }
+    virtual bool is_printer() const = 0;
 
 protected:
     filter_cb_t m_filter_cb;
+
+    virtual void push_state(const node::SymbolNodeIFace* _node) = 0;
+    virtual bool pop_state() = 0;
+    virtual bool next_state() = 0;
+    virtual bool get_current_node(const node::NodeIdentIFace** _node) const = 0;
 
 private:
     bool m_allow_visit_null;
@@ -64,18 +75,8 @@ private:
 
 struct VisitorDFS : public Visitor
 {
-    virtual ~VisitorDFS()
-    {}
     using Visitor::visit;
-    virtual void visit(const node::SymbolNodeIFace* _node);
-
-protected:
-    bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    void abort_visitation()
-    {
-        pop_state();
-    }
+    void visit(const node::SymbolNodeIFace* _node);
 
 private:
     typedef std::pair<const node::SymbolNodeIFace*, int> visit_state_t;
@@ -92,17 +93,8 @@ private:
 
 struct VisitorBFS : public Visitor
 {
-    virtual ~VisitorBFS()
-    {}
     using Visitor::visit;
-    virtual void visit(const node::SymbolNodeIFace* _node);
-
-    bool next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    bool visit_next_child(const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL);
-    void abort_visitation()
-    {
-        pop_state();
-    }
+    void visit(const node::SymbolNodeIFace* _node);
 
 private:
     typedef std::queue<const node::NodeIdentIFace*> visit_state_t;

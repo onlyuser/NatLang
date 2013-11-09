@@ -35,6 +35,10 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
+    bool is_printer() const
+    {
+        return false;
+    }
 
 private:
     size_t m_depth;
@@ -52,6 +56,10 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
+    bool is_printer() const
+    {
+        return false;
+    }
 
 private:
     size_t m_bfs_index;
@@ -69,7 +77,7 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
-    virtual bool is_printer()
+    bool is_printer() const
     {
         return true;
     }
@@ -90,7 +98,7 @@ public:
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
     void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     void visit_null();
-    virtual bool is_printer()
+    bool is_printer() const
     {
         return true;
     }
@@ -114,7 +122,7 @@ public:
     void visit_null();
     static void print_header(bool horizontal);
     static void print_footer();
-    virtual bool is_printer()
+    bool is_printer() const
     {
         return true;
     }

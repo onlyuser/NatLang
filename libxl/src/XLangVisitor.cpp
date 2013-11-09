@@ -95,6 +95,30 @@ void Visitor::dispatch_visit(const node::NodeIdentIFace* unknown)
     }
 }
 
+bool Visitor::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
+{
+    if(_node)
+        push_state(_node);
+    get_current_node(ref_child);
+    return next_state();
+}
+
+bool Visitor::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
+{
+    const node::NodeIdentIFace* child = NULL;
+    if(!next_child(_node, &child))
+        return false;
+    dispatch_visit(child);
+    if(ref_child)
+        *ref_child = child;
+    return true;
+}
+
+void Visitor::abort_visitation()
+{
+    pop_state();
+}
+
 void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
 {
     if(m_filter_cb)
@@ -116,25 +140,6 @@ void VisitorDFS::visit(const node::SymbolNodeIFace* _node)
     }
     if(visit_next_child(_node))
         while(visit_next_child());
-}
-
-bool VisitorDFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
-{
-    if(_node)
-        push_state(_node);
-    get_current_node(ref_child);
-    return next_state();
-}
-
-bool VisitorDFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
-{
-    const node::NodeIdentIFace* child = NULL;
-    if(!next_child(_node, &child))
-        return false;
-    dispatch_visit(child);
-    if(ref_child)
-        *ref_child = child;
-    return true;
 }
 
 void VisitorDFS::push_state(const node::SymbolNodeIFace* _node)
@@ -180,25 +185,6 @@ bool VisitorDFS::end_of_visitation() const
 
 void VisitorBFS::visit(const node::SymbolNodeIFace* _node)
 {
-}
-
-bool VisitorBFS::next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
-{
-    if(_node)
-        push_state(_node);
-    get_current_node(ref_child);
-    return next_state();
-}
-
-bool VisitorBFS::visit_next_child(const node::SymbolNodeIFace* _node, const node::NodeIdentIFace** ref_child)
-{
-    const node::NodeIdentIFace* child = NULL;
-    if(!next_child(_node, &child))
-        return false;
-    dispatch_visit(child);
-    if(ref_child)
-        *ref_child = child;
-    return true;
 }
 
 void VisitorBFS::push_state(const node::SymbolNodeIFace* _node)
