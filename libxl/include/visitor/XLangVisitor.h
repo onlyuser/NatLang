@@ -37,8 +37,6 @@ class Visitor : public VisitorIFace<const node::NodeIdentIFace>, public Filterab
 public:
     Visitor() : m_allow_visit_null(true)
     {}
-    virtual ~Visitor()
-    {}
 
     // required
     virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)

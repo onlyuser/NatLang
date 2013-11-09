@@ -29,6 +29,8 @@ public:
 
     Filterable() : m_filter_cb(NULL)
     {}
+    virtual ~Filterable()
+    {}
     void set_filter_cb(filter_cb_t filter_cb)
     {
         m_filter_cb = filter_cb;
