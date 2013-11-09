@@ -22,8 +22,9 @@
 
 namespace xl { namespace visitor {
 
-struct Filterable
+class Filterable
 {
+public:
     typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
 
     Filterable() : m_filter_cb(NULL)

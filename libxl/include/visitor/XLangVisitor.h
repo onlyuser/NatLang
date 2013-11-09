@@ -32,8 +32,9 @@
 namespace xl { namespace visitor {
 
 template<class T>
-struct Visitor : public VisitorIFace<const node::NodeIdentIFace>, Filterable
+class Visitor : public VisitorIFace<const node::NodeIdentIFace>, public Filterable
 {
+public:
     Visitor() : m_allow_visit_null(true)
     {}
     virtual ~Visitor()
@@ -152,8 +153,9 @@ private:
     bool m_allow_visit_null;
 };
 
-struct VisitorDFS : public Visitor<std::pair<const node::SymbolNodeIFace*, int>>
+class VisitorDFS : public Visitor<std::pair<const node::SymbolNodeIFace*, int>>
 {
+public:
     using Visitor::visit;
     void visit(const node::SymbolNodeIFace* _node);
 
@@ -165,8 +167,9 @@ private:
     bool end_of_visitation() const;
 };
 
-struct VisitorBFS : public Visitor<std::queue<const node::NodeIdentIFace*>>
+class VisitorBFS : public Visitor<std::queue<const node::NodeIdentIFace*>>
 {
+public:
     using Visitor::visit;
 
 private:

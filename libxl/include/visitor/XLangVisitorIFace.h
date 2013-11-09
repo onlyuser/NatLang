@@ -21,8 +21,9 @@
 namespace xl { namespace visitor {
 
 template<class T>
-struct VisitorIFace
+class VisitorIFace
 {
+public:
     virtual ~VisitorIFace()
     {}
     virtual void dispatch_visit(T* unknown) = 0;

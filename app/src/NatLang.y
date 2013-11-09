@@ -575,7 +575,7 @@ void export_ast(
     std::cerr << "INFO: export path #" <<
             pos_value_path_ast_tuple.m_path_index <<
             ": <" << pos_value_path_str << ">" << std::endl;
-    xl::visitor::VisitorDFS::filter_cb_t filter_cb = NULL;
+    xl::visitor::Filterable::filter_cb_t filter_cb = NULL;
     if(options.skip_singleton)
     {
         filter_cb = filter_singleton;
