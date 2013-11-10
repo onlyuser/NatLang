@@ -19,6 +19,7 @@
 #define XLANG_MVC_VIEW_H_
 
 #include "visitor/XLangVisitor.h" // visitor::VisitorDFS
+#include "visitor/XLangFilterable.h" // visitor::Filterable
 #include "XLangType.h" // NULL
 
 namespace xl { namespace node { class NodeIdentIFace; } }

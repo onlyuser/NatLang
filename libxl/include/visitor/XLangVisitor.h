@@ -20,91 +20,52 @@
 
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
 #include "visitor/XLangVisitorIFace.h" // visitor::VisitorIFace
-#include "visitor/XLangFilterable.h" // visitor::Filterable
-#include "XLangString.h" // xl::escape
-#include <sstream> // std::stringstream
 #include <stack> // std::stack
 #include <queue> // std::queue
-#include <iostream> // std::cout
-
-//#define DEBUG
 
 namespace xl { namespace visitor {
 
-template<class T>
-class Visitor : public VisitorIFace<const node::NodeIdentIFace>, public Filterable
+class Visitor : public virtual VisitorIFace<const node::NodeIdentIFace>
 {
 public:
     Visitor() : m_allow_visit_null(true)
     {}
+    virtual ~Visitor()
+    {}
 
     // required
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>* _node)
-    {
-        std::cout << _node->value();
-    }
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>* _node)
-    {
-        std::cout << _node->value();
-    }
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node)
-    {
-        std::cout << '\"' << xl::escape(*_node->value()) << '\"';
-    }
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>* _node)
-    {
-        std::cout << '\'' << xl::escape(_node->value()) << '\'';
-    }
-    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>* _node)
-    {
-        std::cout << *_node->value();
-    }
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::INT>*    _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*  _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::STRING>* _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*   _node);
+    virtual void visit(const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*  _node);
     virtual void visit(const node::SymbolNodeIFace* _node) = 0;
-    virtual void visit_null()
+    virtual void visit_null();
+    void dispatch_visit(const node::NodeIdentIFace* unknown);
+
+    // optional
+    void set_allow_visit_null(bool allow_visit_null)
     {
-        std::cout << "NULL";
+        m_allow_visit_null = allow_visit_null;
     }
-    void dispatch_visit(const node::NodeIdentIFace* unknown)
-    {
-        if(!unknown)
-        {
-            if(m_allow_visit_null)
-                visit_null();
-            return;
-        }
-        #ifdef DEBUG
-            if(is_printer())
-            {
-                std::cout << "{depth=" << unknown->depth()
-                          << ", height=" << unknown->height()
-                          << ", bfs_index=" << unknown->bfs_index() << "}" << std::endl;
-            }
-        #endif
-        switch(unknown->type())
-        {
-            case node::NodeIdentIFace::INT:
-                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::INT>*>(unknown));
-                break;
-            case node::NodeIdentIFace::FLOAT:
-                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(unknown));
-                break;
-            case node::NodeIdentIFace::STRING:
-                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(unknown));
-                break;
-            case node::NodeIdentIFace::CHAR:
-                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::CHAR>*>(unknown));
-                break;
-            case node::NodeIdentIFace::IDENT:
-                visit(dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(unknown));
-                break;
-            case node::NodeIdentIFace::SYMBOL:
-                visit(dynamic_cast<const node::SymbolNodeIFace*>(unknown));
-                break;
-            default:
-                std::cout << "unknown node type" << std::endl;
-                break;
-        }
-    }
+    virtual bool is_printer() const = 0;
+
+private:
+    bool m_allow_visit_null;
+};
+
+template<class T>
+class StackedVisitable : virtual public VisitorIFace<const node::NodeIdentIFace>
+{
+public:
+    typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
+
+    StackedVisitable() : m_filter_cb(NULL)
+    {}
+    virtual ~StackedVisitable()
+    {}
+
+    // required
     bool next_child(
             const node::SymbolNodeIFace* _node = NULL, const node::NodeIdentIFace** ref_child = NULL)
     {
@@ -124,34 +85,37 @@ public:
             *ref_child = child;
         return true;
     }
+
+    // optional
     void abort_visitation()
     {
         pop_state();
     }
-
-    // optional
-    void set_allow_visit_null(bool allow_visit_null)
+    void set_filter_cb(filter_cb_t filter_cb)
     {
-        m_allow_visit_null = allow_visit_null;
+        m_filter_cb = filter_cb;
     }
-    virtual bool is_printer() const = 0;
 
 protected:
     typedef T                         visit_state_t;
     typedef std::stack<visit_state_t> visit_state_stack_t;
 
     visit_state_stack_t m_visit_state_stack;
+    filter_cb_t         m_filter_cb;
 
     virtual void push_state(const node::SymbolNodeIFace* _node) = 0;
-    virtual bool pop_state() = 0;
+    bool pop_state()
+    {
+        if(m_visit_state_stack.empty())
+            return false;
+        m_visit_state_stack.pop();
+        return true;
+    }
     virtual bool next_state() = 0;
     virtual bool get_current_node(const node::NodeIdentIFace** _node) const = 0;
-
-private:
-    bool m_allow_visit_null;
 };
 
-class VisitorDFS : public Visitor<std::pair<const node::SymbolNodeIFace*, int>>
+class VisitorDFS : public Visitor, public StackedVisitable<std::pair<const node::SymbolNodeIFace*, int>>
 {
 public:
     using Visitor::visit;
@@ -159,20 +123,18 @@ public:
 
 private:
     void push_state(const node::SymbolNodeIFace* _node);
-    bool pop_state();
     bool next_state();
     bool get_current_node(const node::NodeIdentIFace** _node) const;
     bool end_of_visitation() const;
 };
 
-class VisitorBFS : public Visitor<std::queue<const node::NodeIdentIFace*>>
+class VisitorBFS : public Visitor, public StackedVisitable<std::queue<const node::NodeIdentIFace*>>
 {
 public:
     using Visitor::visit;
 
 private:
     void push_state(const node::SymbolNodeIFace* _node);
-    bool pop_state();
     bool next_state();
     bool get_current_node(const node::NodeIdentIFace** _node) const;
     bool end_of_visitation() const;
