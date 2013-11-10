@@ -62,6 +62,8 @@ struct NodeIdentIFace
     {
         return NULL;
     }
+
+    // visitation-related
     virtual void set_depth(int depth)
     {}
     virtual int depth() const

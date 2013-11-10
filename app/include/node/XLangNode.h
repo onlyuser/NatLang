@@ -69,6 +69,8 @@ public:
     {
         return m_original ? m_original : this;
     }
+
+    // visitation-related
     void set_depth(int depth)
     {
         m_depth = depth;
