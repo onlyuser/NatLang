@@ -55,14 +55,14 @@ private:
 };
 
 template<class T>
-class StackedVisitable : virtual public VisitorIFace<const node::NodeIdentIFace>
+class StackedVisitor : virtual public VisitorIFace<const node::NodeIdentIFace>
 {
 public:
     typedef bool (*filter_cb_t)(const node::NodeIdentIFace*);
 
-    StackedVisitable() : m_filter_cb(NULL)
+    StackedVisitor() : m_filter_cb(NULL)
     {}
-    virtual ~StackedVisitable()
+    virtual ~StackedVisitor()
     {}
 
     // required
@@ -115,7 +115,7 @@ protected:
     virtual bool get_current_node(const node::NodeIdentIFace** _node) const = 0;
 };
 
-class VisitorDFS : public Visitor, public StackedVisitable<std::pair<const node::SymbolNodeIFace*, int>>
+class VisitorDFS : public Visitor, public StackedVisitor<std::pair<const node::SymbolNodeIFace*, int>>
 {
 public:
     using Visitor::visit;
@@ -128,7 +128,7 @@ private:
     bool end_of_visitation() const;
 };
 
-class VisitorBFS : public Visitor, public StackedVisitable<std::queue<const node::NodeIdentIFace*>>
+class VisitorBFS : public Visitor, public StackedVisitor<std::queue<const node::NodeIdentIFace*>>
 {
 public:
     using Visitor::visit;
