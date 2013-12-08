@@ -19,7 +19,6 @@
 #define XLANG_NODE_H_
 
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "visitor/XLangVisitable.h" // visitor::Visitable
 #include "XLangTreeContext.h" // TreeContext
 #include "XLangType.h" // uint32_t
 #include "NatLang.tab.h" // YYLTYPE
@@ -114,12 +113,11 @@ protected:
 };
 
 template<NodeIdentIFace::type_t _type>
-class TermNode
-    : public Node, public TermNodeIFace<_type>, public visitor::Visitable<TermNode<_type>>
+class TermNode : public Node, public TermNodeIFace<_type>
 {
 public:
     TermNode(uint32_t _lexer_id, YYLTYPE loc, typename TermInternalType<_type>::type _value)
-        : Node(_type, _lexer_id, loc), visitor::Visitable<TermNode<_type>>(this), m_value(_value)
+        : Node(_type, _lexer_id, loc), m_value(_value)
     {
     }
     typename TermInternalType<_type>::type value() const
@@ -142,8 +140,7 @@ private:
     typename TermInternalType<_type>::type m_value;
 };
 
-class SymbolNode
-    : public Node, public SymbolNodeIFace, public visitor::Visitable<SymbolNode>
+class SymbolNode : public Node, public SymbolNodeIFace
 {
 public:
     SymbolNode(uint32_t _lexer_id, YYLTYPE loc, size_t _size, va_list ap);

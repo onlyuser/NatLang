@@ -90,7 +90,7 @@ bool TermNode<NodeIdentIFace::STRING>::compare(const NodeIdentIFace* _node) cons
 }
 
 SymbolNode::SymbolNode(uint32_t _lexer_id, YYLTYPE loc, size_t _size, va_list ap)
-    : Node(NodeIdentIFace::SYMBOL, _lexer_id, loc), visitor::Visitable<SymbolNode>(this)
+    : Node(NodeIdentIFace::SYMBOL, _lexer_id, loc)
 {
     for(size_t i = 0; i<_size; i++)
     {
@@ -117,7 +117,7 @@ SymbolNode::SymbolNode(uint32_t _lexer_id, YYLTYPE loc, size_t _size, va_list ap
 }
 
 SymbolNode::SymbolNode(uint32_t _lexer_id, YYLTYPE loc, std::vector<NodeIdentIFace*>& vec)
-    : Node(NodeIdentIFace::SYMBOL, _lexer_id, loc), visitor::Visitable<SymbolNode>(this)
+    : Node(NodeIdentIFace::SYMBOL, _lexer_id, loc)
 {
     for(auto q = vec.begin(); q != vec.end(); q++)
     {

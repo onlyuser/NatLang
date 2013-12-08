@@ -25,7 +25,7 @@
 
 namespace xl { namespace visitor {
 
-class Visitor : public virtual VisitorIFace<const node::NodeIdentIFace>
+class Visitor : virtual public VisitorIFace<const node::NodeIdentIFace>
 {
 public:
     Visitor() : m_allow_visit_null(true)

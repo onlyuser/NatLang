@@ -18,7 +18,6 @@
 #ifndef XLANG_NODE_IFACE_H_
 #define XLANG_NODE_IFACE_H_
 
-#include "visitor/XLangVisitable.h" // visitor::Visitable
 #include "XLangType.h" // uint32_t
 #include <string> // std::string
 
