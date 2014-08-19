@@ -8,8 +8,9 @@ Copyright (C) 2011-2013 Jerry Chen <mailto:onlyuser@gmail.com>
 About
 -----
 
-NatLang is a parser framework for natural language processing.
+NatLang is a pseudo-GLR parser framework for natural language processing.
 It enumerates all grammatical interpretations of a sentence given a grammar specification and a POS database.
+Right now, only English is supported.
 
 For example:
 
@@ -42,7 +43,7 @@ Path #2: {V   N Aux Adj}
 </pre>
 
 NatLang generates a parse tree for each POS path that result in a successful parse.
-Additional analysis passes can then be implemented on these parse trees.
+Additional analyses passes can be applied to the resulting parse trees.
 
 A Motivating Example
 --------------------
@@ -150,4 +151,4 @@ References
 Keywords
 --------
 
-    Lex, Yacc, Flex, Bison, Parser, NLP, WordNet, POS Tagging, How to Parse English
+    Lex, Yacc, Flex, Bison, natural language processing, WordNet, POS Tagging, GLR parser, parse English
