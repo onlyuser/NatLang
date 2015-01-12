@@ -42,7 +42,7 @@ Path #1: {Adj N Aux Adj}
 Path #2: {V   N Aux Adj}
 </pre>
 
-NatLang generates a parse tree for each POS path that result in a successful parse.
+NatLang generates a parse tree for each POS path that results in a successful parse.
 Additional analyses passes can be applied to the resulting parse trees.
 
 A Motivating Example
