@@ -259,6 +259,7 @@ NP:
 
 VP:
       V             { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
+    | V NP NP       { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     | V NP          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | V NP PP_VP    { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     | V AP          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
