@@ -222,7 +222,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // lvalues for non-terminals that have rules
 %type<symbol_value> CS S NP VP AP PP_VP PP
-%type<symbol_value> CA A
+%type<symbol_value> CA A Modal_or_Aux
 
 // lvalues for terminals that have rules
 %type<symbol_value> N V Noun Verb
@@ -287,10 +287,10 @@ N:
     ;
 
 V:
-      Verb        { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }
-    | Adv V       { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
-    | Modal V     { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
-    | Modal Neg V { $$ = MAKE_SYMBOL(ID_V, @$, 3, $1, $2, $3); }
+      Verb               { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }
+    | Adv V              { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
+    | Modal_or_Aux V     { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
+    | Modal_or_Aux Neg V { $$ = MAKE_SYMBOL(ID_V, @$, 3, $1, $2, $3); }
     ;
 
 CA:
@@ -301,6 +301,11 @@ CA:
 A:
       Adj     { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }
     | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); }
+    ;
+
+Modal_or_Aux:
+      Modal { $$ = $1; }
+    | Aux   { $$ = $1; }
     ;
 
 Noun:
