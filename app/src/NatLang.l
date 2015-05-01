@@ -83,6 +83,16 @@ eow       {ws}
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"
 noun      {noun_pron}
 
+verb_basic       "did"|"made"
+verb_state       "was"
+verb_life        "ate"|"slept"
+verb_transit     "moved"|"stayed"|"came"|"went"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"
+verb_ownership   "gave"|"took"|"lent"|"borrowed"|"lost"|"found"
+verb_container   "opened"|"closed"
+verb_communicate "said"|"told"|"spoke"|"listened"
+verb_commerce    "bought"|"sold"|"rented"
+verb             {verb_basic}|{verb_state}|{verb_life}|{verb_transit}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
+
 prep_basic             "to"|"from"|"of"|"for"|"in"|"on"|"at"
 prep_spatial_distance  "near"|"far"
 prep_spatial_motion    "onto"|"into"|"through"
@@ -128,12 +138,12 @@ suffix_adv  "ly"
                 return ID_NOUN;
             }
 
- /*
 <ST_ALT_VERB>{verb}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_VERB;
             }
 
+ /*
 <ST_ALT_ADJ>{adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADJ;
