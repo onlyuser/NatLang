@@ -83,15 +83,19 @@ eow       {ws}
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"
 noun      {noun_pron}
 
-verb_basic       "did"|"made"
-verb_state       "was"
-verb_life        "ate"|"slept"
-verb_transit     "moved"|"stayed"|"came"|"went"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"
+aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
+aux_do   "does"|"do"|"did"
+aux_have "has"|"have"|"had"|"having"
+aux       {aux_be}|{aux_do}|{aux_have}
+
+verb_basic       {aux}|"made"|"chose"|"selected"
+verb_life        "ate"|"slept"|"washed"
+verb_transit     "moved"|"stayed"|"came"|"went"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"|"dug"
 verb_ownership   "gave"|"took"|"lent"|"borrowed"|"lost"|"found"
 verb_container   "opened"|"closed"
 verb_communicate "said"|"told"|"spoke"|"listened"
 verb_commerce    "bought"|"sold"|"rented"
-verb             {verb_basic}|{verb_state}|{verb_life}|{verb_transit}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
+verb             {verb_basic}|{verb_life}|{verb_transit}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
 
 prep_basic             "to"|"from"|"of"|"for"|"in"|"on"|"at"
 prep_spatial_distance  "near"|"far"
@@ -102,13 +106,8 @@ prep_spatial_order     "behind"|"before"|"after"|"beyond"|"around"
 prep_spatial           {prep_spatial_distance}|{prep_spatial_motion}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
 prep                   {prep_basic}|{prep_spatial}
 
-adv      "quickly"|"slowly"|"always"|"never"|"sometimes"
+adv      "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
 modal    "do"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
-neg      "not"
-aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
-aux_do   "does"|"do"|"did"
-aux_have "has"|"have"|"had"|"having"
-aux       {aux_be}|{aux_do}|{aux_have}
 det       "a"|"an"|"the"|"this"|"that"|"these"|"those"
 conj      "and"|"nor"|"but"|"or"|"yet"|"so"
 
@@ -165,11 +164,6 @@ suffix_adv  "ly"
 <ST_MODAL>{modal}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_MODAL;
-            }
-
-<ST_ALT>{neg}{eow} {LOC;
-                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_NEG;
             }
 
 <ST_ALT>{prep}{eow} {LOC;
