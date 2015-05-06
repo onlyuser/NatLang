@@ -123,9 +123,9 @@ Limitations
 
 * Only English is supported
 * WordNet doesn't provide tense information for POS lookup, so hard-coded POS identities are used for some words
-* No attempt is made to prune the generated parse trees
+* No attempt is made to prune the parse trees
 * No attempt is made to parallelize the POS assignment evaluation
-* The Yacc grammar is hand-crafted without a corpus justifying its rules
+* The Yacc grammar is hand-crafted without a corpus to justify its rules
 
 Make targets
 ------------
@@ -160,4 +160,4 @@ References
 Keywords
 --------
 
-    Lex, Yacc, Flex, Bison, NLP, natural language processing, WordNet, POS Tagging, Yacc grammar for English, BNF, CFG, GLR
+    Lex, Yacc, Flex, Bison, NLP, Natural Language Processing, WordNet, POS Tagging, Yacc Grammar for English, BNF, CFG, GLR
