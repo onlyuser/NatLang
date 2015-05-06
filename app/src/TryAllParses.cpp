@@ -148,7 +148,6 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "verb");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adj");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "prep");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "infin_prefix");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_noun");
@@ -164,7 +163,7 @@ bool get_pos_values(
                 pos_values->push_back(*p);
                 unique_pos_values.insert(*p);
                 // consider conjugations at the NP/VP/CS level
-                if(*p == "Conj")
+                if(*p == "Conj_NP")
                 {
                     pos_values->push_back("Conj_VP");
                     pos_values->push_back("Conj_CS");

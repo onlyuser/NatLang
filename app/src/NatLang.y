@@ -124,7 +124,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_PREP:         return "Prep";
         case ID_AUX:          return "Aux";
         case ID_DET:          return "Det";
-        case ID_CONJ:         return "Conj";
+        case ID_CONJ_NP:      return "Conj_NP";
         case ID_CONJ_VP:      return "Conj_VP";
         case ID_CONJ_CS:      return "Conj_CS";
         case ID_CONJ_CA:      return "Conj_CA";
@@ -161,7 +161,7 @@ uint32_t name_to_id(std::string name)
     if(name == "Prep")         return ID_PREP;
     if(name == "Aux")          return ID_AUX;
     if(name == "Det")          return ID_DET;
-    if(name == "Conj")         return ID_CONJ;
+    if(name == "Conj_NP")      return ID_CONJ_NP;
     if(name == "Conj_VP")      return ID_CONJ_VP;
     if(name == "Conj_CS")      return ID_CONJ_CS;
     if(name == "Conj_CA")      return ID_CONJ_CA;
@@ -223,7 +223,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // lvalues for terminals that don't have rules
 %token<ident_value> ID_N ID_V ID_NOUN ID_VERB
 %token<ident_value> ID_ADJ ID_ADV ID_MODAL ID_PREP_VP ID_PREP
-%token<ident_value> ID_AUX ID_DET ID_CONJ ID_CONJ_VP ID_CONJ_CS ID_CONJ_CA
+%token<ident_value> ID_AUX ID_DET ID_CONJ_NP ID_CONJ_VP ID_CONJ_CS ID_CONJ_CA
 %token<ident_value> ID_INFIN_PREFIX ID_PERIOD
 
 // lvalues for non-terminals that have rules
@@ -233,7 +233,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // lvalues for terminals that have rules
 %type<symbol_value> N V Noun Verb
 %type<symbol_value> Adj Adv Modal Prep_VP Prep
-%type<symbol_value> Aux Det Conj Conj_VP Conj_CS Conj_CA
+%type<symbol_value> Aux Det Conj_NP Conj_VP Conj_CS Conj_CA
 %type<symbol_value> Infin_Prefix Period
 
 // lexer IDs non-terminals
@@ -260,7 +260,7 @@ NP:
       N          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }
     | Det N      { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
     | NP PP      { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
-    | NP Conj NP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }
+    | NP Conj_NP NP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }
     ;
 
 VP:
@@ -281,6 +281,7 @@ Infin_Bare:
     | V NP       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
     | V NP PP_VP { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
     | V AP       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
+    | V CA       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
     ;
 
 AP:
@@ -359,8 +360,8 @@ Det:
       ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-Conj:
-      ID_CONJ { $$ = MAKE_SYMBOL(ID_CONJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Conj_NP:
+      ID_CONJ_NP { $$ = MAKE_SYMBOL(ID_CONJ_NP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Conj_VP:
