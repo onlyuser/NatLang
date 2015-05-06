@@ -8,11 +8,11 @@ Copyright (C) 2011-2013 Jerry Chen <mailto:onlyuser@gmail.com>
 About
 -----
 
-NatLang is a parser framework for English natural language processing.
-It uses WordNet and a Yacc grammar for English to generate all interpretations of a sentence.
+NatLang is a parser framework natural language processing.
+It uses WordNet and a Yacc grammar to generate all interpretations of a sentence.
 WordNet determines individual word POS, while the Yacc grammar decides which sentence POS assignments are possible.
 
-NatLang generates a parse tree for each POS path that results in a successful parse, together yielding a parse forest.
+NatLang generates a parse tree for each POS path that results in a successful parse, yielding a parse forest.
 Additional analyses passes can then be applied to prune the parse forest (not demonstrated).
 
 For example:
@@ -125,7 +125,7 @@ Limitations
 * WordNet doesn't provide tense information for POS lookup, so hard-coded POS identities are used for some words
 * No attempt is made to prune the generated parse forest
 * No attempt is made to parallelize the POS path evaluation
-* The Yacc grammar for English is hand-crafted without a linguist
+* The Yacc grammar is hand-crafted without a linguist, therefore may contain errors
 
 Make targets
 ------------
