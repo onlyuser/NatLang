@@ -66,7 +66,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_ADV ST_INFIN_PREFIX ST_MODAL
+%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_ADV ST_ALT_PREP ST_INFIN_PREFIX ST_MODAL
 %x ST_ALT_SUFFIX_NOUN ST_ALT_SUFFIX_VERB ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
 
 ws        [ \t\n]+
@@ -80,7 +80,9 @@ lit_float {digit}*[.]{digit}+
 
 eow       {ws}
 
-noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"
+det_pron "this"|"that"|"these"|"those"
+
+noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det_pron}
 noun      {noun_pron}
 
 aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
@@ -90,26 +92,26 @@ aux       {aux_be}|{aux_do}|{aux_have}
 
 verb_basic       {aux}|"made"|"chose"|"selected"
 verb_life        "ate"|"slept"|"washed"
-verb_transit     "moved"|"stayed"|"came"|"went"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"|"dug"
+verb_motion      "moved"|"stayed"|"came"|"went"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"|"dug"
 verb_ownership   "gave"|"took"|"lent"|"borrowed"|"lost"|"found"
 verb_container   "opened"|"closed"
 verb_communicate "said"|"told"|"spoke"|"listened"
 verb_commerce    "bought"|"sold"|"rented"
-verb             {verb_basic}|{verb_life}|{verb_transit}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
+verb             {verb_basic}|{verb_life}|{verb_motion}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
 
-prep_basic             "to"|"from"|"of"|"for"|"in"|"on"|"at"
-prep_spatial_distance  "near"|"far"
-prep_spatial_motion    "onto"|"into"|"through"
-prep_spatial_container "inside"|"outside"|"within"|"without"
-prep_spatial_vertical  "above"|"below"|"over"|"under"|"underneath"|"beneath"
-prep_spatial_order     "behind"|"before"|"after"|"beyond"|"around"
-prep_spatial           {prep_spatial_distance}|{prep_spatial_motion}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
-prep                   {prep_basic}|{prep_spatial}
+prep_basic              "to"|"from"|"of"|"for"|"in"|"on"|"at"|"by"
+prep_spatial_distance   "near"|"far"
+prep_spatial_transition "onto"|"into"|"through"
+prep_spatial_container  "inside"|"outside"|"within"|"without"
+prep_spatial_vertical   "above"|"below"|"over"|"under"|"underneath"|"beneath"
+prep_spatial_order      "behind"|"before"|"after"|"beyond"|"around"|"between"
+prep_spatial            {prep_spatial_distance}|{prep_spatial_transition}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
+prep                    {prep_basic}|{prep_spatial}
 
-adv      "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
-modal    "do"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
-det       "a"|"an"|"the"|"this"|"that"|"these"|"those"
-conj      "and"|"nor"|"but"|"or"|"yet"|"so"
+adv   "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
+modal "do"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
+det   "a"|"an"|"the"|{det_pron}
+conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"
 
 suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_verb "ate"|"ify"|"ize"|"ise"
@@ -130,9 +132,10 @@ suffix_adv  "ly"
 "[verb]<"         { PUSH_STATE(ST_ALT_VERB); }
 "[adj]<"          { PUSH_STATE(ST_ALT_ADJ); }
 "[adv]<"          { PUSH_STATE(ST_ALT_ADV); }
+"[prep]<"         { PUSH_STATE(ST_ALT_PREP); }
 "[infin_prefix]<" { PUSH_STATE(ST_INFIN_PREFIX); }
 "[modal]<"        { PUSH_STATE(ST_MODAL); }
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV,ST_INFIN_PREFIX,ST_MODAL>">" { POP_STATE; }
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV,ST_ALT_PREP,ST_INFIN_PREFIX,ST_MODAL>">" { POP_STATE; }
 
 <ST_ALT_NOUN>{noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -154,6 +157,11 @@ suffix_adv  "ly"
 <ST_ALT_ADV>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_ADV;
+            }
+
+<ST_ALT_PREP>{prep}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_PREP;
             }
 
 <ST_INFIN_PREFIX>"to"{eow} {LOC;

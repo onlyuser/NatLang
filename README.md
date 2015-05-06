@@ -122,7 +122,7 @@ Limitations
 -----------
 
 * Only English is supported
-* WordNet doesn't provide tense information for POS lookup, so hard-coded POS identities are used for some words
+* WordNet doesn't provide tense information for POS lookup, so hard-coded POS identities are used for some common words
 * No attempt is made to prune the parse trees
 * No attempt is made to parallelize the POS assignment evaluation
 * The Yacc grammar is hand-crafted without a corpus to justify its rules

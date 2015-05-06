@@ -106,7 +106,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_S:            return "S";
         case ID_NP:           return "NP";
         case ID_VP:           return "VP";
-        case ID_INFIN:        return "Infin";
+        case ID_INFIN_BARE:   return "Infin_Bare";
+        case ID_INFIN_TO:     return "Infin_To";
         case ID_AP:           return "AP";
         case ID_PP_VP:        return "PP_VP";
         case ID_PP:           return "PP";
@@ -142,7 +143,8 @@ uint32_t name_to_id(std::string name)
     if(name == "S")            return ID_S;
     if(name == "NP")           return ID_NP;
     if(name == "VP")           return ID_VP;
-    if(name == "Infin")        return ID_INFIN;
+    if(name == "Infin_Bare")   return ID_INFIN_BARE;
+    if(name == "Infin_To")     return ID_INFIN_TO;
     if(name == "AP")           return ID_AP;
     if(name == "PP_VP")        return ID_PP_VP;
     if(name == "PP")           return ID_PP;
@@ -225,7 +227,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_INFIN_PREFIX ID_PERIOD
 
 // lvalues for non-terminals that have rules
-%type<symbol_value> CS S NP VP Infin AP PP_VP PP
+%type<symbol_value> CS S NP VP Infin_Bare Infin_To AP PP_VP PP
 %type<symbol_value> CA A
 
 // lvalues for terminals that have rules
@@ -235,7 +237,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Infin_Prefix Period
 
 // lexer IDs non-terminals
-%nonassoc ID_CS ID_S ID_NP ID_VP ID_INFIN ID_AP ID_PP_VP ID_PP
+%nonassoc ID_CS ID_S ID_NP ID_VP ID_INFIN_BARE ID_INFIN_TO ID_AP ID_PP_VP ID_PP
 %nonassoc ID_CA ID_A
 
 %%
@@ -262,19 +264,23 @@ NP:
     ;
 
 VP:
-      V             { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
-    | V NP NP       { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
-    | V NP          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | V NP PP_VP    { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
-    | V AP          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | V Infin       { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
+      Infin_Bare    { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
+    | V Infin_To    { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | Modal VP      { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | Aux VP        { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | VP Conj_VP VP { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     ;
 
-Infin:
-      Infin_Prefix VP { $$ = MAKE_SYMBOL(ID_INFIN, @$, 2, $1, $2); }
+Infin_To:
+      Infin_Prefix Infin_Bare { $$ = MAKE_SYMBOL(ID_INFIN_TO, @$, 2, $1, $2); }
+    ;
+
+Infin_Bare:
+      V          { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 1, $1); }
+    | V NP NP    { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
+    | V NP       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
+    | V NP PP_VP { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
+    | V AP       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
     ;
 
 AP:
