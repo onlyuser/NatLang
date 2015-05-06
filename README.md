@@ -8,9 +8,12 @@ Copyright (C) 2011-2013 Jerry Chen <mailto:onlyuser@gmail.com>
 About
 -----
 
-NatLang is a pseudo-GLR parser framework for natural language processing.
-It enumerates all grammatical interpretations of a sentence given a grammar specification and a POS database.
-Right now, only English is supported.
+NatLang is a parser framework for English natural language processing.
+It uses WordNet and a Yacc grammar for English to generate all interpretations of a sentence.
+WordNet determines individual word POS, while the Yacc grammar decides which sentence POS assignments are possible.
+
+NatLang generates a parse tree for each POS path that results in a successful parse, together yielding a parse forest.
+Additional analyses passes can then be applied to prune the parse forest (not demonstrated).
 
 For example:
 
@@ -41,9 +44,6 @@ flying saucers are   dangerous
 Path #1: {Adj N Aux Adj}
 Path #2: {V   N Aux Adj}
 </pre>
-
-NatLang generates a parse tree for each POS path that results in a successful parse.
-Additional analyses passes can be applied to the resulting parse trees.
 
 A Motivating Example
 --------------------
@@ -118,6 +118,15 @@ Unix tools and 3rd party components (accessible from $PATH):
 * $INCLUDE_PATH_EXTERN -- where "ticpp/ticpp.h" resides
 * $LIB_PATH_EXTERN     -- where "libticppd.a" resides
 
+Limitations
+-----------
+
+* Only English is supported
+* WordNet doesn't provide tense information for POS lookup, so hard-coded POS identities are used for some words
+* No attempt is made to prune the generated parse forest
+* No attempt is made to parallelize the POS path evaluation
+* The Yacc grammar for English is hand-crafted without a linguist
+
 Make targets
 ------------
 
@@ -151,4 +160,4 @@ References
 Keywords
 --------
 
-    Lex, Yacc, Flex, Bison, natural language processing, WordNet, POS Tagging, GLR parser, parse English
+    Lex, Yacc, Flex, Bison, NLP, natural language processing, WordNet, POS Tagging, Yacc grammar for English, BNF, CFG, GLR
