@@ -13,8 +13,6 @@ It uses WordNet and a Yacc grammar to generate all possible interpretations of a
 Under the framework, WordNet provides word POS information and the Yacc grammar decides which full-sentence POS assignments are valid.
 For each full-sentence POS assignment, NatLang generates a parse tree.
 
-Additional analyses passes (not included) can be applied to prune the parse trees down to a useful subset.
-
 For example:
 
 The sentence "eats shoots and leaves" has four interpretations depending on the POS of "shoots" and "leaves".
@@ -44,6 +42,8 @@ flying saucers are   dangerous
 Path #1: {Adj N Aux Adj}
 Path #2: {V   N Aux Adj}
 </pre>
+
+Additional analyses passes (not included) can be applied to prune the parse trees down to a useful subset.
 
 A Motivating Example
 --------------------
