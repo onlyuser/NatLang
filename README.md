@@ -11,6 +11,12 @@ About
 NatLang is a parser framework for natural language processing.
 It uses WordNet and a Yacc grammar to generate all possible interpretations of a sentence.
 
+It works as follows:
+1. The user inputs a sentence.
+2. WordNet identifies one or more POS identities for each word in the sentence.
+3. All POS configurations of the sentence are evaluated using the Yacc-generated parser.
+4. A parse tree is constructed for each successful parse.
+
 For example:
 
 The sentence "eats shoots and leaves" has four interpretations depending on the POS of "shoots" and "leaves".
@@ -40,6 +46,8 @@ flying saucers are   dangerous
 Path #1: {Adj N Aux Adj}
 Path #2: {V   N Aux Adj}
 </pre>
+
+TODO: Additional analyses passes are applied to the generated trees for further processing.
 
 A Motivating Example
 --------------------
