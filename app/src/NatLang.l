@@ -170,7 +170,7 @@ suffix_adv  "ly"
 
 <ST_ALT>{prep}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_PREP;
+                return ID_PREP_NP;
             }
 
 <ST_ALT>{aux}{eow} {LOC;

@@ -172,7 +172,7 @@ bool get_pos_values(
                     unique_pos_values.insert("Conj_CS");
                     unique_pos_values.insert("Conj_CA");
                 }
-                if(*p == "Prep")
+                if(*p == "Prep_NP")
                 {
                     pos_values->push_back("Prep_VP");
                     unique_pos_values.insert("Prep_VP");

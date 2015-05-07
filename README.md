@@ -10,8 +10,6 @@ About
 
 NatLang is a parser framework for natural language processing.
 It uses WordNet and a Yacc grammar to generate all possible interpretations of a sentence.
-Under the framework, WordNet provides word POS information and the Yacc grammar decides which full-sentence POS assignments are valid.
-For each full-sentence POS assignment, NatLang generates a parse tree.
 
 For example:
 
@@ -42,8 +40,6 @@ flying saucers are   dangerous
 Path #1: {Adj N Aux Adj}
 Path #2: {V   N Aux Adj}
 </pre>
-
-Additional analyses passes (not included) can be applied to prune the parse trees down to a useful subset.
 
 A Motivating Example
 --------------------
