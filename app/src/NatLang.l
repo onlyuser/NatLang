@@ -109,7 +109,7 @@ prep_spatial            {prep_spatial_distance}|{prep_spatial_transition}|{prep_
 prep                    {prep_basic}|{prep_spatial}
 
 adv   "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
-modal "do"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
+modal "do"|"has"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
 det   "a"|"an"|"the"|{det_pron}
 conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"
 

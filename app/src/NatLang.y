@@ -271,6 +271,10 @@ VP:
     | VP Conj_VP VP { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     ;
 
+Infin_To:
+      Infin_Prefix Infin_Bare { $$ = MAKE_SYMBOL(ID_INFIN_TO, @$, 2, $1, $2); }
+    ;
+
 Infin_Bare:
       V          { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 1, $1); }
     | V NP NP    { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
@@ -278,10 +282,6 @@ Infin_Bare:
     | V NP PP_VP { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
     | V AP       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
     | V CA       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
-    ;
-
-Infin_To:
-      Infin_Prefix Infin_Bare { $$ = MAKE_SYMBOL(ID_INFIN_TO, @$, 2, $1, $2); }
     ;
 
 AP:
