@@ -233,7 +233,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // lvalues for terminals that have rules
 %type<symbol_value> N V Noun Verb
 %type<symbol_value> Adj Adv Modal Prep_NP Prep_VP
-%type<symbol_value> Aux Det Conj_NP Conj_VP Conj_S Conj_A
+%type<symbol_value> Aux Det
 %type<symbol_value> Infin_Prefix Period
 
 // lexer IDs non-terminals
@@ -241,6 +241,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_A
 
 %type<symbol_value> CS CA
+%type<symbol_value> Conj_NP Conj_VP Conj_S Conj_A
 %nonassoc ID_CS ID_CA
 
 %%
@@ -251,6 +252,7 @@ root:
     ;
 
 //=============================================================================
+// high-level structure
 
 S:
       NP VP { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }
@@ -263,8 +265,6 @@ NP:
     | NP Conj_NP NP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }
     ;
 
-//=============================================================================
-
 VP:
       Infin_Bare    { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
     | V Infin_To    { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
@@ -272,6 +272,8 @@ VP:
     | Aux VP        { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | VP Conj_VP VP { $$ = MAKE_SYMBOL(ID_VP, @$, 3, $1, $2, $3); }
     ;
+
+//=============================================================================
 
 Infin_To:
       Infin_Prefix Infin_Bare { $$ = MAKE_SYMBOL(ID_INFIN_TO, @$, 2, $1, $2); }
