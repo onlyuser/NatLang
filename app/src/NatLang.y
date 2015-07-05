@@ -252,6 +252,8 @@ CS:
     | CS Conj_CS CS { $$ = MAKE_SYMBOL(ID_CS, @$, 3, $1, $2, $3); }
     ;
 
+//=============================================================================
+
 S:
       NP VP { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }
     ;
@@ -262,6 +264,8 @@ NP:
     | NP PP_NP      { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
     | NP Conj_NP NP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }
     ;
+
+//=============================================================================
 
 VP:
       Infin_Bare    { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
@@ -300,45 +304,27 @@ PP_VP:
     ;
 
 N:
-      Noun    { $$ = MAKE_SYMBOL(ID_N, @$, 1, $1); }
-    | CA Noun { $$ = MAKE_SYMBOL(ID_N, @$, 2, $1, $2); }
+      Noun    { $$ = MAKE_SYMBOL(ID_N, @$, 1, $1); }     // dog
+    | CA Noun { $$ = MAKE_SYMBOL(ID_N, @$, 2, $1, $2); } // big dog
     ;
 
 V:
-      Verb  { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }
-    | Adv V { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); }
+      Verb  { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }     // run
+    | Adv V { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run
     ;
 
 CA:
-      A             { $$ = MAKE_SYMBOL(ID_CA, @$, 1, $1); }
-    | CA CA         { $$ = MAKE_SYMBOL(ID_CA, @$, 2, $1, $2); }
-    | CA Conj_CA CA { $$ = MAKE_SYMBOL(ID_CA, @$, 3, $1, $2, $3); }
+      A             { $$ = MAKE_SYMBOL(ID_CA, @$, 1, $1); }         // big
+    | CA CA         { $$ = MAKE_SYMBOL(ID_CA, @$, 2, $1, $2); }     // big red
+    | CA Conj_CA CA { $$ = MAKE_SYMBOL(ID_CA, @$, 3, $1, $2, $3); } // big and red
     ;
 
 A:
-      Adj     { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }
-    | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); }
+      Adj     { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }     // red
+    | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); } // very red
     ;
 
-Noun:
-      ID_NOUN { $$ = MAKE_SYMBOL(ID_NOUN, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Verb:
-      ID_VERB { $$ = MAKE_SYMBOL(ID_VERB, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Adj:
-      ID_ADJ { $$ = MAKE_SYMBOL(ID_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Adv:
-      ID_ADV { $$ = MAKE_SYMBOL(ID_ADV, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Modal:
-      ID_MODAL { $$ = MAKE_SYMBOL(ID_MODAL, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
+//=============================================================================
 
 Prep_NP:
       ID_PREP_NP { $$ = MAKE_SYMBOL(ID_PREP_NP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
@@ -348,37 +334,71 @@ Prep_VP:
       ID_PREP_VP { $$ = MAKE_SYMBOL(ID_PREP_VP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
+//=============================================================================
+// basic words
+
+Noun:
+      ID_NOUN { $$ = MAKE_SYMBOL(ID_NOUN, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // dog
+    ;
+
+Verb:
+      ID_VERB { $$ = MAKE_SYMBOL(ID_VERB, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // run
+    ;
+
+Adj:
+      ID_ADJ { $$ = MAKE_SYMBOL(ID_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // big
+    ;
+
+Adv:
+      ID_ADV { $$ = MAKE_SYMBOL(ID_ADV, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // quickly
+    ;
+
+//=============================================================================
+// special words
+
+Det:
+      ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // the
+    ;
+
 Aux:
-      ID_AUX { $$ = MAKE_SYMBOL(ID_AUX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_AUX { $$ = MAKE_SYMBOL(ID_AUX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // is/be, do, have
+    ;
+
+Modal:
+      ID_MODAL { $$ = MAKE_SYMBOL(ID_MODAL, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // could
     ;
 
 Infin_Prefix:
       ID_INFIN_PREFIX { $$ = MAKE_SYMBOL(ID_INFIN_PREFIX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-Det:
-      ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
+//=============================================================================
+// compound words
 
 Conj_NP:
-      ID_CONJ_NP { $$ = MAKE_SYMBOL(ID_CONJ_NP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_CONJ_NP { $$ = MAKE_SYMBOL(ID_CONJ_NP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for NP)
     ;
 
 Conj_VP:
-      ID_CONJ_VP { $$ = MAKE_SYMBOL(ID_CONJ_VP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_CONJ_VP { $$ = MAKE_SYMBOL(ID_CONJ_VP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for VP)
     ;
 
 Conj_CS:
-      ID_CONJ_CS { $$ = MAKE_SYMBOL(ID_CONJ_CS, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_CONJ_CS { $$ = MAKE_SYMBOL(ID_CONJ_CS, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for S)
     ;
 
 Conj_CA:
-      ID_CONJ_CA { $$ = MAKE_SYMBOL(ID_CONJ_CA, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_CONJ_CA { $$ = MAKE_SYMBOL(ID_CONJ_CA, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for A)
     ;
+
+//=============================================================================
+// period
 
 Period:
       ID_PERIOD { $$ = MAKE_SYMBOL(ID_PERIOD, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
+
+//=============================================================================
 
 %%
 
