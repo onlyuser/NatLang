@@ -102,7 +102,6 @@ std::string id_to_name(uint32_t lexer_id)
         return _id_to_name[index];
     switch(lexer_id)
     {
-        case ID_CS:           return "S'";
         case ID_S:            return "S";
         case ID_NP:           return "NP";
         case ID_VP:           return "VP";
@@ -113,7 +112,6 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_PP_NP:        return "PP_NP";
         case ID_N:            return "N";
         case ID_V:            return "V";
-        case ID_CA:           return "A'";
         case ID_A:            return "A";
         case ID_NOUN:         return "Noun";
         case ID_VERB:         return "Verb";
@@ -126,9 +124,11 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_DET:          return "Det";
         case ID_CONJ_NP:      return "Conj_NP";
         case ID_CONJ_VP:      return "Conj_VP";
-        case ID_CONJ_CS:      return "Conj_CS";
-        case ID_CONJ_CA:      return "Conj_CA";
+        case ID_CONJ_S:       return "Conj_S";
+        case ID_CONJ_A:       return "Conj_A";
         case ID_INFIN_PREFIX: return "Infin_Prefix";
+        case ID_CS:           return "S'";
+        case ID_CA:           return "A'";
         case ID_PERIOD:       return "$";
     }
     throw ERROR_LEXER_ID_NOT_FOUND;
@@ -139,7 +139,6 @@ uint32_t name_to_id(std::string name)
     if(name == "int")          return ID_INT;
     if(name == "float")        return ID_FLOAT;
     if(name == "ident")        return ID_IDENT;
-    if(name == "S'")           return ID_CS;
     if(name == "S")            return ID_S;
     if(name == "NP")           return ID_NP;
     if(name == "VP")           return ID_VP;
@@ -150,7 +149,6 @@ uint32_t name_to_id(std::string name)
     if(name == "PP_NP")        return ID_PP_NP;
     if(name == "N")            return ID_N;
     if(name == "V")            return ID_V;
-    if(name == "A'")           return ID_CA;
     if(name == "A")            return ID_A;
     if(name == "Noun")         return ID_NOUN;
     if(name == "Verb")         return ID_VERB;
@@ -163,9 +161,11 @@ uint32_t name_to_id(std::string name)
     if(name == "Det")          return ID_DET;
     if(name == "Conj_NP")      return ID_CONJ_NP;
     if(name == "Conj_VP")      return ID_CONJ_VP;
-    if(name == "Conj_CS")      return ID_CONJ_CS;
-    if(name == "Conj_CA")      return ID_CONJ_CA;
+    if(name == "Conj_S")       return ID_CONJ_S;
+    if(name == "Conj_A")       return ID_CONJ_A;
     if(name == "Infin_Prefix") return ID_INFIN_PREFIX;
+    if(name == "S'")           return ID_CS;
+    if(name == "A'")           return ID_CA;
     if(name == "$")            return ID_PERIOD;
     throw ERROR_LEXER_NAME_NOT_FOUND;
     return 0;
@@ -223,33 +223,31 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // lvalues for terminals that don't have rules
 %token<ident_value> ID_N ID_V ID_NOUN ID_VERB
 %token<ident_value> ID_ADJ ID_ADV ID_MODAL ID_PREP_NP ID_PREP_VP
-%token<ident_value> ID_AUX ID_DET ID_CONJ_NP ID_CONJ_VP ID_CONJ_CS ID_CONJ_CA
+%token<ident_value> ID_AUX ID_DET ID_CONJ_NP ID_CONJ_VP ID_CONJ_S ID_CONJ_A
 %token<ident_value> ID_INFIN_PREFIX ID_PERIOD
 
 // lvalues for non-terminals that have rules
-%type<symbol_value> CS S NP VP Infin_Bare Infin_To AP PP_VP PP_NP
-%type<symbol_value> CA A
+%type<symbol_value> S NP VP Infin_Bare Infin_To AP PP_VP PP_NP
+%type<symbol_value> A
 
 // lvalues for terminals that have rules
 %type<symbol_value> N V Noun Verb
 %type<symbol_value> Adj Adv Modal Prep_NP Prep_VP
-%type<symbol_value> Aux Det Conj_NP Conj_VP Conj_CS Conj_CA
+%type<symbol_value> Aux Det Conj_NP Conj_VP Conj_S Conj_A
 %type<symbol_value> Infin_Prefix Period
 
 // lexer IDs non-terminals
-%nonassoc ID_CS ID_S ID_NP ID_VP ID_INFIN_BARE ID_INFIN_TO ID_AP ID_PP_VP ID_PP_NP
-%nonassoc ID_CA ID_A
+%nonassoc ID_S ID_NP ID_VP ID_INFIN_BARE ID_INFIN_TO ID_AP ID_PP_VP ID_PP_NP
+%nonassoc ID_A
+
+%type<symbol_value> CS CA
+%nonassoc ID_CS ID_CA
 
 %%
 
 root:
       CS Period { pc->tree_context().root() = $1; YYACCEPT; }
     | error     { yyclearin; /* yyerrok; YYABORT; */ }
-    ;
-
-CS:
-      S             { $$ = MAKE_SYMBOL(ID_CS, @$, 1, $1); }
-    | CS Conj_CS CS { $$ = MAKE_SYMBOL(ID_CS, @$, 3, $1, $2, $3); }
     ;
 
 //=============================================================================
@@ -313,12 +311,6 @@ V:
     | Adv V { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run
     ;
 
-CA:
-      A             { $$ = MAKE_SYMBOL(ID_CA, @$, 1, $1); }         // big
-    | CA CA         { $$ = MAKE_SYMBOL(ID_CA, @$, 2, $1, $2); }     // big red
-    | CA Conj_CA CA { $$ = MAKE_SYMBOL(ID_CA, @$, 3, $1, $2, $3); } // big and red
-    ;
-
 A:
       Adj     { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }     // red
     | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); } // very red
@@ -375,6 +367,20 @@ Infin_Prefix:
 //=============================================================================
 // compound words
 
+CS:
+      S            { $$ = MAKE_SYMBOL(ID_CS, @$, 1, $1); }
+    | CS Conj_S CS { $$ = MAKE_SYMBOL(ID_CS, @$, 3, $1, $2, $3); }
+    ;
+
+CA:
+      A            { $$ = MAKE_SYMBOL(ID_CA, @$, 1, $1); }         // big
+    | CA CA        { $$ = MAKE_SYMBOL(ID_CA, @$, 2, $1, $2); }     // big red
+    | CA Conj_A CA { $$ = MAKE_SYMBOL(ID_CA, @$, 3, $1, $2, $3); } // big and red
+    ;
+
+//=============================================================================
+// conjugations
+
 Conj_NP:
       ID_CONJ_NP { $$ = MAKE_SYMBOL(ID_CONJ_NP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for NP)
     ;
@@ -383,12 +389,12 @@ Conj_VP:
       ID_CONJ_VP { $$ = MAKE_SYMBOL(ID_CONJ_VP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for VP)
     ;
 
-Conj_CS:
-      ID_CONJ_CS { $$ = MAKE_SYMBOL(ID_CONJ_CS, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for S)
+Conj_S:
+      ID_CONJ_S { $$ = MAKE_SYMBOL(ID_CONJ_S, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for S)
     ;
 
-Conj_CA:
-      ID_CONJ_CA { $$ = MAKE_SYMBOL(ID_CONJ_CA, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for A)
+Conj_A:
+      ID_CONJ_A { $$ = MAKE_SYMBOL(ID_CONJ_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for A)
     ;
 
 //=============================================================================

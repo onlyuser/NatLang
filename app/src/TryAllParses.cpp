@@ -166,11 +166,11 @@ bool get_pos_values(
                 if(*p == "Conj_NP")
                 {
                     pos_values->push_back("Conj_VP");
-                    pos_values->push_back("Conj_CS");
-                    pos_values->push_back("Conj_CA");
+                    pos_values->push_back("Conj_S");
+                    pos_values->push_back("Conj_A");
                     unique_pos_values.insert("Conj_VP");
-                    unique_pos_values.insert("Conj_CS");
-                    unique_pos_values.insert("Conj_CA");
+                    unique_pos_values.insert("Conj_S");
+                    unique_pos_values.insert("Conj_A");
                 }
                 if(*p == "Prep_NP")
                 {
