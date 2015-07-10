@@ -162,7 +162,7 @@ bool get_pos_values(
                     continue;
                 pos_values->push_back(*p);
                 unique_pos_values.insert(*p);
-                // consider conjugations at the NP/VP/CS level
+                // consider conjugations at the NP/VP/S level
                 if(*p == "Conj_NP")
                 {
                     pos_values->push_back("Conj_VP");

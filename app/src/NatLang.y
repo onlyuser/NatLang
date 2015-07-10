@@ -116,6 +116,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_CS:           return "S'";
         case ID_CVP:          return "VP'";
         case ID_DET:          return "Det";
+        case ID_DP:           return "DP";
         case ID_INFIN_BARE:   return "Infin_Bare";
         case ID_INFIN_PREFIX: return "Infin_Prefix";
         case ID_INFIN_TO:     return "Infin_To";
@@ -149,6 +150,7 @@ uint32_t name_to_id(std::string name)
     if(name == "Conj_S")       return ID_CONJ_S;
     if(name == "Conj_VP")      return ID_CONJ_VP;
     if(name == "Det")          return ID_DET;
+    if(name == "DP")           return ID_DP;
     if(name == "float")        return ID_FLOAT;
     if(name == "ident")        return ID_IDENT;
     if(name == "Infin_Bare")   return ID_INFIN_BARE;
@@ -192,6 +194,7 @@ static std::string expand_contractions(std::string &sentence)
     s = xl::replace(s, "'ve", " have");
     s = xl::replace(s, "'m", " am");
     s = xl::replace(s, "'re", " are");
+    s = xl::replace(s, "'s", " 's");
     return s;
 }
 
@@ -229,7 +232,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // high-level constructs
-%type<symbol_value> S NP VP
+%type<symbol_value> S NP VP DP
 
 // local constructs
 %type<symbol_value> Infin_To Infin_Bare AP PP_NP PP_VP N V A
@@ -242,7 +245,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // high-level constructs
-%nonassoc ID_S ID_NP ID_VP
+%nonassoc ID_S ID_NP ID_VP ID_DP
 
 // local constructs
 %nonassoc ID_INFIN_TO ID_INFIN_BARE ID_AP ID_PP_NP ID_PP_VP ID_N ID_V ID_A
@@ -294,7 +297,7 @@ S:
 
 NP:
       N         { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }
-    | Det N     { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
+    | DP        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }
     | CNP PP_NP { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
     ;
 
@@ -303,6 +306,11 @@ VP:
     | V Infin_To { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | Modal CVP  { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     | Aux CVP    { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
+    ;
+
+DP:
+      Det N { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }
+    | DP DP { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }
     ;
 
 //=============================================================================
@@ -703,7 +711,7 @@ bool apply_options(options_t &options)
     }
     std::list<std::vector<std::string>> pos_value_paths;
     std::string sentence = options.expr;
-    sentence = expand_contractions(sentence);
+    options.expr = sentence = expand_contractions(sentence);
     build_pos_value_paths_from_sentence(&pos_value_paths, sentence);
     int path_index = 0;
     std::list<pos_value_path_ast_tuple_t> pos_value_path_ast_tuples;

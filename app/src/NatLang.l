@@ -73,14 +73,15 @@ ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
 digit     [0-9]
 alpha     [a-zA-Z]
-id        {alpha}|[_]
+id        {alpha}|[_]|[']
 lit_ident {id}+({digit}|{id})*
 lit_int   {digit}+
 lit_float {digit}*[.]{digit}+
 
 eow       {ws}
 
-det_pron "this"|"that"|"these"|"those"
+pos_pron "my"|"your"|"our"|"his"|"her"|"their"|"'s"
+det_pron "this"|"that"|"these"|"those"|{pos_pron}
 
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det_pron}
 noun      {noun_pron}
