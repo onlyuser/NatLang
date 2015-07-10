@@ -225,7 +225,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_IDENT
 
 //=============================================================================
-// lvalues
+// non-terminal lvalues
 //=============================================================================
 
 // high-level constructs
@@ -236,15 +236,9 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // lists
 %type<symbol_value> CS CNP CVP CA
-%type<symbol_value> Conj_S Conj_NP Conj_VP Conj_A
-
-// terminal: descriptive words
-%type<symbol_value> Noun Verb Adj Adv Prep_NP Prep_VP
-%type<symbol_value> Det Aux Modal Infin_Prefix
-%type<symbol_value> Period
 
 //=============================================================================
-// lexer IDs
+// non-terminal lvalue lexer IDs
 //=============================================================================
 
 // high-level constructs
@@ -257,15 +251,29 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_CS ID_CNP ID_CVP ID_CA
 
 //=============================================================================
-// rvalues
+// terminal lvalues
 //=============================================================================
 
-// terminal: descriptive words
-%token<ident_value> ID_NOUN ID_VERB ID_ADJ ID_ADV ID_PREP_NP ID_PREP_VP
-%token<ident_value> ID_DET ID_AUX ID_MODAL ID_INFIN_PREFIX
-%token<ident_value> ID_PERIOD
+// descriptive words
+%type<symbol_value> Noun Verb Adj Adv Prep_NP Prep_VP
 
-// terminal: conjugations
+// functional words
+%type<symbol_value> Det Aux Modal Infin_Prefix Period
+
+// conjugations
+%type<symbol_value> Conj_S Conj_NP Conj_VP Conj_A
+
+//=============================================================================
+// terminal rvalues
+//=============================================================================
+
+// descriptive words
+%token<ident_value> ID_NOUN ID_VERB ID_ADJ ID_ADV ID_PREP_NP ID_PREP_VP
+
+// functional words
+%token<ident_value> ID_DET ID_AUX ID_MODAL ID_INFIN_PREFIX ID_PERIOD
+
+// conjugations
 %token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_A
 
 %%
@@ -330,7 +338,7 @@ PP_VP:
 
 N:
       Noun    { $$ = MAKE_SYMBOL(ID_N, @$, 1, $1); }     // dog
-    | CA Noun { $$ = MAKE_SYMBOL(ID_N, @$, 2, $1, $2); } // big dog
+    | CA Noun { $$ = MAKE_SYMBOL(ID_N, @$, 2, $1, $2); } // big and red dog
     ;
 
 V:
@@ -370,7 +378,7 @@ CA:
 //=============================================================================
 // TERMINALS
 //=============================================================================
-// terminal: descriptive words
+// descriptive words
 
 Noun:
       ID_NOUN { $$ = MAKE_SYMBOL(ID_NOUN, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // dog
@@ -397,7 +405,7 @@ Prep_VP:
     ;
 
 //=============================================================================
-// terminal: functional words
+// functional words
 
 Det:
       ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // the
@@ -415,8 +423,12 @@ Infin_Prefix:
       ID_INFIN_PREFIX { $$ = MAKE_SYMBOL(ID_INFIN_PREFIX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // to
     ;
 
+Period:
+      ID_PERIOD { $$ = MAKE_SYMBOL(ID_PERIOD, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
 //=============================================================================
-// terminal: conjugations
+// conjugations
 
 Conj_S:
       ID_CONJ_S { $$ = MAKE_SYMBOL(ID_CONJ_S, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for S)
@@ -432,13 +444,6 @@ Conj_VP:
 
 Conj_A:
       ID_CONJ_A { $$ = MAKE_SYMBOL(ID_CONJ_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for A)
-    ;
-
-//=============================================================================
-// terminal: period
-
-Period:
-      ID_PERIOD { $$ = MAKE_SYMBOL(ID_PERIOD, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================
