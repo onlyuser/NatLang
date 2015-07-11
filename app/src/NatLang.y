@@ -102,77 +102,77 @@ std::string id_to_name(uint32_t lexer_id)
         return _id_to_name[index];
     switch(lexer_id)
     {
-        case ID_ADJ:          return "Adj";
-        case ID_ADV:          return "Adv";
-        case ID_AP:           return "AP";
-        case ID_A:            return "A";
-        case ID_AUX:          return "Aux";
-        case ID_CA:           return "A'";
-        case ID_CNP:          return "NP'";
-        case ID_CONJ_A:       return "Conj_A";
-        case ID_CONJ_NP:      return "Conj_NP";
-        case ID_CONJ_S:       return "Conj_S";
-        case ID_CONJ_VP:      return "Conj_VP";
-        case ID_CS:           return "S'";
-        case ID_CVP:          return "VP'";
-        case ID_DET:          return "Det";
-        case ID_DP:           return "DP";
-        case ID_INFIN_BARE:   return "Infin_Bare";
-        case ID_INFIN_PREFIX: return "Infin_Prefix";
-        case ID_INFIN_TO:     return "Infin_To";
-        case ID_MODAL:        return "Modal";
-        case ID_NOUN:         return "Noun";
-        case ID_NP:           return "NP";
-        case ID_N:            return "N";
-        case ID_PERIOD:       return "$";
-        case ID_PP_NP:        return "PP_NP";
-        case ID_PP_VP:        return "PP_VP";
-        case ID_PREP_NP:      return "Prep_NP";
-        case ID_PREP_VP:      return "Prep_VP";
-        case ID_S:            return "S";
-        case ID_VERB:         return "Verb";
-        case ID_VP:           return "VP";
-        case ID_V:            return "V";
+        case ID_ADJ:        return "Adj";
+        case ID_ADV:        return "Adv";
+        case ID_AP:         return "AP";
+        case ID_A:          return "A";
+        case ID_AUX:        return "Aux";
+        case ID_CA:         return "A'";
+        case ID_CNP:        return "NP'";
+        case ID_CONJ_A:     return "Conj_A";
+        case ID_CONJ_NP:    return "Conj_NP";
+        case ID_CONJ_S:     return "Conj_S";
+        case ID_CONJ_VP:    return "Conj_VP";
+        case ID_CS:         return "S'";
+        case ID_CVP:        return "VP'";
+        case ID_DET:        return "Det";
+        case ID_DP:         return "DP";
+        case ID_TO:         return "To";
+        case ID_INFINITIVE: return "Infinitive";
+        case ID_MODAL:      return "Modal";
+        case ID_NOUN:       return "Noun";
+        case ID_NP:         return "NP";
+        case ID_N:          return "N";
+        case ID_PERIOD:     return "$";
+        case ID_PP_NP:      return "PP_NP";
+        case ID_PP_VP:      return "PP_VP";
+        case ID_PREP_NP:    return "Prep_NP";
+        case ID_PREP_VP:    return "Prep_VP";
+        case ID_S:          return "S";
+        case ID_VERB:       return "Verb";
+        case ID_VP_INNER:   return "VP_Inner";
+        case ID_VP:         return "VP";
+        case ID_V:          return "V";
     }
     throw ERROR_LEXER_ID_NOT_FOUND;
     return "";
 }
 uint32_t name_to_id(std::string name)
 {
-    if(name == "Adj")          return ID_ADJ;
-    if(name == "Adv")          return ID_ADV;
-    if(name == "AP")           return ID_AP;
-    if(name == "A")            return ID_A;
-    if(name == "A'")           return ID_CA;
-    if(name == "Aux")          return ID_AUX;
-    if(name == "Conj_A")       return ID_CONJ_A;
-    if(name == "Conj_NP")      return ID_CONJ_NP;
-    if(name == "Conj_S")       return ID_CONJ_S;
-    if(name == "Conj_VP")      return ID_CONJ_VP;
-    if(name == "Det")          return ID_DET;
-    if(name == "DP")           return ID_DP;
-    if(name == "float")        return ID_FLOAT;
-    if(name == "ident")        return ID_IDENT;
-    if(name == "Infin_Bare")   return ID_INFIN_BARE;
-    if(name == "Infin_Prefix") return ID_INFIN_PREFIX;
-    if(name == "Infin_To")     return ID_INFIN_TO;
-    if(name == "int")          return ID_INT;
-    if(name == "Modal")        return ID_MODAL;
-    if(name == "Noun")         return ID_NOUN;
-    if(name == "NP'")          return ID_CNP;
-    if(name == "NP")           return ID_NP;
-    if(name == "N")            return ID_N;
-    if(name == "PP_NP")        return ID_PP_NP;
-    if(name == "PP_VP")        return ID_PP_VP;
-    if(name == "Prep_NP")      return ID_PREP_NP;
-    if(name == "Prep_VP")      return ID_PREP_VP;
-    if(name == "$")            return ID_PERIOD;
-    if(name == "S'")           return ID_CS;
-    if(name == "S")            return ID_S;
-    if(name == "Verb")         return ID_VERB;
-    if(name == "VP'")          return ID_CVP;
-    if(name == "VP")           return ID_VP;
-    if(name == "V")            return ID_V;
+    if(name == "Adj")        return ID_ADJ;
+    if(name == "Adv")        return ID_ADV;
+    if(name == "AP")         return ID_AP;
+    if(name == "A")          return ID_A;
+    if(name == "A'")         return ID_CA;
+    if(name == "Aux")        return ID_AUX;
+    if(name == "Conj_A")     return ID_CONJ_A;
+    if(name == "Conj_NP")    return ID_CONJ_NP;
+    if(name == "Conj_S")     return ID_CONJ_S;
+    if(name == "Conj_VP")    return ID_CONJ_VP;
+    if(name == "Det")        return ID_DET;
+    if(name == "DP")         return ID_DP;
+    if(name == "float")      return ID_FLOAT;
+    if(name == "ident")      return ID_IDENT;
+    if(name == "Infinitive") return ID_INFINITIVE;
+    if(name == "int")        return ID_INT;
+    if(name == "Modal")      return ID_MODAL;
+    if(name == "Noun")       return ID_NOUN;
+    if(name == "NP'")        return ID_CNP;
+    if(name == "NP")         return ID_NP;
+    if(name == "N")          return ID_N;
+    if(name == "PP_NP")      return ID_PP_NP;
+    if(name == "PP_VP")      return ID_PP_VP;
+    if(name == "Prep_NP")    return ID_PREP_NP;
+    if(name == "Prep_VP")    return ID_PREP_VP;
+    if(name == "$")          return ID_PERIOD;
+    if(name == "S'")         return ID_CS;
+    if(name == "S")          return ID_S;
+    if(name == "To")         return ID_TO;
+    if(name == "Verb")       return ID_VERB;
+    if(name == "VP_Inner")   return ID_VP_INNER;
+    if(name == "VP'")        return ID_CVP;
+    if(name == "VP")         return ID_VP;
+    if(name == "V")          return ID_V;
     throw ERROR_LEXER_NAME_NOT_FOUND;
     return 0;
 }
@@ -235,7 +235,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> S NP VP DP
 
 // local constructs
-%type<symbol_value> Infin_To Infin_Bare AP PP_NP PP_VP N V A
+%type<symbol_value> Infinitive VP_Inner AP PP_NP PP_VP N V A
 
 // lists
 %type<symbol_value> CS CNP CVP CA
@@ -248,7 +248,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_S ID_NP ID_VP ID_DP
 
 // local constructs
-%nonassoc ID_INFIN_TO ID_INFIN_BARE ID_AP ID_PP_NP ID_PP_VP ID_N ID_V ID_A
+%nonassoc ID_INFINITIVE ID_VP_INNER ID_AP ID_PP_NP ID_PP_VP ID_N ID_V ID_A
 
 // lists
 %nonassoc ID_CS ID_CNP ID_CVP ID_CA
@@ -261,7 +261,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Noun Verb Adj Adv Prep_NP Prep_VP
 
 // functional words
-%type<symbol_value> Det Aux Modal Infin_Prefix Period
+%type<symbol_value> Det Aux Modal To Period
 
 // conjugations
 %type<symbol_value> Conj_S Conj_NP Conj_VP Conj_A
@@ -274,7 +274,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_NOUN ID_VERB ID_ADJ ID_ADV ID_PREP_NP ID_PREP_VP
 
 // functional words
-%token<ident_value> ID_DET ID_AUX ID_MODAL ID_INFIN_PREFIX ID_PERIOD
+%token<ident_value> ID_DET ID_AUX ID_MODAL ID_TO ID_PERIOD
 
 // conjugations
 %token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_A
@@ -302,10 +302,10 @@ NP:
     ;
 
 VP:
-      Infin_Bare { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
-    | V Infin_To { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | Modal CVP  { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | Aux CVP    { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
+      VP_Inner     { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
+    | V Infinitive { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
+    | Modal CVP    { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
+    | Aux CVP      { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
     ;
 
 DP:
@@ -316,17 +316,17 @@ DP:
 //=============================================================================
 // local constructs
 
-Infin_To:
-      Infin_Prefix Infin_Bare { $$ = MAKE_SYMBOL(ID_INFIN_TO, @$, 2, $1, $2); }
+Infinitive:
+      To VP_Inner { $$ = MAKE_SYMBOL(ID_INFINITIVE, @$, 2, $1, $2); }
     ;
 
-Infin_Bare:
-      V           { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 1, $1); }
-    | V CNP CNP   { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
-    | V CNP       { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
-    | V CNP PP_VP { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 3, $1, $2, $3); }
-    | V AP        { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
-    | V CA        { $$ = MAKE_SYMBOL(ID_INFIN_BARE, @$, 2, $1, $2); }
+VP_Inner:
+      V           { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 1, $1); }
+    | V CNP CNP   { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); }
+    | V CNP       { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }
+    | V CNP PP_VP { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); }
+    | V AP        { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }
+    | V CA        { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }
     ;
 
 AP:
@@ -427,8 +427,8 @@ Modal:
       ID_MODAL { $$ = MAKE_SYMBOL(ID_MODAL, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // could
     ;
 
-Infin_Prefix:
-      ID_INFIN_PREFIX { $$ = MAKE_SYMBOL(ID_INFIN_PREFIX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // to
+To:
+      ID_TO { $$ = MAKE_SYMBOL(ID_TO, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // to
     ;
 
 Period:
