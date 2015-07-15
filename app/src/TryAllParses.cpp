@@ -150,6 +150,7 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "question_pron");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_noun");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_verb");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_adj");
