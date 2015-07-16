@@ -124,10 +124,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_NP:            return "NP";
         case ID_N:             return "N";
         case ID_PERIOD:        return "$";
-        case ID_PP_NP:         return "PP_NP";
-        case ID_PP_VP:         return "PP_VP";
-        case ID_PREP_NP:       return "Prep_NP";
-        case ID_PREP_VP:       return "Prep_VP";
+        case ID_PP:            return "PP";
+        case ID_PREP:          return "Prep";
         case ID_QUESTION_PRON: return "QUESTION_PRON";
         case ID_S:             return "S";
         case ID_VERB:          return "Verb";
@@ -161,10 +159,8 @@ uint32_t name_to_id(std::string name)
     if(name == "NP'")           return ID_CNP;
     if(name == "NP")            return ID_NP;
     if(name == "N")             return ID_N;
-    if(name == "PP_NP")         return ID_PP_NP;
-    if(name == "PP_VP")         return ID_PP_VP;
-    if(name == "Prep_NP")       return ID_PREP_NP;
-    if(name == "Prep_VP")       return ID_PREP_VP;
+    if(name == "PP")            return ID_PP;
+    if(name == "Prep")          return ID_PREP;
     if(name == "$")             return ID_PERIOD;
     if(name == "QUESTION_PRON") return ID_QUESTION_PRON;
     if(name == "S'")            return ID_CS;
@@ -234,33 +230,33 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // high-level constructs
-%type<symbol_value> S NP VP DP
+%type<symbol_value> S NP VP
 
 // local constructs
-%type<symbol_value> Infinitive VP_Inner AP PP_NP PP_VP N V A
+%type<symbol_value> Infinitive VP_Inner AP N V A
 
 // lists
-%type<symbol_value> CS CNP CVP CA
+%type<symbol_value> CS CNP CVP CA PP DP
 
 //=============================================================================
 // non-terminal lvalue lexer IDs
 //=============================================================================
 
 // high-level constructs
-%nonassoc ID_S ID_NP ID_VP ID_DP
+%nonassoc ID_S ID_NP ID_VP
 
 // local constructs
-%nonassoc ID_INFINITIVE ID_VP_INNER ID_AP ID_PP_NP ID_PP_VP ID_N ID_V ID_A
+%nonassoc ID_INFINITIVE ID_VP_INNER ID_AP ID_N ID_V ID_A
 
 // lists
-%nonassoc ID_CS ID_CNP ID_CVP ID_CA
+%nonassoc ID_CS ID_CNP ID_CVP ID_CA ID_PP ID_DP
 
 //=============================================================================
 // terminal lvalues
 //=============================================================================
 
 // descriptive words
-%type<symbol_value> Noun Verb Adj Adv Prep_NP Prep_VP
+%type<symbol_value> Noun Verb Adj Adv Prep
 
 // functional words
 %type<symbol_value> Det Aux Modal To Question_pron Period
@@ -273,7 +269,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // descriptive words
-%token<ident_value> ID_NOUN ID_VERB ID_ADJ ID_ADV ID_PREP_NP ID_PREP_VP
+%token<ident_value> ID_NOUN ID_VERB ID_ADJ ID_ADV ID_PREP
 
 // functional words
 %token<ident_value> ID_DET ID_AUX ID_MODAL ID_TO ID_QUESTION_PRON ID_PERIOD
@@ -298,53 +294,39 @@ S:
     ;
 
 NP:
-      N                    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }
-    | DP                   { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }
-    | DP Question_pron CVP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }
-    | CNP PP_NP            { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }
+      N                   { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // john
+    | DP                  { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // the teacher
+    | N NP                { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john the teacher
+    | NP Question_pron VP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); } // john who we know
+    | NP PP               { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // a man of valor
+    | Infinitive          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // to win a war
     ;
 
 VP:
-      VP_Inner     { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }
-    | V Infinitive { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | Modal CVP    { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    | Aux CVP      { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); }
-    ;
-
-DP:
-      Det N { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }
-    | DP DP { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }
+      VP_Inner     { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // win a war
+    | Aux VP_Inner { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is winning a war
+    | Modal VP     { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // could win a war
     ;
 
 //=============================================================================
 // local constructs
 
 Infinitive:
-      To VP_Inner { $$ = MAKE_SYMBOL(ID_INFINITIVE, @$, 2, $1, $2); }
+      To VP_Inner { $$ = MAKE_SYMBOL(ID_INFINITIVE, @$, 2, $1, $2); } // to win a war
     ;
 
 VP_Inner:
-      V           { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 1, $1); }
-    | V CNP CNP   { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); }
-    | V CNP       { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }
-    | V CNP PP_VP { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); }
-    | V AP        { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }
-    | V CA        { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }
+      V         { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 1, $1); }         // give
+    | V CNP     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // give it
+    | V CNP CNP { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // give me it
+    | V CNP PP  { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // give it to me
+    | V AP      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be mad about you
+    | V PP      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // beat around the bush
+    | V CA      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be happy
     ;
 
 AP:
-      PP_VP   { $$ = MAKE_SYMBOL(ID_AP, @$, 1, $1); }
-    | A PP_VP { $$ = MAKE_SYMBOL(ID_AP, @$, 2, $1, $2); }
-    ;
-
-PP_NP:
-      Prep_NP CNP   { $$ = MAKE_SYMBOL(ID_PP_NP, @$, 2, $1, $2); }
-    | Prep_NP PP_NP { $$ = MAKE_SYMBOL(ID_PP_NP, @$, 2, $1, $2); }
-    ;
-
-PP_VP:
-      Prep_VP CNP   { $$ = MAKE_SYMBOL(ID_PP_VP, @$, 2, $1, $2); }
-    | Prep_VP PP_VP { $$ = MAKE_SYMBOL(ID_PP_VP, @$, 2, $1, $2); }
+      CA PP { $$ = MAKE_SYMBOL(ID_AP, @$, 2, $1, $2); } // mad about you
     ;
 
 N:
@@ -353,8 +335,8 @@ N:
     ;
 
 V:
-      Verb  { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }     // run
-    | Adv V { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run
+      Verb     { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }     // run
+    | Adv Verb { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run
     ;
 
 A:
@@ -366,17 +348,17 @@ A:
 // lists
 
 CS:
-      S            { $$ = MAKE_SYMBOL(ID_CS, @$, 1, $1); }
+      S            { $$ = MAKE_SYMBOL(ID_CS, @$, 1, $1); }         // i jump
     | CS Conj_S CS { $$ = MAKE_SYMBOL(ID_CS, @$, 3, $1, $2, $3); } // i jump and you jump
     ;
 
 CNP:
-      NP              { $$ = MAKE_SYMBOL(ID_CNP, @$, 1, $1); }
+      NP              { $$ = MAKE_SYMBOL(ID_CNP, @$, 1, $1); }         // jack
     | CNP Conj_NP CNP { $$ = MAKE_SYMBOL(ID_CNP, @$, 3, $1, $2, $3); } // jack and jill
     ;
 
 CVP:
-      VP              { $$ = MAKE_SYMBOL(ID_CVP, @$, 1, $1); }
+      VP              { $$ = MAKE_SYMBOL(ID_CVP, @$, 1, $1); }         // hit
     | CVP Conj_VP CVP { $$ = MAKE_SYMBOL(ID_CVP, @$, 3, $1, $2, $3); } // hit and run
     ;
 
@@ -384,6 +366,16 @@ CA:
       A            { $$ = MAKE_SYMBOL(ID_CA, @$, 1, $1); }         // big
     | CA CA        { $$ = MAKE_SYMBOL(ID_CA, @$, 2, $1, $2); }     // big red
     | CA Conj_A CA { $$ = MAKE_SYMBOL(ID_CA, @$, 3, $1, $2, $3); } // big and red
+    ;
+
+PP:
+      Prep CNP { $$ = MAKE_SYMBOL(ID_PP, @$, 2, $1, $2); } // around the corner
+    | PP PP    { $$ = MAKE_SYMBOL(ID_PP, @$, 2, $1, $2); } // around the corner across the street
+    ;
+
+DP:
+      Det N { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the dog
+    | DP DP { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the dog's food
     ;
 
 //=============================================================================
@@ -407,12 +399,8 @@ Adv:
       ID_ADV { $$ = MAKE_SYMBOL(ID_ADV, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // quickly
     ;
 
-Prep_NP:
-      ID_PREP_NP { $$ = MAKE_SYMBOL(ID_PREP_NP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Prep_VP:
-      ID_PREP_VP { $$ = MAKE_SYMBOL(ID_PREP_VP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Prep:
+      ID_PREP { $$ = MAKE_SYMBOL(ID_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================
@@ -423,7 +411,7 @@ Det:
     ;
 
 Aux:
-      ID_AUX { $$ = MAKE_SYMBOL(ID_AUX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // is/be, do, have
+      ID_AUX { $$ = MAKE_SYMBOL(ID_AUX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // is/be/do/have
     ;
 
 Modal:
@@ -435,7 +423,7 @@ To:
     ;
 
 Question_pron:
-      ID_QUESTION_PRON { $$ = MAKE_SYMBOL(ID_QUESTION_PRON, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // who, which, that
+      ID_QUESTION_PRON { $$ = MAKE_SYMBOL(ID_QUESTION_PRON, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // who/which/that
     ;
 
 Period:

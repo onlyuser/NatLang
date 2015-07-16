@@ -173,11 +173,6 @@ bool get_pos_values(
                     unique_pos_values.insert("Conj_S");
                     unique_pos_values.insert("Conj_A");
                 }
-                if(*p == "Prep_NP")
-                {
-                    pos_values->push_back("Prep_VP");
-                    unique_pos_values.insert("Prep_VP");
-                }
             }
         }
     }

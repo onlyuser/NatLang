@@ -165,4 +165,4 @@ References
 Keywords
 --------
 
-    Lex, Yacc, Flex, Bison, NLP, Natural Language Processing, WordNet, Part-of-Speech Tagging, Yacc Grammar for English, Linguistics, Phrase Structure Grammar, X-bar Theory, POS, PSG, BNF, CFG, GLR
+    Lex, Yacc, Flex, Bison, NLP, Natural Language Processing, WordNet, Part-of-Speech Tagging, Yacc Grammar for English, English parser, parsing English, Linguistics, Phrase Structure Grammar, X-bar Theory, POS, PSG, BNF, CFG, GLR

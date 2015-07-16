@@ -102,9 +102,9 @@ verb_communicate "said"|"told"|"spoke"|"listened"
 verb_commerce    "bought"|"sold"|"rented"
 verb             {verb_basic}|{verb_life}|{verb_motion}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
 
-prep_basic              "to"|"from"|"of"|"for"|"in"|"on"|"at"|"by"
+prep_basic              "to"|"from"|"of"|"for"|"in"|"on"|"at"|"by"|"as"|"than"|"about"
 prep_spatial_distance   "near"|"far"
-prep_spatial_transition "onto"|"into"|"through"
+prep_spatial_transition "onto"|"into"|"through"|"across"
 prep_spatial_container  "inside"|"outside"|"within"|"without"
 prep_spatial_vertical   "above"|"below"|"over"|"under"|"underneath"|"beneath"
 prep_spatial_order      "behind"|"before"|"after"|"beyond"|"around"|"between"
@@ -118,7 +118,7 @@ conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"
 
 suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_verb "ate"|"ify"|"ize"|"ise"
-suffix_adj  "able"|"al"|"ful"|"ous"
+suffix_adj  "er"|"able"|"al"|"ful"|"ous"
 suffix_adv  "ly"
 
 %%
@@ -179,7 +179,7 @@ suffix_adv  "ly"
 
 <ST_ALT>{prep}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_PREP_NP;
+                return ID_PREP;
             }
 
 <ST_ALT>{aux}{eow} {LOC;
