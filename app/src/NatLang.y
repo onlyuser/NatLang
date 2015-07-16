@@ -297,29 +297,30 @@ NP:
       N                   { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // john
     | DP                  { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // the teacher
     | N NP                { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john the teacher
+    | NP N                { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // the teacher john
     | NP Question_pron VP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); } // john who we know
-    | NP PP               { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // a man of valor
-    | Infinitive          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // to win a war
+    | NP PP               { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john from new york
+    | Infinitive          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // to bring it
     ;
 
 VP:
-      VP_Inner     { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // win a war
-    | Aux VP_Inner { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is winning a war
-    | Modal VP     { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // could win a war
+      VP_Inner     { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // bring it
+    | Aux VP_Inner { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is bringing it
+    | Modal VP     { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // could bring it
     ;
 
 //=============================================================================
 // local constructs
 
 Infinitive:
-      To VP_Inner { $$ = MAKE_SYMBOL(ID_INFINITIVE, @$, 2, $1, $2); } // to win a war
+      To VP_Inner { $$ = MAKE_SYMBOL(ID_INFINITIVE, @$, 2, $1, $2); } // to give
     ;
 
 VP_Inner:
-      V         { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 1, $1); }         // give
-    | V CNP     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // give it
-    | V CNP CNP { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // give me it
-    | V CNP PP  { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // give it to me
+      V         { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 1, $1); }         // bring
+    | V CNP     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // bring it
+    | V CNP CNP { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // bring me it
+    | V CNP PP  { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // bring it to me
     | V AP      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be mad about you
     | V PP      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // beat around the bush
     | V CA      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be happy
@@ -374,8 +375,8 @@ PP:
     ;
 
 DP:
-      Det N { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the dog
-    | DP DP { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the dog's food
+      Det N { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the man
+    | DP DP { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the man's wife's sister
     ;
 
 //=============================================================================
