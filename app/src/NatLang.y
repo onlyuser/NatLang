@@ -337,12 +337,13 @@ N:
 
 V:
       Verb     { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }     // run
-    | Adv Verb { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run
+    | Adv Verb { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run (ambiguous)
+    | Verb Adv { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // run quickly
     ;
 
 A:
       Adj     { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }     // red
-    | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); } // very red
+    | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); } // very red (ambiguous)
     ;
 
 //=============================================================================

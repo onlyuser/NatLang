@@ -183,13 +183,13 @@ bool get_pos_values(
 
 void build_pos_paths_from_pos_options(
         std::list<std::vector<int>>*                 pos_paths,                  // OUT
-        const std::vector<std::vector<std::string>> &sentence_pos_options_table, // IN
+        const std::vector<std::vector<std::string>>* sentence_pos_options_table, // IN
         std::stack<int>*                             pos_path,                   // TEMP
         int                                          word_index)                 // TEMP
 {
     if(!pos_paths || !pos_path)
         return;
-    if(static_cast<size_t>(word_index) >= sentence_pos_options_table.size())
+    if(static_cast<size_t>(word_index) >= sentence_pos_options_table->size())
     {
         size_t n = pos_path->size();
         std::vector<int> pos_path_vec(n);
@@ -203,7 +203,7 @@ void build_pos_paths_from_pos_options(
             pos_path->push(*q);
         return;
     }
-    const std::vector<std::string> &word_pos_options = sentence_pos_options_table[word_index];
+    const std::vector<std::string> &word_pos_options = (*sentence_pos_options_table)[word_index];
     int pos_index = 0;
     for(auto p = word_pos_options.begin(); p != word_pos_options.end(); p++)
     {
@@ -220,7 +220,7 @@ void build_pos_paths_from_pos_options(
 
 void build_pos_paths_from_pos_options(
         std::list<std::vector<int>>*                 pos_paths,                  // OUT
-        const std::vector<std::vector<std::string>> &sentence_pos_options_table) // IN
+        const std::vector<std::vector<std::string>>* sentence_pos_options_table) // IN
 {
     if(!pos_paths)
         return;
@@ -257,7 +257,7 @@ void build_pos_value_paths_from_sentence(
         word_index++;
     }
     std::list<std::vector<int>> pos_paths;
-    build_pos_paths_from_pos_options(&pos_paths, sentence_pos_options_table);
+    build_pos_paths_from_pos_options(&pos_paths, &sentence_pos_options_table);
     int path_index = 0;
     for(auto p = pos_paths.begin(); p != pos_paths.end(); p++)
     {
