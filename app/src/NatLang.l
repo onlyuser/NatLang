@@ -80,7 +80,7 @@ lit_float {digit}*[.]{digit}+
 
 eow       {ws}
 
-pos_pron "my"|"your"|"our"|"his"|"her"|"their"|"'s"
+pos_pron "my"|"your"|"our"|"his"|"her"|"their"
 det_pron "this"|"that"|"these"|"those"|{pos_pron}
 
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det_pron}
@@ -114,6 +114,7 @@ prep                    {prep_basic}|{prep_spatial}
 adv   "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
 modal "do"|"has"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
 det   "a"|"an"|"the"|{det_pron}
+det2  "'s"
 conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"
 
 suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
@@ -190,6 +191,11 @@ suffix_adv  "ly"
 <ST_ALT>{det}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_DET;
+            }
+
+<ST_ALT>{det2}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_DET2;
             }
 
 <ST_ALT>{conj}{eow} {LOC;

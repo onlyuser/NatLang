@@ -116,7 +116,9 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_CS:            return "S'";
         case ID_CVP:           return "VP'";
         case ID_DET:           return "Det";
+        case ID_DET2:          return "Det2";
         case ID_DP:            return "DP";
+        case ID_DP2:           return "DP2";
         case ID_TO:            return "To";
         case ID_INFINITIVE:    return "Infinitive";
         case ID_MODAL:         return "Modal";
@@ -149,7 +151,9 @@ uint32_t name_to_id(std::string name)
     if(name == "Conj_S")        return ID_CONJ_S;
     if(name == "Conj_VP")       return ID_CONJ_VP;
     if(name == "Det")           return ID_DET;
+    if(name == "Det2")          return ID_DET2;
     if(name == "DP")            return ID_DP;
+    if(name == "DP2")           return ID_DP2;
     if(name == "float")         return ID_FLOAT;
     if(name == "ident")         return ID_IDENT;
     if(name == "Infinitive")    return ID_INFINITIVE;
@@ -236,7 +240,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Infinitive VP_Inner AP N V A
 
 // lists
-%type<symbol_value> CS CNP CVP CA PP DP
+%type<symbol_value> CS CNP CVP CA PP DP DP2
 
 //=============================================================================
 // non-terminal lvalue lexer IDs
@@ -249,7 +253,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_INFINITIVE ID_VP_INNER ID_AP ID_N ID_V ID_A
 
 // lists
-%nonassoc ID_CS ID_CNP ID_CVP ID_CA ID_PP ID_DP
+%nonassoc ID_CS ID_CNP ID_CVP ID_CA ID_PP ID_DP ID_DP2
 
 //=============================================================================
 // terminal lvalues
@@ -259,7 +263,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Noun Verb Adj Adv Prep
 
 // functional words
-%type<symbol_value> Det Aux Modal To Question_pron Period
+%type<symbol_value> Det Det2 Aux Modal To Question_pron Period
 
 // conjugations
 %type<symbol_value> Conj_S Conj_NP Conj_VP Conj_A
@@ -272,7 +276,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_NOUN ID_VERB ID_ADJ ID_ADV ID_PREP
 
 // functional words
-%token<ident_value> ID_DET ID_AUX ID_MODAL ID_TO ID_QUESTION_PRON ID_PERIOD
+%token<ident_value> ID_DET ID_DET2 ID_AUX ID_MODAL ID_TO ID_QUESTION_PRON ID_PERIOD
 
 // conjugations
 %token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_A
@@ -376,8 +380,13 @@ PP:
     ;
 
 DP:
-      Det N { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the man
-    | DP DP { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); } // the man's wife's sister
+      Det N     { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // the man
+    | Det N DP2 { $$ = MAKE_SYMBOL(ID_DP, @$, 3, $1, $2, $3); } // the man's wife
+    ;
+
+DP2:
+      Det2 N     { $$ = MAKE_SYMBOL(ID_DP2, @$, 2, $1, $2); }     // 's wife
+    | Det2 N DP2 { $$ = MAKE_SYMBOL(ID_DP2, @$, 3, $1, $2, $3); } // 's wife's sister
     ;
 
 //=============================================================================
@@ -410,6 +419,10 @@ Prep:
 
 Det:
       ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // the
+    ;
+
+Det2:
+      ID_DET2 { $$ = MAKE_SYMBOL(ID_DET2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // the
     ;
 
 Aux:
