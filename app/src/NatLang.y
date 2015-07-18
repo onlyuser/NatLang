@@ -47,8 +47,8 @@
 
 #define MAKE_TERM(lexer_id, ...)   xl::mvc::MVCModel::make_term(&pc->tree_context(), lexer_id, ##__VA_ARGS__)
 #define MAKE_SYMBOL(...)           xl::mvc::MVCModel::make_symbol(&pc->tree_context(), ##__VA_ARGS__)
-#define ERROR_LEXER_ID_NOT_FOUND   "missing lexer id handler, most likely you forgot to register one"
-#define ERROR_LEXER_NAME_NOT_FOUND "missing lexer name handler, most likely you forgot to register one"
+#define ERROR_LEXER_ID_NOT_FOUND   "Missing lexer id handler. Did you forgot to register one?"
+#define ERROR_LEXER_NAME_NOT_FOUND "Missing lexer name handler. Did you forgot to register one?"
 
 // report error
 void _nl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s)
@@ -103,7 +103,8 @@ std::string id_to_name(uint32_t lexer_id)
     switch(lexer_id)
     {
         case ID_ADJ:           return "Adj";
-        case ID_ADV:           return "Adv";
+        case ID_ADV_V:         return "Adv_V";
+        case ID_ADV_A:         return "Adv_A";
         case ID_AP:            return "AP";
         case ID_A:             return "A";
         case ID_AUX:           return "Aux";
@@ -141,7 +142,8 @@ std::string id_to_name(uint32_t lexer_id)
 uint32_t name_to_id(std::string name)
 {
     if(name == "Adj")           return ID_ADJ;
-    if(name == "Adv")           return ID_ADV;
+    if(name == "Adv_V")         return ID_ADV_V;
+    if(name == "Adv_A")         return ID_ADV_A;
     if(name == "AP")            return ID_AP;
     if(name == "A")             return ID_A;
     if(name == "A'")            return ID_CA;
@@ -260,13 +262,13 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // descriptive words
-%type<symbol_value> Noun Verb Adj Adv Prep
+%type<symbol_value> Noun Verb Adj Prep
 
 // functional words
 %type<symbol_value> Det Det2 Aux Modal To Question_pron Period
 
-// conjugations
-%type<symbol_value> Conj_S Conj_NP Conj_VP Conj_A
+// ambiguous terminals
+%type<symbol_value> Conj_S Conj_NP Conj_VP Conj_A Adv_V Adv_A
 
 //=============================================================================
 // terminal rvalues
@@ -278,8 +280,8 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // functional words
 %token<ident_value> ID_DET ID_DET2 ID_AUX ID_MODAL ID_TO ID_QUESTION_PRON ID_PERIOD
 
-// conjugations
-%token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_A
+// ambiguous terminals
+%token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_A ID_ADV_V ID_ADV_A
 
 %%
 
@@ -340,14 +342,14 @@ N:
     ;
 
 V:
-      Verb     { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }     // run
-    | Adv Verb { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run (ambiguous)
-    | Verb Adv { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // run quickly
+      Verb       { $$ = MAKE_SYMBOL(ID_V, @$, 1, $1); }     // run
+    | Adv_V Verb { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // quickly run (ambiguous)
+    | Verb Adv_V { $$ = MAKE_SYMBOL(ID_V, @$, 2, $1, $2); } // run quickly
     ;
 
 A:
-      Adj     { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }     // red
-    | Adv Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); } // very red (ambiguous)
+      Adj       { $$ = MAKE_SYMBOL(ID_A, @$, 1, $1); }     // red
+    | Adv_A Adj { $$ = MAKE_SYMBOL(ID_A, @$, 2, $1, $2); } // very red (ambiguous)
     ;
 
 //=============================================================================
@@ -406,10 +408,6 @@ Adj:
       ID_ADJ { $$ = MAKE_SYMBOL(ID_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // big
     ;
 
-Adv:
-      ID_ADV { $$ = MAKE_SYMBOL(ID_ADV, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // quickly
-    ;
-
 Prep:
       ID_PREP { $$ = MAKE_SYMBOL(ID_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
@@ -446,7 +444,7 @@ Period:
     ;
 
 //=============================================================================
-// conjugations
+// ambiguous terminals
 
 Conj_S:
       ID_CONJ_S { $$ = MAKE_SYMBOL(ID_CONJ_S, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for S)
@@ -462,6 +460,14 @@ Conj_VP:
 
 Conj_A:
       ID_CONJ_A { $$ = MAKE_SYMBOL(ID_CONJ_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for A)
+    ;
+
+Adv_V:
+      ID_ADV_V { $$ = MAKE_SYMBOL(ID_ADV_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+Adv_A:
+      ID_ADV_A { $$ = MAKE_SYMBOL(ID_ADV_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================

@@ -134,8 +134,13 @@ bool get_pos_values(
             {
                 if(unique_pos_values.find(*q) != unique_pos_values.end())
                     continue;
-                pos_values->push_back(*q);
                 unique_pos_values.insert(*q);
+                if(*q == "Adv") {
+                    pos_values->push_back("Adv_V");
+                    pos_values->push_back("Adv_A");
+                } else {
+                    pos_values->push_back(*q);
+                }
             }
         }
     }
@@ -147,7 +152,8 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "noun");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "verb");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adj");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv_v");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv_a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "question_pron");
@@ -161,17 +167,18 @@ bool get_pos_values(
             {
                 if(unique_pos_values.find(*p) != unique_pos_values.end())
                     continue;
-                pos_values->push_back(*p);
                 unique_pos_values.insert(*p);
                 // consider conjugations at the S/NP/VP/A level
-                if(*p == "Conj_NP")
-                {
+                if(*p == "Conj_NP") {
+                    pos_values->push_back("Conj_NP");
                     pos_values->push_back("Conj_VP");
                     pos_values->push_back("Conj_S");
                     pos_values->push_back("Conj_A");
-                    unique_pos_values.insert("Conj_VP");
-                    unique_pos_values.insert("Conj_S");
-                    unique_pos_values.insert("Conj_A");
+                } else if(*p == "Adv_V") {
+                    pos_values->push_back("Adv_V");
+                    pos_values->push_back("Adv_A");
+                } else {
+                    pos_values->push_back(*p);
                 }
             }
         }

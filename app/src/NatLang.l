@@ -66,7 +66,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_ADV ST_TO ST_MODAL ST_QUESTION_PRON
+%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_ADV_V ST_ALT_ADV_A ST_TO ST_MODAL ST_QUESTION_PRON
 %x ST_ALT_SUFFIX_NOUN ST_ALT_SUFFIX_VERB ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
 
 ws        [ \t\n]+
@@ -135,11 +135,12 @@ suffix_adv  "ly"
 "[noun]<"          { PUSH_STATE(ST_ALT_NOUN); }
 "[verb]<"          { PUSH_STATE(ST_ALT_VERB); }
 "[adj]<"           { PUSH_STATE(ST_ALT_ADJ); }
-"[adv]<"           { PUSH_STATE(ST_ALT_ADV); }
+"[adv_v]<"         { PUSH_STATE(ST_ALT_ADV_V); }
+"[adv_a]<"         { PUSH_STATE(ST_ALT_ADV_A); }
 "[to]<"            { PUSH_STATE(ST_TO); }
 "[modal]<"         { PUSH_STATE(ST_MODAL); }
 "[question_pron]<" { PUSH_STATE(ST_QUESTION_PRON); }
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV,ST_TO,ST_MODAL,ST_QUESTION_PRON>">" { POP_STATE; }
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV_V,ST_ALT_ADV_A,ST_TO,ST_MODAL,ST_QUESTION_PRON>">" { POP_STATE; }
 
 <ST_ALT_NOUN>{noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -158,9 +159,14 @@ suffix_adv  "ly"
             }
  */
 
-<ST_ALT_ADV>{adv}{eow} {LOC;
+<ST_ALT_ADV_V>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_ADV;
+                return ID_ADV_V;
+            }
+
+<ST_ALT_ADV_A>{adv}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_ADV_A;
             }
 
 <ST_TO>"to"{eow} {LOC;
@@ -208,7 +214,7 @@ suffix_adv  "ly"
                 return ID_PERIOD;
             }
 
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV,ST_TO,ST_MODAL,ST_QUESTION_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV_V,ST_ALT_ADV_A,ST_TO,ST_MODAL,ST_QUESTION_PRON>[^>] {LOC;
                 return 0;
             }
 
