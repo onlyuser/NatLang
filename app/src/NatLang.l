@@ -118,7 +118,7 @@ det2  "'s"
 conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"
 
 suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
-suffix_verb "ate"|"ify"|"ize"|"ise"
+suffix_verb "ate"|"ify"|"ize"|"ise"|"ing"
 suffix_adj  "er"|"able"|"al"|"ful"|"ous"
 suffix_adv  "ly"
 
