@@ -184,7 +184,7 @@ bool get_pos_values(
         }
     }
     if(pos_values->empty())
-        pos_values->push_back("Noun"); // if we don't recognize it, it's a noun
+        pos_values->push_back("N"); // if we don't recognize it, it's a noun
     return true;
 }
 

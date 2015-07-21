@@ -177,6 +177,7 @@ uint32_t name_to_id(std::string name)
     if(name == "VPX")      return ID_VPX;
     if(name == "VP")       return ID_VP;
     if(name == "VX")       return ID_VX;
+    std::cout << name << std::endl;
     throw ERROR_LEXER_NAME_NOT_FOUND;
     return 0;
 }
