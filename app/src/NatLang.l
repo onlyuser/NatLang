@@ -66,7 +66,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_ADV_V ST_ALT_ADV_A ST_TO ST_MODAL ST_QUESTION_PRON
+%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_R_V ST_ALT_R_A ST_TO ST_MODAL ST_Q_PRON
 %x ST_ALT_SUFFIX_NOUN ST_ALT_SUFFIX_VERB ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
 
 ws        [ \t\n]+
@@ -86,7 +86,7 @@ det_pron "this"|"that"|"these"|"those"|{pos_pron}
 noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det_pron}
 noun      {noun_pron}
 
-question_pron "who"|"which"|"that"
+q_pron "who"|"which"|"that"
 
 aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
 aux_do   "does"|"do"|"did"
@@ -135,38 +135,38 @@ suffix_adv  "ly"
 "[noun]<"          { PUSH_STATE(ST_ALT_NOUN); }
 "[verb]<"          { PUSH_STATE(ST_ALT_VERB); }
 "[adj]<"           { PUSH_STATE(ST_ALT_ADJ); }
-"[adv_v]<"         { PUSH_STATE(ST_ALT_ADV_V); }
-"[adv_a]<"         { PUSH_STATE(ST_ALT_ADV_A); }
+"[adv_v]<"         { PUSH_STATE(ST_ALT_R_V); }
+"[adv_a]<"         { PUSH_STATE(ST_ALT_R_A); }
 "[to]<"            { PUSH_STATE(ST_TO); }
 "[modal]<"         { PUSH_STATE(ST_MODAL); }
-"[question_pron]<" { PUSH_STATE(ST_QUESTION_PRON); }
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV_V,ST_ALT_ADV_A,ST_TO,ST_MODAL,ST_QUESTION_PRON>">" { POP_STATE; }
+"[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
 
 <ST_ALT_NOUN>{noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_NOUN;
+                return ID_N;
             }
 
 <ST_ALT_VERB>{verb}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_VERB;
+                return ID_V;
             }
 
  /*
 <ST_ALT_ADJ>{adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_ADJ;
+                return ID_A;
             }
  */
 
-<ST_ALT_ADV_V>{adv}{eow} {LOC;
+<ST_ALT_R_V>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_ADV_V;
+                return ID_R_V;
             }
 
-<ST_ALT_ADV_A>{adv}{eow} {LOC;
+<ST_ALT_R_A>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_ADV_A;
+                return ID_R_A;
             }
 
 <ST_TO>"to"{eow} {LOC;
@@ -179,14 +179,14 @@ suffix_adv  "ly"
                 return ID_MODAL;
             }
 
-<ST_QUESTION_PRON>{question_pron}{eow} {LOC;
+<ST_Q_PRON>{q_pron}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_QUESTION_PRON;
+                return ID_Q_PRON;
             }
 
 <ST_ALT>{prep}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_PREP;
+                return ID_P;
             }
 
 <ST_ALT>{aux}{eow} {LOC;
@@ -196,25 +196,25 @@ suffix_adv  "ly"
 
 <ST_ALT>{det}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_DET;
+                return ID_D;
             }
 
 <ST_ALT>{det2}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_DET2;
+                return ID_D2;
             }
 
 <ST_ALT>{conj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_CONJ_NP;
+                return ID_C_NP;
             }
 
 <ST_ALT>[.] {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_PERIOD;
+                return ID_EOS;
             }
 
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_ADV_V,ST_ALT_ADV_A,ST_TO,ST_MODAL,ST_QUESTION_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
                 return 0;
             }
 
@@ -226,17 +226,17 @@ suffix_adv  "ly"
 
 <ST_ALT_SUFFIX_NOUN>[^>]+{suffix_noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_NOUN;
+                return ID_N;
             }
 
 <ST_ALT_SUFFIX_VERB>[^>]+{suffix_verb}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_VERB;
+                return ID_V;
             }
 
 <ST_ALT_SUFFIX_ADJ>[^>]+{suffix_adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_ADJ;
+                return ID_A;
             }
 
 <ST_ALT_SUFFIX_ADV>[^>]+{suffix_adv}{eow} {LOC;

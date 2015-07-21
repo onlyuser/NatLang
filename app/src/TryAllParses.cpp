@@ -55,7 +55,7 @@ bool get_pos_values_from_wordnet(
     pos_value_faml_tuples_t pos_value_faml_tuples;
     bool found_match = false;
     const char* wordnet_faml_types[] = {"n", "v", "a", "r"};
-    const char* pos_values_arr[]     = {"Noun", "Verb", "Adj", "Adv"};
+    const char* pos_values_arr[]     = {"N", "V", "A", "R"};
     for(int i = 0; i<4; i++)
     {
         std::string wordnet_stdout =
@@ -135,9 +135,9 @@ bool get_pos_values(
                 if(unique_pos_values.find(*q) != unique_pos_values.end())
                     continue;
                 unique_pos_values.insert(*q);
-                if(*q == "Adv") {
-                    pos_values->push_back("Adv_V");
-                    pos_values->push_back("Adv_A");
+                if(*q == "R") {
+                    pos_values->push_back("R_V");
+                    pos_values->push_back("R_A");
                 } else {
                     pos_values->push_back(*q);
                 }
@@ -169,14 +169,14 @@ bool get_pos_values(
                     continue;
                 unique_pos_values.insert(*p);
                 // consider conjugations at the S/NP/VP/A level
-                if(*p == "Conj_NP") {
-                    pos_values->push_back("Conj_NP");
-                    pos_values->push_back("Conj_VP");
-                    pos_values->push_back("Conj_S");
-                    pos_values->push_back("Conj_A");
-                } else if(*p == "Adv_V") {
-                    pos_values->push_back("Adv_V");
-                    pos_values->push_back("Adv_A");
+                if(*p == "C_NP") {
+                    pos_values->push_back("C_NP");
+                    pos_values->push_back("C_VP");
+                    pos_values->push_back("C_S");
+                    pos_values->push_back("C_A");
+                } else if(*p == "R_V") {
+                    pos_values->push_back("R_V");
+                    pos_values->push_back("R_A");
                 } else {
                     pos_values->push_back(*p);
                 }
