@@ -67,7 +67,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option stack
 %x ST_ALT
 %x ST_ALT_N ST_ALT_V ST_ALT_A ST_ALT_R_V ST_ALT_R_A ST_TO ST_MODAL ST_Q_PRON
-%x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_A ST_ALT_SUFFIX_R
+%x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_V_G ST_ALT_SUFFIX_A ST_ALT_SUFFIX_R
 
 ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
@@ -117,10 +117,11 @@ det   "a"|"an"|"the"|{det_pron}
 det2  "'s"
 conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"
 
-suffix_noun "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
-suffix_verb "ate"|"ify"|"ize"|"ise"|"ing"
-suffix_adj  "er"|"able"|"al"|"ful"|"ous"
-suffix_adv  "ly"
+suffix_n   "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
+suffix_v   "ate"|"ify"|"ize"|"ise"
+suffix_v_g "ing"
+suffix_a   "er"|"able"|"al"|"ful"|"ous"
+suffix_r   "ly"
 
 %%
 
@@ -218,38 +219,44 @@ suffix_adv  "ly"
                 return 0;
             }
 
-"[suffix_n]<" { PUSH_STATE(ST_ALT_SUFFIX_N); }
-"[suffix_v]<" { PUSH_STATE(ST_ALT_SUFFIX_V); }
-"[suffix_a]<" { PUSH_STATE(ST_ALT_SUFFIX_A); }
-"[suffix_r]<" { PUSH_STATE(ST_ALT_SUFFIX_R); }
-<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }
+"[suffix_n]<"   { PUSH_STATE(ST_ALT_SUFFIX_N); }
+"[suffix_v]<"   { PUSH_STATE(ST_ALT_SUFFIX_V); }
+"[suffix_v_g]<" { PUSH_STATE(ST_ALT_SUFFIX_V_G); }
+"[suffix_a]<"   { PUSH_STATE(ST_ALT_SUFFIX_A); }
+"[suffix_r]<"   { PUSH_STATE(ST_ALT_SUFFIX_R); }
+<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_V_G,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }
 
-<ST_ALT_SUFFIX_N>[^>]+{suffix_noun}{eow} {LOC;
+<ST_ALT_SUFFIX_N>[^>]+{suffix_n}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_N;
             }
 
-<ST_ALT_SUFFIX_V>[^>]+{suffix_verb}{eow} {LOC;
+<ST_ALT_SUFFIX_V>[^>]+{suffix_v}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_V;
             }
 
-<ST_ALT_SUFFIX_A>[^>]+{suffix_adj}{eow} {LOC;
+<ST_ALT_SUFFIX_V_G>[^>]+{suffix_v_g}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_V_G;
+            }
+
+<ST_ALT_SUFFIX_A>[^>]+{suffix_a}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_A;
             }
 
-<ST_ALT_R_V,ST_ALT_SUFFIX_R>[^>]+{suffix_adv}{eow} {LOC;
+<ST_ALT_R_V,ST_ALT_SUFFIX_R>[^>]+{suffix_r}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_R_V;
             }
 
-<ST_ALT_R_A,ST_ALT_SUFFIX_R>[^>]+{suffix_adv}{eow} {LOC;
+<ST_ALT_R_A,ST_ALT_SUFFIX_R>[^>]+{suffix_r}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_R_A;
             }
 
-<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>[^>] {LOC;
+<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_V_G,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>[^>] {LOC;
                 return 0;
             }
 
