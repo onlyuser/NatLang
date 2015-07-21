@@ -66,8 +66,8 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_NOUN ST_ALT_VERB ST_ALT_ADJ ST_ALT_R_V ST_ALT_R_A ST_TO ST_MODAL ST_Q_PRON
-%x ST_ALT_SUFFIX_NOUN ST_ALT_SUFFIX_VERB ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
+%x ST_ALT_N ST_ALT_V ST_ALT_A ST_ALT_R_V ST_ALT_R_A ST_TO ST_MODAL ST_Q_PRON
+%x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_A ST_ALT_SUFFIX_R
 
 ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
@@ -132,28 +132,28 @@ suffix_adv  "ly"
  /* LITERALS */
 
 "[]<"              { PUSH_STATE(ST_ALT); }
-"[noun]<"          { PUSH_STATE(ST_ALT_NOUN); }
-"[verb]<"          { PUSH_STATE(ST_ALT_VERB); }
-"[adj]<"           { PUSH_STATE(ST_ALT_ADJ); }
+"[noun]<"          { PUSH_STATE(ST_ALT_N); }
+"[verb]<"          { PUSH_STATE(ST_ALT_V); }
+"[adj]<"           { PUSH_STATE(ST_ALT_A); }
 "[adv_v]<"         { PUSH_STATE(ST_ALT_R_V); }
 "[adv_a]<"         { PUSH_STATE(ST_ALT_R_A); }
 "[to]<"            { PUSH_STATE(ST_TO); }
 "[modal]<"         { PUSH_STATE(ST_MODAL); }
 "[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
 
-<ST_ALT_NOUN>{noun}{eow} {LOC;
+<ST_ALT_N>{noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_N;
             }
 
-<ST_ALT_VERB>{verb}{eow} {LOC;
+<ST_ALT_V>{verb}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_V;
             }
 
  /*
-<ST_ALT_ADJ>{adj}{eow} {LOC;
+<ST_ALT_A>{adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_A;
             }
@@ -214,37 +214,42 @@ suffix_adv  "ly"
                 return ID_EOS;
             }
 
-<ST_ALT,ST_ALT_NOUN,ST_ALT_VERB,ST_ALT_ADJ,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
                 return 0;
             }
 
-"[suffix_noun]<" { PUSH_STATE(ST_ALT_SUFFIX_NOUN); }
-"[suffix_verb]<" { PUSH_STATE(ST_ALT_SUFFIX_VERB); }
-"[suffix_adj]<"  { PUSH_STATE(ST_ALT_SUFFIX_ADJ); }
-"[suffix_adv]<"  { PUSH_STATE(ST_ALT_SUFFIX_ADV); }
-<ST_ALT_SUFFIX_NOUN,ST_ALT_SUFFIX_VERB,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>">" { POP_STATE; }
+"[suffix_noun]<" { PUSH_STATE(ST_ALT_SUFFIX_N); }
+"[suffix_verb]<" { PUSH_STATE(ST_ALT_SUFFIX_V); }
+"[suffix_adj]<"  { PUSH_STATE(ST_ALT_SUFFIX_A); }
+"[suffix_adv]<"  { PUSH_STATE(ST_ALT_SUFFIX_R); }
+<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }
 
-<ST_ALT_SUFFIX_NOUN>[^>]+{suffix_noun}{eow} {LOC;
+<ST_ALT_SUFFIX_N>[^>]+{suffix_noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_N;
             }
 
-<ST_ALT_SUFFIX_VERB>[^>]+{suffix_verb}{eow} {LOC;
+<ST_ALT_SUFFIX_V>[^>]+{suffix_verb}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_V;
             }
 
-<ST_ALT_SUFFIX_ADJ>[^>]+{suffix_adj}{eow} {LOC;
+<ST_ALT_SUFFIX_A>[^>]+{suffix_adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_A;
             }
 
-<ST_ALT_SUFFIX_ADV>[^>]+{suffix_adv}{eow} {LOC;
+<ST_ALT_R_V,ST_ALT_SUFFIX_R>[^>]+{suffix_adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_ADV;
+                return ID_R_V;
             }
 
-<ST_ALT_SUFFIX_NOUN,ST_ALT_SUFFIX_VERB,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>[^>] {LOC;
+<ST_ALT_R_A,ST_ALT_SUFFIX_R>[^>]+{suffix_adv}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_R_A;
+            }
+
+<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>[^>] {LOC;
                 return 0;
             }
 

@@ -275,7 +275,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // descriptive words
-%token<ident_value> ID_N ID_V ID_A ID_ADV ID_P
+%token<ident_value> ID_N ID_V ID_A ID_P
 
 // functional words
 %token<ident_value> ID_D ID_D2 ID_AUX ID_MODAL ID_TO ID_Q_PRON ID_EOS
