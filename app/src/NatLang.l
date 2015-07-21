@@ -131,14 +131,14 @@ suffix_adv  "ly"
  /*==========================================================================*/
  /* LITERALS */
 
-"[]<"              { PUSH_STATE(ST_ALT); }
-"[noun]<"          { PUSH_STATE(ST_ALT_N); }
-"[verb]<"          { PUSH_STATE(ST_ALT_V); }
-"[adj]<"           { PUSH_STATE(ST_ALT_A); }
-"[adv_v]<"         { PUSH_STATE(ST_ALT_R_V); }
-"[adv_a]<"         { PUSH_STATE(ST_ALT_R_A); }
-"[to]<"            { PUSH_STATE(ST_TO); }
-"[modal]<"         { PUSH_STATE(ST_MODAL); }
+"[]<"       { PUSH_STATE(ST_ALT); }
+"[n]<"      { PUSH_STATE(ST_ALT_N); }
+"[v]<"      { PUSH_STATE(ST_ALT_V); }
+"[a]<"      { PUSH_STATE(ST_ALT_A); }
+"[r_v]<"    { PUSH_STATE(ST_ALT_R_V); }
+"[r_a]<"    { PUSH_STATE(ST_ALT_R_A); }
+"[to]<"     { PUSH_STATE(ST_TO); }
+"[modal]<"  { PUSH_STATE(ST_MODAL); }
 "[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
 <ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
 
@@ -218,10 +218,10 @@ suffix_adv  "ly"
                 return 0;
             }
 
-"[suffix_noun]<" { PUSH_STATE(ST_ALT_SUFFIX_N); }
-"[suffix_verb]<" { PUSH_STATE(ST_ALT_SUFFIX_V); }
-"[suffix_adj]<"  { PUSH_STATE(ST_ALT_SUFFIX_A); }
-"[suffix_adv]<"  { PUSH_STATE(ST_ALT_SUFFIX_R); }
+"[suffix_n]<" { PUSH_STATE(ST_ALT_SUFFIX_N); }
+"[suffix_v]<" { PUSH_STATE(ST_ALT_SUFFIX_V); }
+"[suffix_a]<" { PUSH_STATE(ST_ALT_SUFFIX_A); }
+"[suffix_r]<" { PUSH_STATE(ST_ALT_SUFFIX_R); }
 <ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }
 
 <ST_ALT_SUFFIX_N>[^>]+{suffix_noun}{eow} {LOC;

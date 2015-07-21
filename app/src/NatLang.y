@@ -292,7 +292,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 root:
       SX EOS { pc->tree_context().root() = $1; YYACCEPT; }
-    | error     { yyclearin; /* yyerrok; YYABORT; */ }
+    | error  { yyclearin; /* yyerrok; YYABORT; */ }
     ;
 
 S:

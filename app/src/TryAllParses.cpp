@@ -149,18 +149,18 @@ bool get_pos_values(
         std::vector<std::string> pos_values_from_lexer;
         bool found_match = false;
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer);
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "noun");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "verb");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adj");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv_v");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adv_a");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "n");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "a");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "r_v");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "r_a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "question_pron");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_noun");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_verb");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_adj");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_adv");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "q_pron");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_a");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_r");
         if(found_match)
         {
             for(auto p = pos_values_from_lexer.begin(); p != pos_values_from_lexer.end(); p++)
