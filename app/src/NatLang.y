@@ -314,6 +314,7 @@ NP:
     | NP Q_pron VP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); } // john who we know
     | NP PP        { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john from new york
     | Infin        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // to bring it
+    | VGP_Inner    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // bringing it
     ;
 
 VP:
@@ -360,19 +361,19 @@ NX:
 
 VX:
       V     { $$ = MAKE_SYMBOL(ID_VX, @$, 1, $1); }     // run
-    | R_V V { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); } // quickly run (ambiguous)
+    | R_V V { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); } // quickly run
     | V R_V { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); } // run quickly
     ;
 
 VGX:
-      V_G     { $$ = MAKE_SYMBOL(ID_VGX, @$, 1, $1); }     // run
-    | R_V V_G { $$ = MAKE_SYMBOL(ID_VGX, @$, 2, $1, $2); } // quickly run (ambiguous)
-    | V_G R_V { $$ = MAKE_SYMBOL(ID_VGX, @$, 2, $1, $2); } // run quickly
+      V_G     { $$ = MAKE_SYMBOL(ID_VGX, @$, 1, $1); }     // running
+    | R_V V_G { $$ = MAKE_SYMBOL(ID_VGX, @$, 2, $1, $2); } // quickly running
+    | V_G R_V { $$ = MAKE_SYMBOL(ID_VGX, @$, 2, $1, $2); } // running quickly
     ;
 
 AX:
       A     { $$ = MAKE_SYMBOL(ID_AX, @$, 1, $1); }     // red
-    | R_A A { $$ = MAKE_SYMBOL(ID_AX, @$, 2, $1, $2); } // very red (ambiguous)
+    | R_A A { $$ = MAKE_SYMBOL(ID_AX, @$, 2, $1, $2); } // very red
     ;
 
 //=============================================================================
