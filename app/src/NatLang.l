@@ -83,8 +83,9 @@ eow       {ws}
 pos_pron "my"|"your"|"our"|"his"|"her"|"their"
 det_pron "this"|"that"|"these"|"those"|{pos_pron}
 
-noun_pron "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det_pron}
-noun      {noun_pron}
+noun_pron     "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det_pron}
+noun_quantity "all"|"most"|"many"|"some"|"few"|"none"|"any"
+noun          {noun_pron}|{noun_quantity}
 
 q_pron "who"|"which"|"that"
 
