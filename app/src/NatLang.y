@@ -411,6 +411,7 @@ PP:
 DP:
       D NX     { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // the man
     | D NX DP2 { $$ = MAKE_SYMBOL(ID_DP, @$, 3, $1, $2, $3); } // the man's wife
+    | NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife
     ;
 
 DP2:
