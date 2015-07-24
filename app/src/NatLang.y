@@ -307,14 +307,17 @@ S:
     ;
 
 NP:
-      NX           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // john
-    | DP           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // the teacher
-    | NX NP        { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john the teacher
-    | NP NX        { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // the teacher john
-    | NP Q_pron VP { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); } // john who we know
-    | NP PP        { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john from new york
-    | Infin        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // to bring it
-    | VGP_Inner    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // bringing it
+      NX              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // john
+    | DP              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // the teacher
+    | NX DP           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john the teacher
+    | DP NX           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // the teacher john
+    | NX VGP_Inner    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john reading a book
+    | VGP_Inner NX    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // reading a book john
+    | NX PP           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john from work
+    | NP Q_pron VP    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }     // john who is here
+    | NP Q_pron NP VP { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); } // john we know
+    | Infin           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // to bring it
+    | VGP_Inner       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // bringing it
     ;
 
 VP:
