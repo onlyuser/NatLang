@@ -153,14 +153,9 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "a");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "r_v");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "rvg");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "r_a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "q_pron");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "p_n");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "p_s");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v_g");
@@ -179,13 +174,13 @@ bool get_pos_values(
                     pos_values->push_back("C_VP");
                     pos_values->push_back("C_S");
                     pos_values->push_back("C_A");
+                } else if(*p == "P") {
+                    pos_values->push_back("P_N");
+                    pos_values->push_back("P_S");
                 } else if(*p == "R") {
                     pos_values->push_back("R_V");
                     pos_values->push_back("RVG");
                     pos_values->push_back("R_A");
-                } else if(*p == "P") {
-                    pos_values->push_back("P_N");
-                    pos_values->push_back("P_S");
                 } else {
                     pos_values->push_back(*p);
                 }
