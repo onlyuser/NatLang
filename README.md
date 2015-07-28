@@ -160,6 +160,9 @@ References
 
     <dt>"Syntactic Theory: A Unified Approach"</dt>
     <dd>ISBN: 0340706104</dd>
+
+    <dt>"Enju - A fast, accurate, and deep parser for English"</dt>
+    <dd>http://www.nactem.ac.uk/enju/</dd>
 </dl>
 
 Keywords
