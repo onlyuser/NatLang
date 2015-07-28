@@ -123,9 +123,10 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_NPX:       return "NPX";
         case ID_N:         return "N";
         case ID_NX:        return "NX";
-        case ID_PP:        return "PP";
+        case ID_PPN:       return "PPN";
         case ID_PPS:       return "PPS";
         case ID_P:         return "P";
+        case ID_P_N:       return "P_N";
         case ID_P_S:       return "P_S";
         case ID_Q_PRON:    return "Q_PRON";
         case ID_R:         return "R";
@@ -176,9 +177,10 @@ uint32_t name_to_id(std::string name)
     if(name == "NPX")       return ID_NPX;
     if(name == "NP")        return ID_NP;
     if(name == "NX")        return ID_NX;
-    if(name == "PP")        return ID_PP;
+    if(name == "PPN")       return ID_PPN;
     if(name == "PPS")       return ID_PPS;
     if(name == "P")         return ID_P;
+    if(name == "P_N")       return ID_P_N;
     if(name == "P_S")       return ID_P_S;
     if(name == "$")         return ID_EOS;
     if(name == "Q_PRON")    return ID_Q_PRON;
@@ -259,7 +261,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Infin VP_Inner VGP_Inner AP NX VX VGX AX
 
 // lists
-%type<symbol_value> SX NPX VPX AXX PP PPS DP DP2
+%type<symbol_value> SX NPX VPX AXX PPN PPS DP DP2
 
 //=============================================================================
 // non-terminal lvalue lexer IDs
@@ -272,14 +274,15 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_INFIN ID_VP_INNER ID_VGP_INNER ID_AP ID_NX ID_VX ID_VGX ID_AX
 
 // lists
-%nonassoc ID_SX ID_NPX ID_VPX ID_AXX ID_PP ID_PPS ID_DP ID_DP2
+%nonassoc ID_SX ID_NPX ID_VPX ID_AXX ID_PPN ID_PPS ID_DP ID_DP2
 
 //=============================================================================
 // terminal lvalues
 //=============================================================================
 
 // descriptive words
-%type<symbol_value> N V V_G A P P_S
+%type<symbol_value> N V V_G A
+%type<symbol_value> P_N P_S
 
 // functional words
 %type<symbol_value> D D2 Aux Modal To Q_pron EOS
@@ -293,7 +296,9 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // descriptive words
-%token<ident_value> ID_N ID_V ID_V_G ID_A ID_P ID_P_S
+%token<ident_value> ID_N ID_V ID_V_G ID_A
+%token<ident_value> ID_P
+%token<ident_value> ID_P_N ID_P_S
 
 // functional words
 %token<ident_value> ID_D ID_D2 ID_AUX ID_MODAL ID_TO ID_Q_PRON ID_EOS
@@ -328,7 +333,7 @@ NP:
     | DP NX           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // the teacher john
     | NX VGP_Inner    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john reading a book
     | VGP_Inner NX    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // reading a book john
-    | NX PP           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john from work
+    | NX PPN          { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john from work
     | NP Q_pron VP    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }     // john who is here
     | NP Q_pron NP VP { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); } // john we know
     | Infin           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // to bring it
@@ -352,9 +357,9 @@ VP_Inner:
       VX         { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 1, $1); }         // bring
     | VX NPX     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // bring it
     | VX NPX NPX { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // bring me it
-    | VX NPX PP  { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // bring it to me
+    | VX NPX PPN { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 3, $1, $2, $3); } // bring it to me
     | VX AP      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be mad about you
-    | VX PP      { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // beat around the bush
+    | VX PPN     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // beat around the bush
     | VX AXX     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be happy
     ;
 
@@ -362,14 +367,14 @@ VGP_Inner:
       VGX         { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 1, $1); }         // bringing
     | VGX NPX     { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // bringing it
     | VGX NPX NPX { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 3, $1, $2, $3); } // bringing me it
-    | VGX NPX PP  { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 3, $1, $2, $3); } // bringing it to me
+    | VGX NPX PPN { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 3, $1, $2, $3); } // bringing it to me
     | VGX AP      { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // being mad about you
-    | VGX PP      { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // beating around the bush
+    | VGX PPN     { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // beating around the bush
     | VGX AXX     { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // being happy
     ;
 
 AP:
-      AXX PP { $$ = MAKE_SYMBOL(ID_AP, @$, 2, $1, $2); } // mad about you
+      AXX PPN { $$ = MAKE_SYMBOL(ID_AP, @$, 2, $1, $2); } // mad about you
     ;
 
 NX:
@@ -418,9 +423,9 @@ AXX:
     | AXX C_A AXX { $$ = MAKE_SYMBOL(ID_AXX, @$, 3, $1, $2, $3); } // big and red
     ;
 
-PP:
-      P NPX { $$ = MAKE_SYMBOL(ID_PP, @$, 2, $1, $2); } // around the corner
-    | PP PP { $$ = MAKE_SYMBOL(ID_PP, @$, 2, $1, $2); } // around the corner across the street
+PPN:
+      P_N NPX { $$ = MAKE_SYMBOL(ID_PPN, @$, 2, $1, $2); } // around the corner
+    | PPN PPN { $$ = MAKE_SYMBOL(ID_PPN, @$, 2, $1, $2); } // around the corner across the street
     ;
 
 PPS:
@@ -460,8 +465,8 @@ A:
       ID_A { $$ = MAKE_SYMBOL(ID_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // big
     ;
 
-P:
-      ID_P { $$ = MAKE_SYMBOL(ID_P, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+P_N:
+      ID_P_N { $$ = MAKE_SYMBOL(ID_P_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 P_S:

@@ -159,6 +159,8 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "q_pron");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "p_n");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "p_s");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v_g");
@@ -182,7 +184,7 @@ bool get_pos_values(
                     pos_values->push_back("RVG");
                     pos_values->push_back("R_A");
                 } else if(*p == "P") {
-                    pos_values->push_back("P");
+                    pos_values->push_back("P_N");
                     pos_values->push_back("P_S");
                 } else {
                     pos_values->push_back(*p);
