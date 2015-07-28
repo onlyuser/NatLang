@@ -66,7 +66,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_N ST_ALT_V ST_ALT_A ST_ALT_R_V ST_ALT_R_A ST_TO ST_MODAL ST_Q_PRON
+%x ST_ALT_N ST_ALT_V ST_ALT_A ST_ALT_R_V ST_ALT_RVG ST_ALT_R_A ST_TO ST_MODAL ST_Q_PRON ST_P_S
 %x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_V_G ST_ALT_SUFFIX_A ST_ALT_SUFFIX_R
 
 ws        [ \t\n]+
@@ -138,11 +138,13 @@ suffix_r   "ly"
 "[v]<"      { PUSH_STATE(ST_ALT_V); }
 "[a]<"      { PUSH_STATE(ST_ALT_A); }
 "[r_v]<"    { PUSH_STATE(ST_ALT_R_V); }
+"[rvg]<"    { PUSH_STATE(ST_ALT_RVG); }
 "[r_a]<"    { PUSH_STATE(ST_ALT_R_A); }
 "[to]<"     { PUSH_STATE(ST_TO); }
 "[modal]<"  { PUSH_STATE(ST_MODAL); }
 "[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
+"[p_s]<"    { PUSH_STATE(ST_P_S); }
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_RVG,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON,ST_P_S>">" { POP_STATE; }
 
 <ST_ALT_N>{noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -166,6 +168,11 @@ suffix_r   "ly"
                 return ID_R_V;
             }
 
+<ST_ALT_RVG>{adv}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_RVG;
+            }
+
 <ST_ALT_R_A>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_R_A;
@@ -184,6 +191,11 @@ suffix_r   "ly"
 <ST_Q_PRON>{q_pron}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_Q_PRON;
+            }
+
+<ST_P_S>{prep}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_P_S;
             }
 
 <ST_ALT>{prep}{eow} {LOC;
@@ -208,7 +220,7 @@ suffix_r   "ly"
 
 <ST_ALT>{conj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_C_NP;
+                return ID_C;
             }
 
 <ST_ALT>[.] {LOC;
@@ -216,7 +228,7 @@ suffix_r   "ly"
                 return ID_EOS;
             }
 
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_ALT_R_V,ST_ALT_RVG,ST_ALT_R_A,ST_TO,ST_MODAL,ST_Q_PRON,ST_P_S>[^>] {LOC;
                 return 0;
             }
 
@@ -247,14 +259,9 @@ suffix_r   "ly"
                 return ID_A;
             }
 
-<ST_ALT_R_V,ST_ALT_SUFFIX_R>[^>]+{suffix_r}{eow} {LOC;
+<ST_ALT_SUFFIX_R>[^>]+{suffix_r}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_R_V;
-            }
-
-<ST_ALT_R_A,ST_ALT_SUFFIX_R>[^>]+{suffix_r}{eow} {LOC;
-                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_R_A;
+                return ID_R;
             }
 
 <ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_V_G,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>[^>] {LOC;

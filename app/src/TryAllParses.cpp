@@ -137,6 +137,7 @@ bool get_pos_values(
                 unique_pos_values.insert(*q);
                 if(*q == "R") {
                     pos_values->push_back("R_V");
+                    pos_values->push_back("RVG");
                     pos_values->push_back("R_A");
                 } else {
                     pos_values->push_back(*q);
@@ -153,6 +154,7 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "r_v");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "rvg");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "r_a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
@@ -170,14 +172,18 @@ bool get_pos_values(
                     continue;
                 unique_pos_values.insert(*p);
                 // consider conjugations at the S/NP/VP/A level
-                if(*p == "C_NP") {
+                if(*p == "C") {
                     pos_values->push_back("C_NP");
                     pos_values->push_back("C_VP");
                     pos_values->push_back("C_S");
                     pos_values->push_back("C_A");
-                } else if(*p == "R_V") {
+                } else if(*p == "R") {
                     pos_values->push_back("R_V");
+                    pos_values->push_back("RVG");
                     pos_values->push_back("R_A");
+                } else if(*p == "P") {
+                    pos_values->push_back("P");
+                    pos_values->push_back("P_S");
                 } else {
                     pos_values->push_back(*p);
                 }
