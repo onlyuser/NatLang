@@ -126,12 +126,15 @@ suffix_r   "ly"
 
 %%
 
+ /*==========================================================================*/
+ /* WHITE SPACE */
+
 {ws}        {LOC;
                 SCANNER_CONTEXT.m_word_index++;
             }
 
  /*==========================================================================*/
- /* LITERALS */
+ /* GROUPED STATE TRANSITIONS */
 
 "[]<"       { PUSH_STATE(ST_ALT); }
 "[n]<"      { PUSH_STATE(ST_ALT_N); }
@@ -141,6 +144,9 @@ suffix_r   "ly"
 "[modal]<"  { PUSH_STATE(ST_MODAL); }
 "[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
 <ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
+
+ /*==========================================================================*/
+ /* GROUPED STATEFUL LITERALS */
 
 <ST_ALT_N>{noun}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -173,6 +179,9 @@ suffix_r   "ly"
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_Q_PRON;
             }
+
+ /*==========================================================================*/
+ /* UNGROUPED STATEFUL LITERALS */
 
 <ST_ALT>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -209,9 +218,15 @@ suffix_r   "ly"
                 return ID_EOS;
             }
 
+ /*==========================================================================*/
+ /* GROUPED STATE CATCH-ALL */
+
 <ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
                 return 0;
             }
+
+ /*==========================================================================*/
+ /* SUFFIX STATE TRANSITIONS */
 
 "[suffix_n]<"   { PUSH_STATE(ST_ALT_SUFFIX_N); }
 "[suffix_v]<"   { PUSH_STATE(ST_ALT_SUFFIX_V); }
@@ -219,6 +234,9 @@ suffix_r   "ly"
 "[suffix_a]<"   { PUSH_STATE(ST_ALT_SUFFIX_A); }
 "[suffix_r]<"   { PUSH_STATE(ST_ALT_SUFFIX_R); }
 <ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_V_G,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }
+
+ /*==========================================================================*/
+ /* SUFFIX STATEFUL LITERALS */
 
 <ST_ALT_SUFFIX_N>[^>]+{suffix_n}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -245,9 +263,15 @@ suffix_r   "ly"
                 return ID_R;
             }
 
+ /*==========================================================================*/
+ /* SUFFIX STATE CATCH-ALL */
+
 <ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_V_G,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>[^>] {LOC;
                 return 0;
             }
+
+ /*==========================================================================*/
+ /* OTHER */
 
 {lit_ident}|[.] {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
@@ -273,7 +297,7 @@ suffix_r   "ly"
             }
 
  /*==========================================================================*/
- /* OTHER */
+ /* OTHER CATCH-ALL */
 
 .           {LOC;
                 _nl(error)("unknown character");
