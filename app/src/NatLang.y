@@ -429,14 +429,14 @@ PPN:
     ;
 
 PPS:
-      P_S NX  { $$ = MAKE_SYMBOL(ID_PPS, @$, 2, $1, $2); } // around the corner
+      P_S NPX { $$ = MAKE_SYMBOL(ID_PPS, @$, 2, $1, $2); } // around the corner
     | PPS PPS { $$ = MAKE_SYMBOL(ID_PPS, @$, 2, $1, $2); } // around the corner across the street
     ;
 
 DP:
       D NX     { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // the man
     | D NX DP2 { $$ = MAKE_SYMBOL(ID_DP, @$, 3, $1, $2, $3); } // the man's wife
-    | NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife
+    //| NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife <-- conflict with PPS
     ;
 
 DP2:
