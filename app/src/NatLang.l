@@ -218,6 +218,11 @@ suffix_r   "ly"
                 return ID_EOS;
             }
 
+<ST_ALT>"COMMA" {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_COMMA;
+            }
+
  /*==========================================================================*/
  /* GROUPED STATE CATCH-ALL */
 

@@ -112,6 +112,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_C_NP:      return "C_NP";
         case ID_C_S:       return "C_S";
         case ID_C_VP:      return "C_VP";
+        case ID_COMMA:     return "COMMA";
         case ID_D2:        return "D2";
         case ID_DP2:       return "DP2";
         case ID_DP:        return "DP";
@@ -164,6 +165,7 @@ uint32_t name_to_id(std::string name)
     if(name == "C_NP")      return ID_C_NP;
     if(name == "C_S")       return ID_C_S;
     if(name == "C_VP")      return ID_C_VP;
+    if(name == "COMMA")     return ID_COMMA;
     if(name == "D")         return ID_D;
     if(name == "D2")        return ID_D2;
     if(name == "DP")        return ID_DP;
@@ -218,6 +220,7 @@ static std::string expand_contractions(std::string &sentence)
     s = xl::replace(s, "'m", " am");
     s = xl::replace(s, "'re", " are");
     s = xl::replace(s, "'s", " 's");
+    s = xl::replace(s, ",", " COMMA ");
     return s;
 }
 
@@ -285,7 +288,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> P_N P_S
 
 // functional words
-%type<symbol_value> D D2 Aux Modal To Q_pron EOS
+%type<symbol_value> D D2 Aux Modal To Q_pron EOS COMMA
 
 // ambiguous terminals
 %type<symbol_value> C_S C_NP C_VP C_A
@@ -301,7 +304,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_P_N ID_P_S
 
 // functional words
-%token<ident_value> ID_D ID_D2 ID_AUX ID_MODAL ID_TO ID_Q_PRON ID_EOS
+%token<ident_value> ID_D ID_D2 ID_AUX ID_MODAL ID_TO ID_Q_PRON ID_EOS ID_COMMA
 
 // ambiguous terminals
 %token<ident_value> ID_C
@@ -322,8 +325,8 @@ root:
     ;
 
 S:
-      NPX VPX     { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }
-    | PPS NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 3, $1, $2, $3); }
+      NPX VPX           { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }
+    | PPS COMMA NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); }
     ;
 
 NP:
@@ -436,7 +439,7 @@ PPS:
 DP:
       D NX     { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // the man
     | D NX DP2 { $$ = MAKE_SYMBOL(ID_DP, @$, 3, $1, $2, $3); } // the man's wife
-    //| NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife <-- conflict with PPS
+    | NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife <-- conflict with PPS
     ;
 
 DP2:
@@ -502,6 +505,10 @@ Q_pron:
 
 EOS:
       ID_EOS { $$ = MAKE_SYMBOL(ID_EOS, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA:
+      ID_COMMA { $$ = MAKE_SYMBOL(ID_COMMA, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================
