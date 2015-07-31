@@ -73,7 +73,7 @@ ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
 digit     [0-9]
 alpha     [a-zA-Z]
-id        {alpha}|[_]|[']
+id        {alpha}|[_]|[']|[,]
 lit_ident {id}+({digit}|{id})*
 lit_int   {digit}+
 lit_float {digit}*[.]{digit}+
@@ -218,7 +218,7 @@ suffix_r   "ly"
                 return ID_EOS;
             }
 
-<ST_ALT>"COMMA" {LOC;
+<ST_ALT>[,] {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_COMMA;
             }

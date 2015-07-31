@@ -107,12 +107,12 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_AUX:       return "Aux";
         case ID_AX:        return "AX";
         case ID_AXX:       return "AXX";
-        case ID_C:         return "C";
         case ID_C_A:       return "C_A";
         case ID_C_NP:      return "C_NP";
+        case ID_COMMA:     return "COMMA";
+        case ID_C:         return "C";
         case ID_C_S:       return "C_S";
         case ID_C_VP:      return "C_VP";
-        case ID_COMMA:     return "COMMA";
         case ID_D2:        return "D2";
         case ID_DP2:       return "DP2";
         case ID_DP:        return "DP";
@@ -124,79 +124,79 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_NPX:       return "NPX";
         case ID_N:         return "N";
         case ID_NX:        return "NX";
+        case ID_P_N:       return "P_N";
         case ID_PPN:       return "PPN";
         case ID_PPS:       return "PPS";
         case ID_P:         return "P";
-        case ID_P_N:       return "P_N";
         case ID_P_S:       return "P_S";
         case ID_Q_PRON:    return "Q_PRON";
-        case ID_R:         return "R";
         case ID_R_A:       return "R_A";
-        case ID_R_V:       return "R_V";
+        case ID_R:         return "R";
         case ID_RVG:       return "RVG";
+        case ID_R_V:       return "R_V";
         case ID_S:         return "S";
         case ID_SX:        return "SX";
         case ID_TO:        return "To";
-        case ID_VP_INNER:  return "VP_Inner";
         case ID_VGP_INNER: return "VGP_Inner";
+        case ID_V_G:       return "V_G";
+        case ID_VGX:       return "VGX";
+        case ID_VP_INNER:  return "VP_Inner";
         case ID_VP:        return "VP";
         case ID_VPX:       return "VPX";
         case ID_V:         return "V";
-        case ID_V_G:       return "V_G";
         case ID_VX:        return "VX";
-        case ID_VGX:       return "VGX";
     }
     throw ERROR_LEXER_ID_NOT_FOUND;
     return "";
 }
 uint32_t name_to_id(std::string name)
 {
-    if(name == "A")         return ID_A;
-    if(name == "R")         return ID_R;
-    if(name == "R_V")       return ID_R_V;
-    if(name == "RVG")       return ID_RVG;
-    if(name == "R_A")       return ID_R_A;
     if(name == "AP")        return ID_AP;
+    if(name == "A")         return ID_A;
+    if(name == "Aux")       return ID_AUX;
     if(name == "AX")        return ID_AX;
     if(name == "AXX")       return ID_AXX;
-    if(name == "Aux")       return ID_AUX;
-    if(name == "C")         return ID_C;
     if(name == "C_A")       return ID_C_A;
     if(name == "C_NP")      return ID_C_NP;
+    if(name == "COMMA")     return ID_COMMA;
+    if(name == "C")         return ID_C;
     if(name == "C_S")       return ID_C_S;
     if(name == "C_VP")      return ID_C_VP;
-    if(name == "COMMA")     return ID_COMMA;
-    if(name == "D")         return ID_D;
     if(name == "D2")        return ID_D2;
-    if(name == "DP")        return ID_DP;
     if(name == "DP2")       return ID_DP2;
+    if(name == "DP")        return ID_DP;
+    if(name == "D")         return ID_D;
     if(name == "float")     return ID_FLOAT;
     if(name == "ident")     return ID_IDENT;
     if(name == "Infin")     return ID_INFIN;
     if(name == "int")       return ID_INT;
     if(name == "Modal")     return ID_MODAL;
-    if(name == "N")         return ID_N;
-    if(name == "NPX")       return ID_NPX;
     if(name == "NP")        return ID_NP;
+    if(name == "NPX")       return ID_NPX;
+    if(name == "N")         return ID_N;
     if(name == "NX")        return ID_NX;
+    if(name == "P_N")       return ID_P_N;
     if(name == "PPN")       return ID_PPN;
     if(name == "PPS")       return ID_PPS;
     if(name == "P")         return ID_P;
-    if(name == "P_N")       return ID_P_N;
     if(name == "P_S")       return ID_P_S;
-    if(name == "$")         return ID_EOS;
     if(name == "Q_PRON")    return ID_Q_PRON;
-    if(name == "SX")        return ID_SX;
+    if(name == "R_A")       return ID_R_A;
+    if(name == "$")         return ID_EOS;
+    if(name == "R")         return ID_R;
+    if(name == "RVG")       return ID_RVG;
+    if(name == "R_V")       return ID_R_V;
     if(name == "S")         return ID_S;
+    if(name == "SX")        return ID_SX;
     if(name == "To")        return ID_TO;
-    if(name == "V")         return ID_V;
-    if(name == "V_G")       return ID_V_G;
-    if(name == "VP_Inner")  return ID_VP_INNER;
     if(name == "VGP_Inner") return ID_VGP_INNER;
-    if(name == "VPX")       return ID_VPX;
-    if(name == "VP")        return ID_VP;
-    if(name == "VX")        return ID_VX;
+    if(name == "V_G")       return ID_V_G;
     if(name == "VGX")       return ID_VGX;
+    if(name == "VP_Inner")  return ID_VP_INNER;
+    if(name == "VP")        return ID_VP;
+    if(name == "VPX")       return ID_VPX;
+    if(name == "V")         return ID_V;
+    if(name == "VX")        return ID_VX;
     std::cout << name << std::endl;
     throw ERROR_LEXER_NAME_NOT_FOUND;
     return 0;
@@ -220,7 +220,7 @@ static std::string expand_contractions(std::string &sentence)
     s = xl::replace(s, "'m", " am");
     s = xl::replace(s, "'re", " are");
     s = xl::replace(s, "'s", " 's");
-    s = xl::replace(s, ",", " COMMA ");
+    s = xl::replace(s, ",", " , ");
     return s;
 }
 
@@ -325,8 +325,8 @@ root:
     ;
 
 S:
-      NPX VPX           { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }
-    | PPS COMMA NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); }
+      NPX VPX           { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
+    | PPS COMMA NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
@@ -338,7 +338,7 @@ NP:
     | VGP_Inner NX    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // reading a book john
     | NX PPN          { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john from work
     | NP Q_pron VP    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }     // john who is here
-    | NP Q_pron NP VP { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); } // john we know
+    | NP Q_pron NP VP { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); } // john who we know
     | Infin           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // to bring it
     | VGP_Inner       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // bringing it
     ;
