@@ -3,14 +3,14 @@
 NatLang
 =======
 
-Copyright (C) 2011-2013 Jerry Chen <mailto:onlyuser@gmail.com>
+Copyright (C) 2011-2015 Jerry Chen <mailto:onlyuser@gmail.com>
 
 About
 -----
 
 NatLang is an English parser with an extensible grammar.
 It generates abstract syntax trees for all possible interpretations of an English sentence.
-The grammar is fully customizable. No training data required.
+The grammar is fully customizable. No training data is involved.
 
 It works as follows:
 
