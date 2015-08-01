@@ -8,8 +8,9 @@ Copyright (C) 2011-2013 Jerry Chen <mailto:onlyuser@gmail.com>
 About
 -----
 
-NatLang is a parser framework for natural language processing.
-It uses WordNet and a Yacc grammar to generate all possible interpretations of a sentence.
+NatLang is an English parser with an extensible grammar.
+It generates abstract syntax trees for all possible interpretations of an English sentence.
+The grammar is fully customizable. No training data required.
 
 It works as follows:
 
@@ -126,11 +127,11 @@ Unix tools and 3rd party components (accessible from $PATH):
 Limitations
 -----------
 
-* Only English is supported
-* WordNet doesn't provide tense information for POS lookup, so hard-coded POS identities are used for some common words
-* No attempt is made to prune the parse trees
-* No attempt is made to parallelize the POS assignment evaluation
-* The Yacc grammar is hand-crafted without a corpus to justify its rules
+* Only supports English.
+* Only supports active voice statements in the present, present progressive, or past tense (for now).
+* Since WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, this results in lots of hard-coded POS definitions in the lexer.
+* Slow for long sentences. Brute force algorithm tries all possibilities. Go figure.
+* BNF rules may be suitable for constituent-based phrase structure grammars, but are definitely a poor fit for non-local dependencies.
 
 Make targets
 ------------

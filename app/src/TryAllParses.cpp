@@ -181,6 +181,11 @@ bool get_pos_values(
                     pos_values->push_back("R_V");
                     pos_values->push_back("RVG");
                     pos_values->push_back("R_A");
+                } else if(*p == "COMMA") {
+                    pos_values->push_back("COMMA_P");
+                    pos_values->push_back("COMMA_N");
+                    pos_values->push_back("COMMA_Q");
+                    pos_values->push_back("COMMA_V");
                 } else {
                     pos_values->push_back(*p);
                 }

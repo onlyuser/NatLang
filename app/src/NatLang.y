@@ -110,6 +110,10 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_C_A:       return "C_A";
         case ID_C_NP:      return "C_NP";
         case ID_COMMA:     return "COMMA";
+        case ID_COMMA_P:   return "COMMA_P";
+        case ID_COMMA_N:   return "COMMA_N";
+        case ID_COMMA_Q:   return "COMMA_Q";
+        case ID_COMMA_V:   return "COMMA_V";
         case ID_C:         return "C";
         case ID_C_S:       return "C_S";
         case ID_C_VP:      return "C_VP";
@@ -159,6 +163,10 @@ uint32_t name_to_id(std::string name)
     if(name == "C_A")       return ID_C_A;
     if(name == "C_NP")      return ID_C_NP;
     if(name == "COMMA")     return ID_COMMA;
+    if(name == "COMMA_P")   return ID_COMMA_P;
+    if(name == "COMMA_N")   return ID_COMMA_N;
+    if(name == "COMMA_Q")   return ID_COMMA_Q;
+    if(name == "COMMA_V")   return ID_COMMA_V;
     if(name == "C")         return ID_C;
     if(name == "C_S")       return ID_C_S;
     if(name == "C_VP")      return ID_C_VP;
@@ -288,7 +296,8 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> P_N P_S
 
 // functional words
-%type<symbol_value> D D2 Aux Modal To Q_pron EOS COMMA
+%type<symbol_value> D D2 Aux Modal To Q_pron EOS
+%type<symbol_value> COMMA_P COMMA_N COMMA_Q COMMA_V
 
 // ambiguous terminals
 %type<symbol_value> C_S C_NP C_VP C_A
@@ -304,7 +313,9 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_P_N ID_P_S
 
 // functional words
-%token<ident_value> ID_D ID_D2 ID_AUX ID_MODAL ID_TO ID_Q_PRON ID_EOS ID_COMMA
+%token<ident_value> ID_D ID_D2 ID_AUX ID_MODAL ID_TO ID_Q_PRON ID_EOS
+%token<ident_value> ID_COMMA
+%token<ident_value> ID_COMMA_P ID_COMMA_N ID_COMMA_Q ID_COMMA_V
 
 // ambiguous terminals
 %token<ident_value> ID_C
@@ -325,22 +336,22 @@ root:
     ;
 
 S:
-      NPX VPX           { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
-    | PPS COMMA NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
+      NPX VPX             { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
+    | PPS COMMA_P NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
-      NX              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // john
-    | DP              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // the teacher
-    | NX DP           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john the teacher
-    | DP NX           { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // the teacher john
-    | NX VGP_Inner    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john reading a book
-    | VGP_Inner NX    { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // reading a book john
-    | NX PPN          { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }         // john from work
-    | NP Q_pron VP    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }     // john who is here
-    | NP Q_pron NP VP { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); } // john who we know
-    | Infin           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // to bring it
-    | VGP_Inner       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }             // bringing it
+      NX                              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // john
+    | DP                              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
+    | NX COMMA_N DP COMMA_N           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
+    | DP COMMA_N NX                   { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
+    | NX COMMA_N VGP_Inner COMMA_V    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
+    | VGP_Inner COMMA_V NX            { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
+    | NX PPN                          { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
+    | NP COMMA_Q Q_pron VP COMMA_Q    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
+    | NP COMMA_Q Q_pron NP VP COMMA_Q { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
+    | Infin                           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
+    | VGP_Inner                       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
     ;
 
 VP:
@@ -507,8 +518,20 @@ EOS:
       ID_EOS { $$ = MAKE_SYMBOL(ID_EOS, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-COMMA:
-      ID_COMMA { $$ = MAKE_SYMBOL(ID_COMMA, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+COMMA_P:
+      ID_COMMA_P { $$ = MAKE_SYMBOL(ID_COMMA_P, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_N:
+      ID_COMMA_N { $$ = MAKE_SYMBOL(ID_COMMA_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_Q:
+      ID_COMMA_Q { $$ = MAKE_SYMBOL(ID_COMMA_Q, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_V:
+      ID_COMMA_V { $$ = MAKE_SYMBOL(ID_COMMA_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================
