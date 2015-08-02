@@ -91,13 +91,12 @@ Limitations
 * Brute force algorithm tries all possibilities. This is slow for long sentences.
 * BNF rules are suitable for specifying constituent-based phrase structure grammars, but a poor fit for expressing non-local dependencies.
 
-Strategy to Resolving Grammar Ambiguity
+Strategy to Eliminate Grammar Ambiguity
 ---------------------------------------
 
 1. Identify lexer terminal with ambiguous meaning.
 2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign each use case a different lexer terminal ID.
-3. For each lexer terminal use case, take advantage of stateful lexing to return a different lexer terminal ID when recognizing the same lexer terminal regex.
-4. Carefully tune grammar such that each rule has a unique FIRST(1) look-ahead (leading edge literal) that can be triggered in each use case.
+3. For each lexer terminal use case, take advantage of stateful lexing to return a different lexer terminal ID when recognizing the same lexer terminal.
 
 Make Targets
 ------------
