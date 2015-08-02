@@ -86,12 +86,20 @@ Limitations
 -----------
 
 * Only supports English.
-* Only supports present, present progressive, or past tense statements in the active voice.
+* Only supports present, present progressive, or past tense statements in the active voice (for now).
 * WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer.
 * Brute force algorithm tries all possibilities. This is slow for long sentences.
 * BNF rules are suitable for specifying constituent-based phrase structure grammars, but a poor fit for expressing non-local dependencies.
 
-Make targets
+Strategy to Resolving Grammar Ambiguity
+---------------------------------------
+
+1. Identify lexer terminal with ambiguous meaning.
+2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign each use case a different lexer terminal ID.
+3. Take advantage of stateful lexing to return different lexer terminal IDs when recognizing the same lexer terminal regex.
+4. Carefully tune grammar such that each rule has a unique FIRST(1) look-ahead in each use case.
+
+Make Targets
 ------------
 
 <table>
