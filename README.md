@@ -86,10 +86,10 @@ Limitations
 -----------
 
 * Only supports English.
-* Only supports active voice statements in the present, present progressive, or past tense (for now).
-* Since WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, this results in lots of hard-coded POS definitions in the lexer.
-* Slow for long sentences. Brute force algorithm tries all possibilities. Go figure.
-* BNF rules may be suitable for constituent-based phrase structure grammars, but are definitely a poor fit for non-local dependencies.
+* Only supports present, present progressive, or past tense statements in the active voice.
+* WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer.
+* Brute force algorithm tries all possibilities. This is slow for long sentences.
+* BNF rules are suitable for specifying constituent-based phrase structure grammars, but a poor fit for expressing non-local dependencies.
 
 Make targets
 ------------
