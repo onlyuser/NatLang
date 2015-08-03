@@ -72,7 +72,7 @@ Strategy for Eliminating Grammar Ambiguity
 
 For example:
 
-The sentence "She and I run and he jumps and shouts." has three conjugations "and" which connect different parts of the sentence.
+The sentence "She and I run and he jumps and shouts." has three conjugations "and", which connect different parts of the sentence.
 
 A possible parse tree may look like this:
 
@@ -94,29 +94,29 @@ A possible parse tree may look like this:
 She and  I  run and  he jumps and shouts.
 </pre>
 
-Yacc chokes on this input as shift-reduce conflicts default to a shift action.
+Yacc chokes on this input as shift-reduce conflicts default to shift action.
 
-The trick is to split "and" into three different terminals in the lexer, each representing a different level of abstraction in the grammar.
+The trick is to split "and" into three different lexer terminals, each representing a different level of abstraction in the grammar.
 
 * C_NP for noun-part level conjugations.
 * C_VP for verb-part level conjugations.
 * C_S for sentence level conjugations.
 
-To construct all 27 permutations for conjugation assignment, and to feed each permutation into the parser.
+And to try all 27 permutations to see which work.
 
 <pre>
 (N) (C#1) (N) (V) (C#2) (N) (V)   (C#3) (V)
  |   |     |   |   |     |   |     |     |
 She and    I  run and    he jumps and   shouts.
 
-          C#1  C#2  C#3
-           |    |    |
-Path #1: {C_NP C_NP C_NP}
-Path #2: {C_NP C_NP C_VP}
-Path #3: {C_NP C_NP C_S}
-Path #4: {C_NP C_VP C_NP}
-Path #5: {C_NP C_VP C_VP}
-Path #6: {C_NP C_VP C_S}
+           C#1  C#2  C#3
+            |    |    |
+Path #1:  {C_NP C_NP C_NP}
+Path #2:  {C_NP C_NP C_VP}
+Path #3:  {C_NP C_NP C_S}
+Path #4:  {C_NP C_VP C_NP}
+Path #5:  {C_NP C_VP C_VP}
+Path #6:  {C_NP C_VP C_S}
 ...
 Path #27: {C_S  C_S  C_S}
 </pre>
