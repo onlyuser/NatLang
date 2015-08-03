@@ -63,34 +63,6 @@ output:
 
 ![picture alt](https://sites.google.com/site/onlyuser/files/ast_fox.png "ast_fox")
 
-Usage
------
-
-<pre>
-./app/bin/NatLang -e "the quick brown fox jumps over the lazy dog" -d | dot -Tpng -oast_fox.png
-</pre>
-
-Requirements
-------------
-
-Unix tools and 3rd party components (accessible from $PATH):
-
-    gcc (with -std=c++0x support), flex, bison, wordnet, valgrind, cppcheck, doxygen, graphviz, ticpp
-
-**Environment variables:**
-
-* $INCLUDE_PATH_EXTERN -- where "ticpp/ticpp.h" resides
-* $LIB_PATH_EXTERN     -- where "libticppd.a" resides
-
-Limitations
------------
-
-* Only supports English.
-* Only supports present, present progressive, and past tense statements in the active voice (for now).
-* WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer for these words.
-* A brute force algorithm tries all possibilities. This is slow for long sentences.
-* BNF rules are suitable for specifying constituent-based phrase structure grammars, but are a poor fit for expressing non-local dependencies.
-
 Strategy for Eliminating Grammar Ambiguity
 ------------------------------------------
 
@@ -124,13 +96,21 @@ She and  I  run and  he jumps and shouts.
 
 Yacc chokes on this input as shift-reduce conflicts default to a shift action.
 
-So the solution is to split "and" into three different terminals in the lexer, and feed each permutation into the parser.
+The trick is to split "and" into three different terminals in the lexer, each representing a different level of abstraction in the grammar.
+
+* C_NP for noun-part level conjugations.
+* C_VP for verb-part level conjugations.
+* C_S for sentence level conjugations.
+
+To construct all 27 permutations for conjugation assignment, and to feed each permutation into the parser.
 
 <pre>
-(N) (C_NP) (N) (V) (C_S) (N) (V)   (C_VP) (V)
- |   |      |   |   |     |   |     |      |
-She and     I  run and    he jumps and    shouts.
+(N) (C#1) (N) (V) (C#2) (N) (V)   (C#3) (V)
+ |   |     |   |   |     |   |     |     |
+She and    I  run and    he jumps and   shouts.
 
+          C#1  C#2  C#3
+           |    |    |
 Path #1: {C_NP C_NP C_NP}
 Path #2: {C_NP C_NP C_VP}
 Path #3: {C_NP C_NP C_S}
@@ -140,6 +120,34 @@ Path #6: {C_NP C_VP C_S}
 ...
 Path #27: {C_S  C_S  C_S}
 </pre>
+
+Usage
+-----
+
+<pre>
+./app/bin/NatLang -e "the quick brown fox jumps over the lazy dog" -d | dot -Tpng -oast_fox.png
+</pre>
+
+Requirements
+------------
+
+Unix tools and 3rd party components (accessible from $PATH):
+
+    gcc (with -std=c++0x support), flex, bison, wordnet, valgrind, cppcheck, doxygen, graphviz, ticpp
+
+**Environment variables:**
+
+* $INCLUDE_PATH_EXTERN -- where "ticpp/ticpp.h" resides
+* $LIB_PATH_EXTERN     -- where "libticppd.a" resides
+
+Limitations
+-----------
+
+* Only supports English.
+* Only supports present, present progressive, and past tense statements in the active voice (for now).
+* WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer for these words.
+* A brute force algorithm tries all possibilities. This is slow for long sentences.
+* BNF rules are suitable for specifying constituent-based phrase structure grammars, but are a poor fit for expressing non-local dependencies.
 
 Make Targets
 ------------
