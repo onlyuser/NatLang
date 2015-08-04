@@ -9,8 +9,8 @@ About
 -----
 
 NatLang is an English parser with an extensible grammar.
-It generates abstract syntax trees for all possible interpretations of an English sentence.
-The grammar is fully customizable. No training data involved.
+It generates abstract syntax trees for all possible interpretations of an English sentence supported by a grammar.
+The algorithm is completely deterministic. No training data is required.
 
 It works as follows:
 
@@ -69,10 +69,9 @@ Strategy for Eliminating Grammar Ambiguity
 English is a non-context-free language.
 This means the same word used in different contexts can have different meanings.
 But Yacc cannot interpret the same word differently if it is represented using the same lexer terminal.
-This results in a shift-reduce or reduce-reduce conflict.
 When this happens, it is necessary to split ambiguous terminals.
 
-It works as follows:
+How to split ambiguous terminals:
 
 1. Identify lexer terminal with ambiguous meaning.
 2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign to each use case a different lexer terminal ID.
@@ -80,7 +79,7 @@ It works as follows:
 
 For example:
 
-The sentence "She and I run and he jumps and shouts." has three conjugations "and", which connect different parts of the sentence.
+The sentence "She and I run and he jumps and shouts." has three conjugations "and".
 
 A possible parse tree may look like this:
 
@@ -102,34 +101,42 @@ A possible parse tree may look like this:
 She and  I  run and  he jumps and shouts.
 </pre>
 
-Yacc chokes on this input as shift-reduce conflicts default to shift action.
+Yacc chokes on this input due to the ambiguity of "and".
 
-The trick is to split "and" into multiple lexer terminals, each representing a different level of abstraction in the grammar.
+The solution is to split "and" into multiple lexer terminals, each representing a different abstraction level in the grammar.
 
 * C_NP for noun-part level conjugations.
 * C_VP for verb-part level conjugations.
 * C_S for sentence level conjugations.
 
-And to try all 27 permutations to see which work.
+And to try all 27 permutations to see which ones work.
 
 <pre>
-(N) (C#1) (N) (V) (C#2) (N) (V)   (C#3) (V)
- |   |     |   |   |     |   |     |     |
 She and    I  run and    he jumps and   shouts.
+ |   |     |   |   |     |   |     |     |
+(N) (C#1) (N) (V) (C#2) (N) (V)   (C#3) (V)
 
            C#1  C#2  C#3
             |    |    |
-Path #1:  {C_NP C_NP C_NP}
-Path #2:  {C_NP C_NP C_VP}
-Path #3:  {C_NP C_NP C_S}
-Path #4:  {C_NP C_VP C_NP}
-Path #5:  {C_NP C_VP C_VP}
-Path #6:  {C_NP C_VP C_S}
+Path #1:  {C_NP C_NP C_NP} -- fail!
+Path #2:  {C_NP C_NP C_VP} -- fail!
+Path #3:  {C_NP C_NP C_S}  -- fail!
+Path #4:  {C_NP C_VP C_NP} -- fail!
+Path #5:  {C_NP C_VP C_VP} -- fail!
+Path #6:  {C_NP C_VP C_S}  -- fail!
+Path #7:  {C_NP C_S  C_NP} -- fail!
+Path #8:  {C_NP C_S  C_VP} -- success!
 ...
-Path #27: {C_S  C_S  C_S}
+Path #27: {C_S  C_S  C_S}  -- fail!
 </pre>
 
-NOTE: Sometimes, it is even useful to split commas into multiple lexer terminals.
+Here, path #8's POS configuration results in a successful parse, so keep the parse tree it generates.
+
+<pre>
+She and     I  run and    he jumps and    shouts.
+ |   |      |   |   |     |   |     |      |
+(N) (C_NP) (N) (V) (C_S) (N) (V)   (C_VP) (V)
+</pre>
 
 Usage
 -----

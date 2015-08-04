@@ -450,7 +450,7 @@ PPS:
 DP:
       D NX     { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // the man
     | D NX DP2 { $$ = MAKE_SYMBOL(ID_DP, @$, 3, $1, $2, $3); } // the man's wife
-    | NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife <-- conflict with PPS
+    | NX DP2   { $$ = MAKE_SYMBOL(ID_DP, @$, 2, $1, $2); }     // john's wife
     ;
 
 DP2:
@@ -518,22 +518,6 @@ EOS:
       ID_EOS { $$ = MAKE_SYMBOL(ID_EOS, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-COMMA_P:
-      ID_COMMA_P { $$ = MAKE_SYMBOL(ID_COMMA_P, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-COMMA_N:
-      ID_COMMA_N { $$ = MAKE_SYMBOL(ID_COMMA_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-COMMA_Q:
-      ID_COMMA_Q { $$ = MAKE_SYMBOL(ID_COMMA_Q, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-COMMA_V:
-      ID_COMMA_V { $$ = MAKE_SYMBOL(ID_COMMA_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
 //=============================================================================
 // ambiguous terminals
 
@@ -563,6 +547,22 @@ RVG:
 
 R_A:
       ID_R_A { $$ = MAKE_SYMBOL(ID_R_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_P:
+      ID_COMMA_P { $$ = MAKE_SYMBOL(ID_COMMA_P, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_N:
+      ID_COMMA_N { $$ = MAKE_SYMBOL(ID_COMMA_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_Q:
+      ID_COMMA_Q { $$ = MAKE_SYMBOL(ID_COMMA_Q, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+COMMA_V:
+      ID_COMMA_V { $$ = MAKE_SYMBOL(ID_COMMA_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================
