@@ -68,10 +68,10 @@ Strategy for Eliminating Grammar Ambiguity
 
 English is a non-context-free language.
 This means the same word used in different contexts can have different meanings.
-But Yacc cannot interpret the same word differently if it is represented using the same lexer terminal.
+But Yacc cannot interpret the same lexer terminal differently if it is represented using the same lexer terminal ID.
 When this happens, it is necessary to split ambiguous terminals.
 
-How to split ambiguous terminals:
+It works as follows:
 
 1. Identify lexer terminal with ambiguous meaning.
 2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign to each use case a different lexer terminal ID.
@@ -130,7 +130,7 @@ Path #8:  {C_NP C_S  C_VP} -- success!
 Path #27: {C_S  C_S  C_S}  -- fail!
 </pre>
 
-Here, path #8's POS configuration results in a successful parse, so keep the parse tree it generates.
+Here, path #8's POS configuration results in a successful parse.
 
 <pre>
 She and     I  run and    he jumps and    shouts.
