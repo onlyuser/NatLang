@@ -137,7 +137,7 @@ bool get_pos_values(
                 unique_pos_values.insert(*q);
                 if(*q == "R") {
                     pos_values->push_back("R_V");
-                    pos_values->push_back("RVG");
+                    pos_values->push_back("R_G");
                     pos_values->push_back("R_A");
                 } else {
                     pos_values->push_back(*q);
@@ -158,7 +158,7 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "q_pron");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v_g");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_g");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_r");
         if(found_match)
@@ -179,7 +179,7 @@ bool get_pos_values(
                     pos_values->push_back("P_S");
                 } else if(*p == "R") {
                     pos_values->push_back("R_V");
-                    pos_values->push_back("RVG");
+                    pos_values->push_back("R_G");
                     pos_values->push_back("R_A");
                 } else if(*p == "COMMA") {
                     pos_values->push_back("COMMA_P");

@@ -102,109 +102,109 @@ std::string id_to_name(uint32_t lexer_id)
         return _id_to_name[index];
     switch(lexer_id)
     {
-        case ID_AP:        return "AP";
-        case ID_A:         return "A";
-        case ID_AUX:       return "Aux";
-        case ID_AX:        return "AX";
-        case ID_AXX:       return "AXX";
-        case ID_C_A:       return "C_A";
-        case ID_C_NP:      return "C_NP";
-        case ID_COMMA:     return "COMMA";
-        case ID_COMMA_P:   return "COMMA_P";
-        case ID_COMMA_N:   return "COMMA_N";
-        case ID_COMMA_Q:   return "COMMA_Q";
-        case ID_COMMA_V:   return "COMMA_V";
-        case ID_C:         return "C";
-        case ID_C_S:       return "C_S";
-        case ID_C_VP:      return "C_VP";
-        case ID_D2:        return "D2";
-        case ID_DP2:       return "DP2";
-        case ID_DP:        return "DP";
-        case ID_D:         return "D";
-        case ID_EOS:       return "$";
-        case ID_INFIN:     return "Infin";
-        case ID_MODAL:     return "Modal";
-        case ID_NP:        return "NP";
-        case ID_NPX:       return "NPX";
-        case ID_N:         return "N";
-        case ID_NX:        return "NX";
-        case ID_P_N:       return "P_N";
-        case ID_PPN:       return "PPN";
-        case ID_PPS:       return "PPS";
-        case ID_P:         return "P";
-        case ID_P_S:       return "P_S";
-        case ID_Q_PRON:    return "Q_PRON";
-        case ID_R_A:       return "R_A";
-        case ID_R:         return "R";
-        case ID_RVG:       return "RVG";
-        case ID_R_V:       return "R_V";
-        case ID_S:         return "S";
-        case ID_SX:        return "SX";
-        case ID_TO:        return "To";
-        case ID_VGP_INNER: return "VGP_Inner";
-        case ID_V_G:       return "V_G";
-        case ID_VGX:       return "VGX";
-        case ID_VP_INNER:  return "VP_Inner";
-        case ID_VP:        return "VP";
-        case ID_VPX:       return "VPX";
-        case ID_V:         return "V";
-        case ID_VX:        return "VX";
+        case ID_AP:       return "AP";
+        case ID_A:        return "A";
+        case ID_AUX:      return "Aux";
+        case ID_AX:       return "AX";
+        case ID_AXX:      return "AXX";
+        case ID_C_A:      return "C_A";
+        case ID_C_NP:     return "C_NP";
+        case ID_COMMA:    return "COMMA";
+        case ID_COMMA_P:  return "COMMA_P";
+        case ID_COMMA_N:  return "COMMA_N";
+        case ID_COMMA_Q:  return "COMMA_Q";
+        case ID_COMMA_V:  return "COMMA_V";
+        case ID_C:        return "C";
+        case ID_C_S:      return "C_S";
+        case ID_C_VP:     return "C_VP";
+        case ID_D2:       return "D2";
+        case ID_DP2:      return "DP2";
+        case ID_DP:       return "DP";
+        case ID_D:        return "D";
+        case ID_EOS:      return "$";
+        case ID_INFIN:    return "Infin";
+        case ID_MODAL:    return "Modal";
+        case ID_NP:       return "NP";
+        case ID_NPX:      return "NPX";
+        case ID_N:        return "N";
+        case ID_NX:       return "NX";
+        case ID_P_N:      return "P_N";
+        case ID_PPN:      return "PPN";
+        case ID_PPS:      return "PPS";
+        case ID_P:        return "P";
+        case ID_P_S:      return "P_S";
+        case ID_Q_PRON:   return "Q_PRON";
+        case ID_R_A:      return "R_A";
+        case ID_R:        return "R";
+        case ID_R_G:      return "R_G";
+        case ID_R_V:      return "R_V";
+        case ID_S:        return "S";
+        case ID_SX:       return "SX";
+        case ID_TO:       return "To";
+        case ID_GP_INNER: return "GP_Inner";
+        case ID_G:        return "G";
+        case ID_GX:       return "GX";
+        case ID_VP_INNER: return "VP_Inner";
+        case ID_VP:       return "VP";
+        case ID_VPX:      return "VPX";
+        case ID_V:        return "V";
+        case ID_VX:       return "VX";
     }
     throw ERROR_LEXER_ID_NOT_FOUND;
     return "";
 }
 uint32_t name_to_id(std::string name)
 {
-    if(name == "AP")        return ID_AP;
-    if(name == "A")         return ID_A;
-    if(name == "Aux")       return ID_AUX;
-    if(name == "AX")        return ID_AX;
-    if(name == "AXX")       return ID_AXX;
-    if(name == "C_A")       return ID_C_A;
-    if(name == "C_NP")      return ID_C_NP;
-    if(name == "COMMA")     return ID_COMMA;
-    if(name == "COMMA_P")   return ID_COMMA_P;
-    if(name == "COMMA_N")   return ID_COMMA_N;
-    if(name == "COMMA_Q")   return ID_COMMA_Q;
-    if(name == "COMMA_V")   return ID_COMMA_V;
-    if(name == "C")         return ID_C;
-    if(name == "C_S")       return ID_C_S;
-    if(name == "C_VP")      return ID_C_VP;
-    if(name == "D2")        return ID_D2;
-    if(name == "DP2")       return ID_DP2;
-    if(name == "DP")        return ID_DP;
-    if(name == "D")         return ID_D;
-    if(name == "float")     return ID_FLOAT;
-    if(name == "ident")     return ID_IDENT;
-    if(name == "Infin")     return ID_INFIN;
-    if(name == "int")       return ID_INT;
-    if(name == "Modal")     return ID_MODAL;
-    if(name == "NP")        return ID_NP;
-    if(name == "NPX")       return ID_NPX;
-    if(name == "N")         return ID_N;
-    if(name == "NX")        return ID_NX;
-    if(name == "P_N")       return ID_P_N;
-    if(name == "PPN")       return ID_PPN;
-    if(name == "PPS")       return ID_PPS;
-    if(name == "P")         return ID_P;
-    if(name == "P_S")       return ID_P_S;
-    if(name == "Q_PRON")    return ID_Q_PRON;
-    if(name == "R_A")       return ID_R_A;
-    if(name == "$")         return ID_EOS;
-    if(name == "R")         return ID_R;
-    if(name == "RVG")       return ID_RVG;
-    if(name == "R_V")       return ID_R_V;
-    if(name == "S")         return ID_S;
-    if(name == "SX")        return ID_SX;
-    if(name == "To")        return ID_TO;
-    if(name == "VGP_Inner") return ID_VGP_INNER;
-    if(name == "V_G")       return ID_V_G;
-    if(name == "VGX")       return ID_VGX;
-    if(name == "VP_Inner")  return ID_VP_INNER;
-    if(name == "VP")        return ID_VP;
-    if(name == "VPX")       return ID_VPX;
-    if(name == "V")         return ID_V;
-    if(name == "VX")        return ID_VX;
+    if(name == "AP")       return ID_AP;
+    if(name == "A")        return ID_A;
+    if(name == "Aux")      return ID_AUX;
+    if(name == "AX")       return ID_AX;
+    if(name == "AXX")      return ID_AXX;
+    if(name == "C_A")      return ID_C_A;
+    if(name == "C_NP")     return ID_C_NP;
+    if(name == "COMMA")    return ID_COMMA;
+    if(name == "COMMA_P")  return ID_COMMA_P;
+    if(name == "COMMA_N")  return ID_COMMA_N;
+    if(name == "COMMA_Q")  return ID_COMMA_Q;
+    if(name == "COMMA_V")  return ID_COMMA_V;
+    if(name == "C")        return ID_C;
+    if(name == "C_S")      return ID_C_S;
+    if(name == "C_VP")     return ID_C_VP;
+    if(name == "D2")       return ID_D2;
+    if(name == "DP2")      return ID_DP2;
+    if(name == "DP")       return ID_DP;
+    if(name == "D")        return ID_D;
+    if(name == "float")    return ID_FLOAT;
+    if(name == "ident")    return ID_IDENT;
+    if(name == "Infin")    return ID_INFIN;
+    if(name == "int")      return ID_INT;
+    if(name == "Modal")    return ID_MODAL;
+    if(name == "NP")       return ID_NP;
+    if(name == "NPX")      return ID_NPX;
+    if(name == "N")        return ID_N;
+    if(name == "NX")       return ID_NX;
+    if(name == "P_N")      return ID_P_N;
+    if(name == "PPN")      return ID_PPN;
+    if(name == "PPS")      return ID_PPS;
+    if(name == "P")        return ID_P;
+    if(name == "P_S")      return ID_P_S;
+    if(name == "Q_PRON")   return ID_Q_PRON;
+    if(name == "R_A")      return ID_R_A;
+    if(name == "$")        return ID_EOS;
+    if(name == "R")        return ID_R;
+    if(name == "R_G")      return ID_R_G;
+    if(name == "R_V")      return ID_R_V;
+    if(name == "S")        return ID_S;
+    if(name == "SX")       return ID_SX;
+    if(name == "To")       return ID_TO;
+    if(name == "GP_Inner") return ID_GP_INNER;
+    if(name == "G")        return ID_G;
+    if(name == "GX")       return ID_GX;
+    if(name == "VP_Inner") return ID_VP_INNER;
+    if(name == "VP")       return ID_VP;
+    if(name == "VPX")      return ID_VPX;
+    if(name == "V")        return ID_V;
+    if(name == "VX")       return ID_VX;
     std::cout << name << std::endl;
     throw ERROR_LEXER_NAME_NOT_FOUND;
     return 0;
@@ -269,7 +269,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> S NP VP
 
 // local constructs
-%type<symbol_value> Infin VP_Inner VGP_Inner AP NX VX VGX AX
+%type<symbol_value> Infin VP_Inner GP_Inner AP NX VX GX AX
 
 // lists
 %type<symbol_value> SX NPX VPX AXX PPN PPS DP DP2
@@ -282,7 +282,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_S ID_NP ID_VP
 
 // local constructs
-%nonassoc ID_INFIN ID_VP_INNER ID_VGP_INNER ID_AP ID_NX ID_VX ID_VGX ID_AX
+%nonassoc ID_INFIN ID_VP_INNER ID_GP_INNER ID_AP ID_NX ID_VX ID_GX ID_AX
 
 // lists
 %nonassoc ID_SX ID_NPX ID_VPX ID_AXX ID_PPN ID_PPS ID_DP ID_DP2
@@ -292,7 +292,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // descriptive words
-%type<symbol_value> N V V_G A
+%type<symbol_value> N V G A
 %type<symbol_value> P_N P_S
 
 // functional words
@@ -301,14 +301,14 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // ambiguous terminals
 %type<symbol_value> C_S C_NP C_VP C_A
-%type<symbol_value> R_V RVG R_A
+%type<symbol_value> R_V R_G R_A
 
 //=============================================================================
 // terminal rvalues
 //=============================================================================
 
 // descriptive words
-%token<ident_value> ID_N ID_V ID_V_G ID_A
+%token<ident_value> ID_N ID_V ID_G ID_A
 %token<ident_value> ID_P
 %token<ident_value> ID_P_N ID_P_S
 
@@ -321,7 +321,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_C
 %token<ident_value> ID_C_S ID_C_NP ID_C_VP ID_C_A
 %token<ident_value> ID_R
-%token<ident_value> ID_R_V ID_RVG ID_R_A
+%token<ident_value> ID_R_V ID_R_G ID_R_A
 
 %%
 
@@ -345,18 +345,18 @@ NP:
     | DP                              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
     | NX COMMA_N DP COMMA_N           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
     | DP COMMA_N NX                   { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
-    | NX COMMA_N VGP_Inner COMMA_V    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
-    | VGP_Inner COMMA_V NX            { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
+    | NX COMMA_N GP_Inner COMMA_V    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
+    | GP_Inner COMMA_V NX            { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
     | NX PPN                          { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
     | NP COMMA_Q Q_pron VP COMMA_Q    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
     | NP COMMA_Q Q_pron NP VP COMMA_Q { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
     | Infin                           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
-    | VGP_Inner                       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
+    | GP_Inner                       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
     ;
 
 VP:
       VP_Inner      { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // bring it
-    | Aux VGP_Inner { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is bringing it
+    | Aux GP_Inner { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is bringing it
     | Modal VP      { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // could bring it
     ;
 
@@ -377,14 +377,14 @@ VP_Inner:
     | VX AXX     { $$ = MAKE_SYMBOL(ID_VP_INNER, @$, 2, $1, $2); }     // be happy
     ;
 
-VGP_Inner:
-      VGX         { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 1, $1); }         // bringing
-    | VGX NPX     { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // bringing it
-    | VGX NPX NPX { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 3, $1, $2, $3); } // bringing me it
-    | VGX NPX PPN { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 3, $1, $2, $3); } // bringing it to me
-    | VGX AP      { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // being mad about you
-    | VGX PPN     { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // beating around the bush
-    | VGX AXX     { $$ = MAKE_SYMBOL(ID_VGP_INNER, @$, 2, $1, $2); }     // being happy
+GP_Inner:
+      GX         { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 1, $1); }         // bringing
+    | GX NPX     { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 2, $1, $2); }     // bringing it
+    | GX NPX NPX { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 3, $1, $2, $3); } // bringing me it
+    | GX NPX PPN { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 3, $1, $2, $3); } // bringing it to me
+    | GX AP      { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 2, $1, $2); }     // being mad about you
+    | GX PPN     { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 2, $1, $2); }     // beating around the bush
+    | GX AXX     { $$ = MAKE_SYMBOL(ID_GP_INNER, @$, 2, $1, $2); }     // being happy
     ;
 
 AP:
@@ -402,10 +402,10 @@ VX:
     | V R_V { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); } // run quickly
     ;
 
-VGX:
-      V_G     { $$ = MAKE_SYMBOL(ID_VGX, @$, 1, $1); }     // running
-    | RVG V_G { $$ = MAKE_SYMBOL(ID_VGX, @$, 2, $1, $2); } // quickly running
-    | V_G RVG { $$ = MAKE_SYMBOL(ID_VGX, @$, 2, $1, $2); } // running quickly
+GX:
+      G     { $$ = MAKE_SYMBOL(ID_GX, @$, 1, $1); }     // running
+    | R_G G { $$ = MAKE_SYMBOL(ID_GX, @$, 2, $1, $2); } // quickly running
+    | G R_G { $$ = MAKE_SYMBOL(ID_GX, @$, 2, $1, $2); } // running quickly
     ;
 
 AX:
@@ -471,8 +471,8 @@ V:
       ID_V { $$ = MAKE_SYMBOL(ID_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // run
     ;
 
-V_G:
-      ID_V_G { $$ = MAKE_SYMBOL(ID_V_G, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // running
+G:
+      ID_G { $$ = MAKE_SYMBOL(ID_G, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // running
     ;
 
 A:
@@ -541,8 +541,8 @@ R_V:
       ID_R_V { $$ = MAKE_SYMBOL(ID_R_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-RVG:
-      ID_RVG { $$ = MAKE_SYMBOL(ID_RVG, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+R_G:
+      ID_R_G { $$ = MAKE_SYMBOL(ID_R_G, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 R_A:
