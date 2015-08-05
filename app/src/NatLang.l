@@ -66,7 +66,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_N ST_ALT_V ST_ALT_A ST_TO ST_MODAL ST_Q_PRON
+%x ST_ALT_N ST_ALT_V ST_ALT_V_PP ST_ALT_A ST_TO ST_MODAL ST_Q_PRON
 %x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_G ST_ALT_SUFFIX_A ST_ALT_SUFFIX_R
 
 ws        [ \t\n]+
@@ -89,10 +89,10 @@ noun          {noun_pron}|{noun_quantity}
 
 q_pron "who"|"which"|"that"
 
-aux_be   "am"|"is"|"are"|"was"|"were"|"being"|"been"
-aux_do   "does"|"do"|"did"
-aux_have "has"|"have"|"had"|"having"
-aux       {aux_be}|{aux_do}|{aux_have}
+aux_be   "am"|"is"|"are"|"was"|"were"
+aux_do   "do"|"does"|"did"
+aux_have "have"|"has"|"had"
+aux      {aux_be}|{aux_do}|{aux_have}
 
 verb_basic       {aux}|"made"|"chose"|"selected"
 verb_life        "ate"|"slept"|"washed"
@@ -102,6 +102,8 @@ verb_container   "opened"|"closed"
 verb_communicate "said"|"told"|"spoke"|"listened"
 verb_commerce    "bought"|"sold"|"rented"
 verb             {verb_basic}|{verb_life}|{verb_motion}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
+
+verb_pp "been"|"done"|"had"
 
 prep_basic              "to"|"from"|"of"|"for"|"in"|"on"|"at"|"by"|"as"|"than"|"about"
 prep_spatial_distance   "near"|"far"
@@ -113,10 +115,10 @@ prep_spatial            {prep_spatial_distance}|{prep_spatial_transition}|{prep_
 prep                    {prep_basic}|{prep_spatial}
 
 adv   "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
-modal "do"|"has"|"can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
+modal "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
 det   "a"|"an"|"the"|{det_pron}
 det2  "'s"
-conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"
+conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"|"notwithstanding"
 
 suffix_n   "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_v   "ate"|"ify"|"ize"|"ise"
@@ -139,11 +141,12 @@ suffix_r   "ly"
 "[]<"       { PUSH_STATE(ST_ALT); }
 "[n]<"      { PUSH_STATE(ST_ALT_N); }
 "[v]<"      { PUSH_STATE(ST_ALT_V); }
+"[v_pp]<"   { PUSH_STATE(ST_ALT_V_PP); }
 "[a]<"      { PUSH_STATE(ST_ALT_A); }
 "[to]<"     { PUSH_STATE(ST_TO); }
 "[modal]<"  { PUSH_STATE(ST_MODAL); }
 "[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_V_PP,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
 
  /*==========================================================================*/
  /* GROUPED STATEFUL LITERALS */
@@ -156,6 +159,11 @@ suffix_r   "ly"
 <ST_ALT_V>{verb}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
                 return ID_V;
+            }
+
+<ST_ALT_V_PP>{verb_pp}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_V_PP;
             }
 
  /*
@@ -193,9 +201,19 @@ suffix_r   "ly"
                 return ID_P;
             }
 
-<ST_ALT>{aux}{eow} {LOC;
+<ST_ALT>{aux_be}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_AUX;
+                return ID_AUX_BE;
+            }
+
+<ST_ALT>{aux_do}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_AUX_DO;
+            }
+
+<ST_ALT>{aux_have}{eow} {LOC;
+                LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
+                return ID_AUX_HAVE;
             }
 
 <ST_ALT>{det}{eow} {LOC;
@@ -226,7 +244,7 @@ suffix_r   "ly"
  /*==========================================================================*/
  /* GROUPED STATE CATCH-ALL */
 
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_V_PP,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
                 return 0;
             }
 
@@ -235,7 +253,7 @@ suffix_r   "ly"
 
 "[suffix_n]<"   { PUSH_STATE(ST_ALT_SUFFIX_N); }
 "[suffix_v]<"   { PUSH_STATE(ST_ALT_SUFFIX_V); }
-"[suffix_g]<" { PUSH_STATE(ST_ALT_SUFFIX_G); }
+"[suffix_g]<"   { PUSH_STATE(ST_ALT_SUFFIX_G); }
 "[suffix_a]<"   { PUSH_STATE(ST_ALT_SUFFIX_A); }
 "[suffix_r]<"   { PUSH_STATE(ST_ALT_SUFFIX_R); }
 <ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_G,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }

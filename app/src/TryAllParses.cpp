@@ -152,6 +152,7 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer);
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v_pp");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
@@ -180,6 +181,7 @@ bool get_pos_values(
                 } else if(*p == "R") {
                     pos_values->push_back("R_V");
                     pos_values->push_back("R_G");
+                    pos_values->push_back("R_VPP");
                     pos_values->push_back("R_A");
                 } else if(*p == "COMMA") {
                     pos_values->push_back("COMMA_P");
