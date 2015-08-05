@@ -111,7 +111,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_AXX:       return "AXX";
         case ID_C_A:       return "C_A";
         case ID_C_NP:      return "C_NP";
-        case ID_COMMA:     return "COMMA";
+        case ID_COMMA:     return "Comma";
         case ID_COMMA_P:   return "Comma_P";
         case ID_COMMA_N:   return "Comma_N";
         case ID_COMMA_Q:   return "Comma_Q";
@@ -170,7 +170,7 @@ uint32_t name_to_id(std::string name)
     if(name == "AXX")       return ID_AXX;
     if(name == "C_A")       return ID_C_A;
     if(name == "C_NP")      return ID_C_NP;
-    if(name == "COMMA")     return ID_COMMA;
+    if(name == "Comma")     return ID_COMMA;
     if(name == "Comma_P")   return ID_COMMA_P;
     if(name == "Comma_N")   return ID_COMMA_N;
     if(name == "Comma_Q")   return ID_COMMA_Q;

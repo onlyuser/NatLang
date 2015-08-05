@@ -184,11 +184,11 @@ bool get_pos_values(
                     pos_values->push_back("R_G");
                     pos_values->push_back("R_VPP");
                     pos_values->push_back("R_A");
-                } else if(*p == "COMMA") {
-                    pos_values->push_back("COMMA_P");
-                    pos_values->push_back("COMMA_N");
-                    pos_values->push_back("COMMA_Q");
-                    pos_values->push_back("COMMA_V");
+                } else if(*p == "Comma") {
+                    pos_values->push_back("Comma_P");
+                    pos_values->push_back("Comma_N");
+                    pos_values->push_back("Comma_Q");
+                    pos_values->push_back("Comma_V");
                 } else {
                     pos_values->push_back(*p);
                 }
