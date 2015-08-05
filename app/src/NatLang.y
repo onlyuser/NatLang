@@ -112,10 +112,10 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_C_A:       return "C_A";
         case ID_C_NP:      return "C_NP";
         case ID_COMMA:     return "COMMA";
-        case ID_COMMA_P:   return "COMMA_P";
-        case ID_COMMA_N:   return "COMMA_N";
-        case ID_COMMA_Q:   return "COMMA_Q";
-        case ID_COMMA_V:   return "COMMA_V";
+        case ID_COMMA_P:   return "Comma_P";
+        case ID_COMMA_N:   return "Comma_N";
+        case ID_COMMA_Q:   return "Comma_Q";
+        case ID_COMMA_V:   return "Comma_V";
         case ID_C:         return "C";
         case ID_C_S:       return "C_S";
         case ID_C_VP:      return "C_VP";
@@ -171,10 +171,10 @@ uint32_t name_to_id(std::string name)
     if(name == "C_A")       return ID_C_A;
     if(name == "C_NP")      return ID_C_NP;
     if(name == "COMMA")     return ID_COMMA;
-    if(name == "COMMA_P")   return ID_COMMA_P;
-    if(name == "COMMA_N")   return ID_COMMA_N;
-    if(name == "COMMA_Q")   return ID_COMMA_Q;
-    if(name == "COMMA_V")   return ID_COMMA_V;
+    if(name == "Comma_P")   return ID_COMMA_P;
+    if(name == "Comma_N")   return ID_COMMA_N;
+    if(name == "Comma_Q")   return ID_COMMA_Q;
+    if(name == "Comma_V")   return ID_COMMA_V;
     if(name == "C")         return ID_C;
     if(name == "C_S")       return ID_C_S;
     if(name == "C_VP")      return ID_C_VP;
@@ -309,7 +309,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // functional words
 %type<symbol_value> D D2 Aux_be Aux_do Aux_have Modal To Q_pron EOS
-%type<symbol_value> COMMA_P COMMA_N COMMA_Q COMMA_V
+%type<symbol_value> Comma_P Comma_N Comma_Q Comma_V
 
 // ambiguous terminals
 %type<symbol_value> C_S C_NP C_VP C_A
@@ -349,19 +349,19 @@ root:
 
 S:
       NPX VPX             { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
-    | PPS COMMA_P NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
+    | PPS Comma_P NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
       NX                              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // john
     | DP                              { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
-    | NX COMMA_N DP COMMA_N           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
-    | DP COMMA_N NX                   { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
-    | NX COMMA_N GP_Inner COMMA_V     { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
-    | GP_Inner COMMA_V NX             { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
+    | NX Comma_N DP Comma_N           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
+    | DP Comma_N NX                   { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
+    | NX Comma_N GP_Inner Comma_V     { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
+    | GP_Inner Comma_V NX             { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
     | NX PPN                          { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
-    | NP COMMA_Q Q_pron VP COMMA_Q    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
-    | NP COMMA_Q Q_pron NP VP COMMA_Q { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
+    | NP Comma_Q Q_pron VP Comma_Q    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
+    | NP Comma_Q Q_pron NP VP Comma_Q { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
     | Infin                           { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
     | GP_Inner                        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
     ;
@@ -595,19 +595,19 @@ R_A:
       ID_R_A { $$ = MAKE_SYMBOL(ID_R_A, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-COMMA_P:
+Comma_P:
       ID_COMMA_P { $$ = MAKE_SYMBOL(ID_COMMA_P, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-COMMA_N:
+Comma_N:
       ID_COMMA_N { $$ = MAKE_SYMBOL(ID_COMMA_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-COMMA_Q:
+Comma_Q:
       ID_COMMA_Q { $$ = MAKE_SYMBOL(ID_COMMA_Q, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-COMMA_V:
+Comma_V:
       ID_COMMA_V { $$ = MAKE_SYMBOL(ID_COMMA_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
