@@ -348,22 +348,22 @@ root:
     ;
 
 S:
-      NPX VPX                 { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
+      NPX VPX                    { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
     | PrepP_S Comma_Prep NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
-      NX                               { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // john
-    | DetP                             { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
-    | NX Comma_N DetP Comma_N          { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
-    | DetP Comma_N NX                  { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
-    | NX Comma_N GerundP_Inner Comma_V { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
-    | GerundP_Inner Comma_V NX         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
-    | NX PrepP_N                       { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
-    | NP Comma_QWord QWord_Pron VP Comma_QWord     { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
-    | NP Comma_QWord QWord_Pron NP VP Comma_QWord  { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
-    | Infin                            { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
-    | GerundP_Inner                    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
+      NX                                          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // john
+    | DetP                                        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
+    | NX Comma_N DetP Comma_N                     { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
+    | DetP Comma_N NX                             { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
+    | NX Comma_N GerundP_Inner Comma_V            { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
+    | GerundP_Inner Comma_V NX                    { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
+    | NX PrepP_N                                  { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
+    | NP Comma_QWord QWord_Pron VP Comma_QWord    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
+    | NP Comma_QWord QWord_Pron NP VP Comma_QWord { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
+    | Infin                                       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
+    | GerundP_Inner                               { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
     ;
 
 VP:

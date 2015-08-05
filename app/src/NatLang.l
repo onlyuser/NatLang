@@ -114,11 +114,11 @@ prep_spatial_order      "behind"|"before"|"after"|"beyond"|"around"|"between"
 prep_spatial            {prep_spatial_distance}|{prep_spatial_transition}|{prep_spatial_container}|{prep_spatial_vertical}|{prep_spatial_order}
 prep                    {prep_basic}|{prep_spatial}
 
-adv   "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
-modal "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
-det   "a"|"an"|"the"|{det_pron}
-detsuffix  "'s"
-conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"|"notwithstanding"
+adv       "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
+modal     "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
+det       "a"|"an"|"the"|{det_pron}
+detsuffix "'s"
+conj      "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"|"notwithstanding"
 
 suffix_n        "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
 suffix_v        "ate"|"ify"|"ize"|"ise"
