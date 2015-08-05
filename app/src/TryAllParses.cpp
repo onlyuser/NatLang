@@ -160,6 +160,7 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_g");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v_pp");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_a");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_r");
         if(found_match)
