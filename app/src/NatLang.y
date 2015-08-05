@@ -115,8 +115,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_AUX_DO:          return "Aux_Do";
         case ID_AUX_HAVE:        return "Aux_Have";
         case ID_COMMA_N:         return "Comma_N";
-        case ID_COMMA_P:         return "Comma_P";
-        case ID_COMMA_Q:         return "Comma_Q";
+        case ID_COMMA_PREP:         return "Comma_Prep";
+        case ID_COMMA_QWORD:         return "Comma_QWord";
         case ID_COMMA:           return "Comma";
         case ID_COMMA_V:         return "Comma_V";
         case ID_CONJ_ADJ:        return "Conj_Adj";
@@ -146,7 +146,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_PREPP_S:         return "PrepP_S";
         case ID_PREP:            return "Prep";
         case ID_PREP_S:          return "Prep_S";
-        case ID_Q_PRON:          return "Q_PRON";
+        case ID_QWORD_PRON:      return "QWord_Pron";
         case ID_S:               return "S";
         case ID_SX:              return "SX";
         case ID_TO:              return "To";
@@ -174,8 +174,8 @@ uint32_t name_to_id(std::string name)
     if(name == "Aux_Do")          return ID_AUX_DO;
     if(name == "Aux_Have")        return ID_AUX_HAVE;
     if(name == "Comma_N")         return ID_COMMA_N;
-    if(name == "Comma_P")         return ID_COMMA_P;
-    if(name == "Comma_Q")         return ID_COMMA_Q;
+    if(name == "Comma_Prep")         return ID_COMMA_PREP;
+    if(name == "Comma_QWord")         return ID_COMMA_QWORD;
     if(name == "Comma")           return ID_COMMA;
     if(name == "Comma_V")         return ID_COMMA_V;
     if(name == "Conj_Adj")        return ID_CONJ_ADJ;
@@ -207,7 +207,7 @@ uint32_t name_to_id(std::string name)
     if(name == "PrepP_S")         return ID_PREPP_S;
     if(name == "Prep")            return ID_PREP;
     if(name == "Prep_S")          return ID_PREP_S;
-    if(name == "Q_PRON")          return ID_Q_PRON;
+    if(name == "QWord_Pron")      return ID_QWORD_PRON;
     if(name == "$")               return ID_EOS;
     if(name == "S")               return ID_S;
     if(name == "SX")              return ID_SX;
@@ -308,8 +308,8 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Prep_N Prep_S
 
 // functional words
-%type<symbol_value> Det Det2 Aux_Be Aux_Do Aux_Have Modal To Q_pron EOS
-%type<symbol_value> Comma_P Comma_N Comma_Q Comma_V
+%type<symbol_value> Det Det2 Aux_Be Aux_Do Aux_Have Modal To QWord_Pron EOS
+%type<symbol_value> Comma_Prep Comma_N Comma_QWord Comma_V
 
 // ambiguous terminals
 %type<symbol_value> Conj_S Conj_NP Conj_VP Conj_Adj
@@ -325,9 +325,9 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_PREP_N ID_PREP_S
 
 // functional words
-%token<ident_value> ID_DET ID_DET2 ID_AUX_BE ID_AUX_DO ID_AUX_HAVE ID_MODAL ID_TO ID_Q_PRON ID_EOS
+%token<ident_value> ID_DET ID_DET2 ID_AUX_BE ID_AUX_DO ID_AUX_HAVE ID_MODAL ID_TO ID_QWORD_PRON ID_EOS
 %token<ident_value> ID_COMMA
-%token<ident_value> ID_COMMA_P ID_COMMA_N ID_COMMA_Q ID_COMMA_V
+%token<ident_value> ID_COMMA_PREP ID_COMMA_N ID_COMMA_QWORD ID_COMMA_V
 
 // ambiguous terminals
 %token<ident_value> ID_CONJ
@@ -349,7 +349,7 @@ root:
 
 S:
       NPX VPX                 { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
-    | PrepP_S Comma_P NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
+    | PrepP_S Comma_Prep NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
@@ -360,8 +360,8 @@ NP:
     | NX Comma_N GerundP_Inner Comma_V { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
     | GerundP_Inner Comma_V NX         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
     | NX PrepP_N                       { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
-    | NP Comma_Q Q_pron VP Comma_Q     { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
-    | NP Comma_Q Q_pron NP VP Comma_Q  { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
+    | NP Comma_QWord QWord_Pron VP Comma_QWord     { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
+    | NP Comma_QWord QWord_Pron NP VP Comma_QWord  { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
     | Infin                            { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
     | GerundP_Inner                    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
     ;
@@ -552,8 +552,8 @@ To:
       ID_TO { $$ = MAKE_SYMBOL(ID_TO, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // to
     ;
 
-Q_pron:
-      ID_Q_PRON { $$ = MAKE_SYMBOL(ID_Q_PRON, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // who/which/that
+QWord_Pron:
+      ID_QWORD_PRON { $$ = MAKE_SYMBOL(ID_QWORD_PRON, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // who/which/that
     ;
 
 EOS:
@@ -595,16 +595,16 @@ Adv_Adj:
       ID_ADV_ADJ { $$ = MAKE_SYMBOL(ID_ADV_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-Comma_P:
-      ID_COMMA_P { $$ = MAKE_SYMBOL(ID_COMMA_P, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Comma_Prep:
+      ID_COMMA_PREP { $$ = MAKE_SYMBOL(ID_COMMA_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Comma_N:
       ID_COMMA_N { $$ = MAKE_SYMBOL(ID_COMMA_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
-Comma_Q:
-      ID_COMMA_Q { $$ = MAKE_SYMBOL(ID_COMMA_Q, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Comma_QWord:
+      ID_COMMA_QWORD { $$ = MAKE_SYMBOL(ID_COMMA_QWORD, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Comma_V:

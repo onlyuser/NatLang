@@ -66,7 +66,7 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_N ST_ALT_V ST_ALT_PASTPART ST_ALT_ADJ ST_TO ST_MODAL ST_Q_PRON
+%x ST_ALT_N ST_ALT_V ST_ALT_PASTPART ST_ALT_ADJ ST_TO ST_MODAL ST_QWORD_PRON
 %x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_GERUND ST_ALT_SUFFIX_PASTPART ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
 
 ws        [ \t\n]+
@@ -87,7 +87,7 @@ noun_pron     "i"|"you"|"he"|"she"|"it"|"we"|"us"|"they"|"them"|"him"|"her"|{det
 noun_quantity "all"|"most"|"many"|"some"|"few"|"none"|"any"
 noun          {noun_pron}|{noun_quantity}
 
-q_pron "who"|"which"|"that"
+qword_pron "who"|"which"|"that"
 
 aux_be   "am"|"is"|"are"|"was"|"were"
 aux_do   "do"|"does"|"did"
@@ -139,15 +139,15 @@ suffix_adv      "ly"
  /*==========================================================================*/
  /* GROUPED STATE TRANSITIONS */
 
-"[]<"         { PUSH_STATE(ST_ALT); }
-"[n]<"        { PUSH_STATE(ST_ALT_N); }
-"[v]<"        { PUSH_STATE(ST_ALT_V); }
-"[pastpart]<" { PUSH_STATE(ST_ALT_PASTPART); }
-"[adj]<"      { PUSH_STATE(ST_ALT_ADJ); }
-"[to]<"       { PUSH_STATE(ST_TO); }
-"[modal]<"    { PUSH_STATE(ST_MODAL); }
-"[q_pron]<"   { PUSH_STATE(ST_Q_PRON); }
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_PASTPART,ST_ALT_ADJ,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
+"[]<"           { PUSH_STATE(ST_ALT); }
+"[n]<"          { PUSH_STATE(ST_ALT_N); }
+"[v]<"          { PUSH_STATE(ST_ALT_V); }
+"[pastpart]<"   { PUSH_STATE(ST_ALT_PASTPART); }
+"[adj]<"        { PUSH_STATE(ST_ALT_ADJ); }
+"[to]<"         { PUSH_STATE(ST_TO); }
+"[modal]<"      { PUSH_STATE(ST_MODAL); }
+"[qword_pron]<" { PUSH_STATE(ST_QWORD_PRON); }
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_PASTPART,ST_ALT_ADJ,ST_TO,ST_MODAL,ST_QWORD_PRON>">" { POP_STATE; }
 
  /*==========================================================================*/
  /* GROUPED STATEFUL LITERALS */
@@ -184,9 +184,9 @@ suffix_adv      "ly"
                 return ID_MODAL;
             }
 
-<ST_Q_PRON>{q_pron}{eow} {LOC;
+<ST_QWORD_PRON>{qword_pron}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_Q_PRON;
+                return ID_QWORD_PRON;
             }
 
  /*==========================================================================*/
@@ -245,7 +245,7 @@ suffix_adv      "ly"
  /*==========================================================================*/
  /* GROUPED STATE CATCH-ALL */
 
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_PASTPART,ST_ALT_ADJ,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_PASTPART,ST_ALT_ADJ,ST_TO,ST_MODAL,ST_QWORD_PRON>[^>] {LOC;
                 return 0;
             }
 

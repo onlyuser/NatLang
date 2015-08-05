@@ -156,7 +156,7 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adj");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "q_pron");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "qword_pron");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_gerund");
@@ -185,9 +185,9 @@ bool get_pos_values(
                     pos_values->push_back("Adv_PastPart");
                     pos_values->push_back("Adv_Adj");
                 } else if(*p == "Comma") {
-                    pos_values->push_back("Comma_P");
+                    pos_values->push_back("Comma_Prep");
                     pos_values->push_back("Comma_N");
-                    pos_values->push_back("Comma_Q");
+                    pos_values->push_back("Comma_QWord");
                     pos_values->push_back("Comma_V");
                 } else {
                     pos_values->push_back(*p);
