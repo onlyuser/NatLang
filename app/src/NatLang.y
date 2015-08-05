@@ -115,8 +115,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_AUX_DO:          return "Aux_Do";
         case ID_AUX_HAVE:        return "Aux_Have";
         case ID_COMMA_N:         return "Comma_N";
-        case ID_COMMA_PREP:         return "Comma_Prep";
-        case ID_COMMA_QWORD:         return "Comma_QWord";
+        case ID_COMMA_PREP:      return "Comma_Prep";
+        case ID_COMMA_QWORD:     return "Comma_QWord";
         case ID_COMMA:           return "Comma";
         case ID_COMMA_V:         return "Comma_V";
         case ID_CONJ_ADJ:        return "Conj_Adj";
@@ -124,8 +124,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_CONJ:            return "Conj";
         case ID_CONJ_S:          return "Conj_S";
         case ID_CONJ_VP:         return "Conj_VP";
-        case ID_DET2:            return "Det2";
-        case ID_DETP2:           return "DetP2";
+        case ID_DETSUFFIX:       return "DetSuffix";
+        case ID_DETSUFFIXP:      return "DetSuffixP";
         case ID_DETP:            return "DetP";
         case ID_DET:             return "Det";
         case ID_EOS:             return "$";
@@ -174,8 +174,8 @@ uint32_t name_to_id(std::string name)
     if(name == "Aux_Do")          return ID_AUX_DO;
     if(name == "Aux_Have")        return ID_AUX_HAVE;
     if(name == "Comma_N")         return ID_COMMA_N;
-    if(name == "Comma_Prep")         return ID_COMMA_PREP;
-    if(name == "Comma_QWord")         return ID_COMMA_QWORD;
+    if(name == "Comma_Prep")      return ID_COMMA_PREP;
+    if(name == "Comma_QWord")     return ID_COMMA_QWORD;
     if(name == "Comma")           return ID_COMMA;
     if(name == "Comma_V")         return ID_COMMA_V;
     if(name == "Conj_Adj")        return ID_CONJ_ADJ;
@@ -183,8 +183,8 @@ uint32_t name_to_id(std::string name)
     if(name == "Conj")            return ID_CONJ;
     if(name == "Conj_S")          return ID_CONJ_S;
     if(name == "Conj_VP")         return ID_CONJ_VP;
-    if(name == "Det2")            return ID_DET2;
-    if(name == "DetP2")           return ID_DETP2;
+    if(name == "DetSuffix")       return ID_DETSUFFIX;
+    if(name == "DetSuffixP")      return ID_DETSUFFIXP;
     if(name == "DetP")            return ID_DETP;
     if(name == "Det")             return ID_DET;
     if(name == "float")           return ID_FLOAT;
@@ -284,7 +284,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Infin VP_Inner GerundP_Inner PastPartP_Inner AdjP NX VX GerundX PastPartX AdjX
 
 // lists
-%type<symbol_value> SX NPX VPX AdjXX PrepP_N PrepP_S DetP DetP2
+%type<symbol_value> SX NPX VPX AdjXX PrepP_N PrepP_S DetP DetSuffixP
 
 //=============================================================================
 // non-terminal lvalue lexer IDs
@@ -297,7 +297,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_INFIN ID_VP_INNER ID_GERUNDP_INNER ID_PASTPARTP_INNER ID_ADJP ID_NX ID_VX ID_GERUNDX ID_PASTPARTX ID_ADJX
 
 // lists
-%nonassoc ID_SX ID_NPX ID_VPX ID_ADJXX ID_PREPP_N ID_PREPP_S ID_DETP ID_DETP2
+%nonassoc ID_SX ID_NPX ID_VPX ID_ADJXX ID_PREPP_N ID_PREPP_S ID_DETP ID_DETSUFFIXP
 
 //=============================================================================
 // terminal lvalues
@@ -308,7 +308,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> Prep_N Prep_S
 
 // functional words
-%type<symbol_value> Det Det2 Aux_Be Aux_Do Aux_Have Modal To QWord_Pron EOS
+%type<symbol_value> Det DetSuffix Aux_Be Aux_Do Aux_Have Modal To QWord_Pron EOS
 %type<symbol_value> Comma_Prep Comma_N Comma_QWord Comma_V
 
 // ambiguous terminals
@@ -325,7 +325,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_PREP_N ID_PREP_S
 
 // functional words
-%token<ident_value> ID_DET ID_DET2 ID_AUX_BE ID_AUX_DO ID_AUX_HAVE ID_MODAL ID_TO ID_QWORD_PRON ID_EOS
+%token<ident_value> ID_DET ID_DETSUFFIX ID_AUX_BE ID_AUX_DO ID_AUX_HAVE ID_MODAL ID_TO ID_QWORD_PRON ID_EOS
 %token<ident_value> ID_COMMA
 %token<ident_value> ID_COMMA_PREP ID_COMMA_N ID_COMMA_QWORD ID_COMMA_V
 
@@ -478,14 +478,14 @@ PrepP_S:
     ;
 
 DetP:
-      Det NX       { $$ = MAKE_SYMBOL(ID_DETP, @$, 2, $1, $2); }     // the man
-    | Det NX DetP2 { $$ = MAKE_SYMBOL(ID_DETP, @$, 3, $1, $2, $3); } // the man's wife
-    | NX DetP2     { $$ = MAKE_SYMBOL(ID_DETP, @$, 2, $1, $2); }     // john's wife
+      Det NX            { $$ = MAKE_SYMBOL(ID_DETP, @$, 2, $1, $2); }     // the man
+    | Det NX DetSuffixP { $$ = MAKE_SYMBOL(ID_DETP, @$, 3, $1, $2, $3); } // the man's wife
+    | NX DetSuffixP     { $$ = MAKE_SYMBOL(ID_DETP, @$, 2, $1, $2); }     // john's wife
     ;
 
-DetP2:
-      Det2 NX       { $$ = MAKE_SYMBOL(ID_DETP2, @$, 2, $1, $2); }     // 's wife
-    | Det2 NX DetP2 { $$ = MAKE_SYMBOL(ID_DETP2, @$, 3, $1, $2, $3); } // 's wife's sister
+DetSuffixP:
+      DetSuffix NX            { $$ = MAKE_SYMBOL(ID_DETSUFFIXP, @$, 2, $1, $2); }     // 's wife
+    | DetSuffix NX DetSuffixP { $$ = MAKE_SYMBOL(ID_DETSUFFIXP, @$, 3, $1, $2, $3); } // 's wife's sister
     ;
 
 //=============================================================================
@@ -528,8 +528,8 @@ Det:
       ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // the
     ;
 
-Det2:
-      ID_DET2 { $$ = MAKE_SYMBOL(ID_DET2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // 's
+DetSuffix:
+      ID_DETSUFFIX { $$ = MAKE_SYMBOL(ID_DETSUFFIX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // 's
     ;
 
 Aux_Be:

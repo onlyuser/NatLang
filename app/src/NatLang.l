@@ -117,7 +117,7 @@ prep                    {prep_basic}|{prep_spatial}
 adv   "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
 modal "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
 det   "a"|"an"|"the"|{det_pron}
-det2  "'s"
+detsuffix  "'s"
 conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"|"notwithstanding"
 
 suffix_n        "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
@@ -222,9 +222,9 @@ suffix_adv      "ly"
                 return ID_DET;
             }
 
-<ST_ALT>{det2}{eow} {LOC;
+<ST_ALT>{detsuffix}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_DET2;
+                return ID_DETSUFFIX;
             }
 
 <ST_ALT>{conj}{eow} {LOC;
