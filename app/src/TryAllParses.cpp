@@ -55,7 +55,7 @@ bool get_pos_values_from_wordnet(
     pos_value_faml_tuples_t pos_value_faml_tuples;
     bool found_match = false;
     const char* wordnet_faml_types[] = {"n", "v", "a", "r"};
-    const char* pos_values_arr[]     = {"N", "V", "A", "R"};
+    const char* pos_values_arr[]     = {"N", "V", "Adj", "Adv"};
     for(int i = 0; i<4; i++)
     {
         std::string wordnet_stdout =
@@ -135,10 +135,10 @@ bool get_pos_values(
                 if(unique_pos_values.find(*q) != unique_pos_values.end())
                     continue;
                 unique_pos_values.insert(*q);
-                if(*q == "R") {
-                    pos_values->push_back("R_V");
-                    pos_values->push_back("R_G");
-                    pos_values->push_back("R_A");
+                if(*q == "Adv") {
+                    pos_values->push_back("Adv_V");
+                    pos_values->push_back("Adv_Gerund");
+                    pos_values->push_back("Adv_Adj");
                 } else {
                     pos_values->push_back(*q);
                 }
@@ -152,17 +152,17 @@ bool get_pos_values(
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer);
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "v_pp");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "a");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "pastpart");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "adj");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "to");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "modal");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "q_pron");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_n");
         found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_g");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_v_pp");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_a");
-        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_r");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_gerund");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_pastpart");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_adj");
+        found_match |= get_pos_values_from_lexer(word, &pos_values_from_lexer, "suffix_adv");
         if(found_match)
         {
             for(auto p = pos_values_from_lexer.begin(); p != pos_values_from_lexer.end(); p++)
@@ -171,19 +171,19 @@ bool get_pos_values(
                     continue;
                 unique_pos_values.insert(*p);
                 // consider conjugations at the S/NP/VP/A level
-                if(*p == "C") {
-                    pos_values->push_back("C_NP");
-                    pos_values->push_back("C_VP");
-                    pos_values->push_back("C_S");
-                    pos_values->push_back("C_A");
-                } else if(*p == "P") {
-                    pos_values->push_back("P_N");
-                    pos_values->push_back("P_S");
-                } else if(*p == "R") {
-                    pos_values->push_back("R_V");
-                    pos_values->push_back("R_G");
-                    pos_values->push_back("R_VPP");
-                    pos_values->push_back("R_A");
+                if(*p == "Conj") {
+                    pos_values->push_back("Conj_NP");
+                    pos_values->push_back("Conj_VP");
+                    pos_values->push_back("Conj_S");
+                    pos_values->push_back("Conj_Adj");
+                } else if(*p == "Prep") {
+                    pos_values->push_back("Prep_N");
+                    pos_values->push_back("Prep_S");
+                } else if(*p == "Adv") {
+                    pos_values->push_back("Adv_V");
+                    pos_values->push_back("Adv_Gerund");
+                    pos_values->push_back("Adv_PastPart");
+                    pos_values->push_back("Adv_Adj");
                 } else if(*p == "Comma") {
                     pos_values->push_back("Comma_P");
                     pos_values->push_back("Comma_N");

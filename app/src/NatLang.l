@@ -66,8 +66,8 @@ void begin_token(yyscan_t yyscanner, size_t length);
 %option reentrant bison-bridge bison-locations
 %option stack
 %x ST_ALT
-%x ST_ALT_N ST_ALT_V ST_ALT_V_PP ST_ALT_A ST_TO ST_MODAL ST_Q_PRON
-%x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_G ST_ALT_SUFFIX_V_PP ST_ALT_SUFFIX_A ST_ALT_SUFFIX_R
+%x ST_ALT_N ST_ALT_V ST_ALT_PASTPART ST_ALT_ADJ ST_TO ST_MODAL ST_Q_PRON
+%x ST_ALT_SUFFIX_N ST_ALT_SUFFIX_V ST_ALT_SUFFIX_GERUND ST_ALT_SUFFIX_PASTPART ST_ALT_SUFFIX_ADJ ST_ALT_SUFFIX_ADV
 
 ws        [ \t\n]+
 lit_char  [,()+\-*/^=]
@@ -78,7 +78,7 @@ lit_ident {id}+({digit}|{id})*
 lit_int   {digit}+
 lit_float {digit}*[.]{digit}+
 
-eow       {ws}
+eow {ws}
 
 pos_pron "my"|"your"|"our"|"his"|"her"|"their"
 det_pron "this"|"that"|"these"|"those"|{pos_pron}
@@ -103,7 +103,7 @@ verb_communicate "said"|"told"|"spoke"|"listened"
 verb_commerce    "bought"|"sold"|"rented"
 verb             {verb_basic}|{verb_life}|{verb_motion}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
 
-verb_pp "been"|"done"|"had"
+pastpart "been"|"done"|"had"
 
 prep_basic              "to"|"from"|"of"|"for"|"in"|"on"|"at"|"by"|"as"|"than"|"about"
 prep_spatial_distance   "near"|"far"
@@ -120,12 +120,12 @@ det   "a"|"an"|"the"|{det_pron}
 det2  "'s"
 conj  "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"|"notwithstanding"
 
-suffix_n    "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
-suffix_v    "ate"|"ify"|"ize"|"ise"
-suffix_g    "ing"
-suffix_v_pp "en"|"ought"|"aught"
-suffix_a    "er"|"able"|"al"|"ful"|"ous"
-suffix_r    "ly"
+suffix_n        "age"|"er"|"ian"|"ion"|"ist"|"ment"|"or"|"ty"|"ism"
+suffix_v        "ate"|"ify"|"ize"|"ise"
+suffix_gerund   "ing"
+suffix_pastpart "en"|"ought"|"aught"
+suffix_adj      "er"|"able"|"al"|"ful"|"ous"
+suffix_adv      "ly"
 
 %%
 
@@ -139,15 +139,15 @@ suffix_r    "ly"
  /*==========================================================================*/
  /* GROUPED STATE TRANSITIONS */
 
-"[]<"       { PUSH_STATE(ST_ALT); }
-"[n]<"      { PUSH_STATE(ST_ALT_N); }
-"[v]<"      { PUSH_STATE(ST_ALT_V); }
-"[v_pp]<"   { PUSH_STATE(ST_ALT_V_PP); }
-"[a]<"      { PUSH_STATE(ST_ALT_A); }
-"[to]<"     { PUSH_STATE(ST_TO); }
-"[modal]<"  { PUSH_STATE(ST_MODAL); }
-"[q_pron]<" { PUSH_STATE(ST_Q_PRON); }
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_V_PP,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
+"[]<"         { PUSH_STATE(ST_ALT); }
+"[n]<"        { PUSH_STATE(ST_ALT_N); }
+"[v]<"        { PUSH_STATE(ST_ALT_V); }
+"[pastpart]<" { PUSH_STATE(ST_ALT_PASTPART); }
+"[adj]<"      { PUSH_STATE(ST_ALT_ADJ); }
+"[to]<"       { PUSH_STATE(ST_TO); }
+"[modal]<"    { PUSH_STATE(ST_MODAL); }
+"[q_pron]<"   { PUSH_STATE(ST_Q_PRON); }
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_PASTPART,ST_ALT_ADJ,ST_TO,ST_MODAL,ST_Q_PRON>">" { POP_STATE; }
 
  /*==========================================================================*/
  /* GROUPED STATEFUL LITERALS */
@@ -162,15 +162,15 @@ suffix_r    "ly"
                 return ID_V;
             }
 
-<ST_ALT_V_PP>{verb_pp}{eow} {LOC;
+<ST_ALT_PASTPART>{pastpart}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_V_PP;
+                return ID_PASTPART;
             }
 
  /*
-<ST_ALT_A>{adj}{eow} {LOC;
+<ST_ALT_ADJ>{adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_A;
+                return ID_ADJ;
             }
  */
 
@@ -194,12 +194,12 @@ suffix_r    "ly"
 
 <ST_ALT>{adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_R;
+                return ID_ADV;
             }
 
 <ST_ALT>{prep}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_P;
+                return ID_PREP;
             }
 
 <ST_ALT>{aux_be}{eow} {LOC;
@@ -219,17 +219,17 @@ suffix_r    "ly"
 
 <ST_ALT>{det}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_D;
+                return ID_DET;
             }
 
 <ST_ALT>{det2}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_D2;
+                return ID_DET2;
             }
 
 <ST_ALT>{conj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_C;
+                return ID_CONJ;
             }
 
 <ST_ALT>[.] {LOC;
@@ -245,20 +245,20 @@ suffix_r    "ly"
  /*==========================================================================*/
  /* GROUPED STATE CATCH-ALL */
 
-<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_V_PP,ST_ALT_A,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
+<ST_ALT,ST_ALT_N,ST_ALT_V,ST_ALT_PASTPART,ST_ALT_ADJ,ST_TO,ST_MODAL,ST_Q_PRON>[^>] {LOC;
                 return 0;
             }
 
  /*==========================================================================*/
  /* SUFFIX STATE TRANSITIONS */
 
-"[suffix_n]<"    { PUSH_STATE(ST_ALT_SUFFIX_N); }
-"[suffix_v]<"    { PUSH_STATE(ST_ALT_SUFFIX_V); }
-"[suffix_g]<"    { PUSH_STATE(ST_ALT_SUFFIX_G); }
-"[suffix_v_pp]<" { PUSH_STATE(ST_ALT_SUFFIX_V_PP); }
-"[suffix_a]<"    { PUSH_STATE(ST_ALT_SUFFIX_A); }
-"[suffix_r]<"    { PUSH_STATE(ST_ALT_SUFFIX_R); }
-<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_G,ST_ALT_SUFFIX_V_PP,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>">" { POP_STATE; }
+"[suffix_n]<"        { PUSH_STATE(ST_ALT_SUFFIX_N); }
+"[suffix_v]<"        { PUSH_STATE(ST_ALT_SUFFIX_V); }
+"[suffix_gerund]<"   { PUSH_STATE(ST_ALT_SUFFIX_GERUND); }
+"[suffix_pastpart]<" { PUSH_STATE(ST_ALT_SUFFIX_PASTPART); }
+"[suffix_adj]<"      { PUSH_STATE(ST_ALT_SUFFIX_ADJ); }
+"[suffix_adv]<"      { PUSH_STATE(ST_ALT_SUFFIX_ADV); }
+<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_GERUND,ST_ALT_SUFFIX_PASTPART,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>">" { POP_STATE; }
 
  /*==========================================================================*/
  /* SUFFIX STATEFUL LITERALS */
@@ -273,30 +273,30 @@ suffix_r    "ly"
                 return ID_V;
             }
 
-<ST_ALT_SUFFIX_G>[^>]+{suffix_g}{eow} {LOC;
+<ST_ALT_SUFFIX_GERUND>[^>]+{suffix_gerund}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_G;
+                return ID_GERUND;
             }
 
-<ST_ALT_SUFFIX_V_PP>[^>]+{suffix_v_pp}{eow} {LOC;
+<ST_ALT_SUFFIX_PASTPART>[^>]+{suffix_pastpart}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_V_PP;
+                return ID_PASTPART;
             }
 
-<ST_ALT_SUFFIX_A>[^>]+{suffix_a}{eow} {LOC;
+<ST_ALT_SUFFIX_ADJ>[^>]+{suffix_adj}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_A;
+                return ID_ADJ;
             }
 
-<ST_ALT_SUFFIX_R>[^>]+{suffix_r}{eow} {LOC;
+<ST_ALT_SUFFIX_ADV>[^>]+{suffix_adv}{eow} {LOC;
                 LVAL.ident_value = TREE_CONTEXT.alloc_unique_string(yytext);
-                return ID_R;
+                return ID_ADV;
             }
 
  /*==========================================================================*/
  /* SUFFIX STATE CATCH-ALL */
 
-<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_G,ST_ALT_SUFFIX_V_PP,ST_ALT_SUFFIX_A,ST_ALT_SUFFIX_R>[^>] {LOC;
+<ST_ALT_SUFFIX_N,ST_ALT_SUFFIX_V,ST_ALT_SUFFIX_GERUND,ST_ALT_SUFFIX_PASTPART,ST_ALT_SUFFIX_ADJ,ST_ALT_SUFFIX_ADV>[^>] {LOC;
                 return 0;
             }
 
