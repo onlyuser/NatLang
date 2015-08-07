@@ -96,7 +96,7 @@ aux      {aux_be}|{aux_do}|{aux_have}
 
 verb_basic       {aux}|"made"|"chose"|"selected"
 verb_life        "ate"|"slept"|"washed"
-verb_motion      "moved"|"stayed"|"came"|"went"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"|"dug"
+verb_motion      "moved"|"stayed"|"came"|"went"|"left"|"gone"|"arrived"|"departed"|"walked"|"ran"|"flew"|"swam"|"crawled"|"dug"
 verb_ownership   "gave"|"took"|"lent"|"borrowed"|"lost"|"found"
 verb_container   "opened"|"closed"
 verb_communicate "said"|"told"|"spoke"|"listened"

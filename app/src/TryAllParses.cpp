@@ -186,6 +186,7 @@ bool get_pos_values(
                     pos_values->push_back("Adv_Adj");
                 } else if(*p == "Comma") {
                     pos_values->push_back("Comma_Prep");
+                    pos_values->push_back("Comma_Prep2");
                     pos_values->push_back("Comma_N");
                     pos_values->push_back("Comma_QWord");
                     pos_values->push_back("Comma_V");

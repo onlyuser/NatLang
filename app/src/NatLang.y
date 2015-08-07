@@ -116,6 +116,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_AUX_HAVE:         return "Aux_Have";
         case ID_COMMA_N:          return "Comma_N";
         case ID_COMMA_PREP:       return "Comma_Prep";
+        case ID_COMMA_PREP2:      return "Comma_Prep2";
         case ID_COMMA_QWORD:      return "Comma_QWord";
         case ID_COMMA:            return "Comma";
         case ID_COMMA_V:          return "Comma_V";
@@ -175,6 +176,7 @@ uint32_t name_to_id(std::string name)
     if(name == "Aux_Have")         return ID_AUX_HAVE;
     if(name == "Comma_N")          return ID_COMMA_N;
     if(name == "Comma_Prep")       return ID_COMMA_PREP;
+    if(name == "Comma_Prep2")      return ID_COMMA_PREP2;
     if(name == "Comma_QWord")      return ID_COMMA_QWORD;
     if(name == "Comma")            return ID_COMMA;
     if(name == "Comma_V")          return ID_COMMA_V;
@@ -309,7 +311,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // functional words
 %type<symbol_value> Det DetSuffix Aux_Be Aux_Do Aux_Have Modal To QWord_Pron EOS
-%type<symbol_value> Comma_Prep Comma_N Comma_QWord Comma_V
+%type<symbol_value> Comma_Prep Comma_Prep2 Comma_N Comma_QWord Comma_V
 
 // ambiguous terminals
 %type<symbol_value> Conj_S Conj_NP Conj_VP Conj_Adj
@@ -327,7 +329,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // functional words
 %token<ident_value> ID_DET ID_DETSUFFIX ID_AUX_BE ID_AUX_DO ID_AUX_HAVE ID_MODAL ID_TO ID_QWORD_PRON ID_EOS
 %token<ident_value> ID_COMMA
-%token<ident_value> ID_COMMA_PREP ID_COMMA_N ID_COMMA_QWORD ID_COMMA_V
+%token<ident_value> ID_COMMA_PREP ID_COMMA_PREP2 ID_COMMA_N ID_COMMA_QWORD ID_COMMA_V
 
 // ambiguous terminals
 %token<ident_value> ID_CONJ
@@ -357,9 +359,10 @@ NP:
     | DetX                                        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
     | NX Comma_N DetX Comma_N                     { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
     | DetX Comma_N NX                             { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
-    | NX Comma_N GerundXX Comma_V                 { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
-    | GerundXX Comma_V NX                         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
-    | NX PrepX_N                                  { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
+    | NP Comma_N GerundXX Comma_V                 { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
+    | GerundXX Comma_V NP                         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
+    | NP PrepX_N                                  { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
+    | NP Comma_Prep2 PrepX_N Comma_Prep           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, from work,
     | NP Comma_QWord QWord_Pron VP Comma_QWord    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
     | NP Comma_QWord QWord_Pron NP VP Comma_QWord { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
     | Infin                                       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
@@ -370,7 +373,7 @@ VP:
       VXX                 { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // bring it
     | Aux_Be GerundXX     { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is bringing it
     | Aux_Do VXX          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // do bring it
-    | Aux_Have PastPartXX { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // have been here
+    | Aux_Have PastPartXX { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // has brought it
     | Modal VP            { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // could bring it
     ;
 
@@ -594,6 +597,10 @@ Adv_Adj:
 
 Comma_Prep:
       ID_COMMA_PREP { $$ = MAKE_SYMBOL(ID_COMMA_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+Comma_Prep2:
+      ID_COMMA_PREP2 { $$ = MAKE_SYMBOL(ID_COMMA_PREP2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Comma_N:
