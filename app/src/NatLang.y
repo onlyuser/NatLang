@@ -359,8 +359,8 @@ NP:
     | DetX                                        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
     | NX Comma_N DetX Comma_N                     { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
     | DetX Comma_N NX                             { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
-    | NP Comma_N GerundXX Comma_V                 { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
-    | GerundXX Comma_V NP                         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
+    | NX Comma_N GerundXX Comma_V                 { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
+    | GerundXX Comma_V NX                         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
     | NP PrepX_N                                  { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
     | NP Comma_Prep2 PrepX_N Comma_Prep           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, from work,
     | NP Comma_QWord QWord_Pron VP Comma_QWord    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
