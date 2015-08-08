@@ -67,7 +67,7 @@ Strategy for Eliminating Grammar Ambiguity
 ------------------------------------------
 
 English is a non-context-free language.
-This means the same word used in different contexts can have different meanings.
+That means the same word used in different contexts can have different meanings.
 But Yacc cannot interpret the same lexer terminal differently if it is represented using the same lexer terminal ID.
 When this happens, it is necessary to split ambiguous terminals.
 
@@ -75,7 +75,7 @@ It works as follows:
 
 1. Identify lexer terminal with ambiguous meaning.
 2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign to each use case a different lexer terminal ID.
-3. For each lexer terminal use case, take advantage of stateful lexing to return a different lexer terminal ID when recognizing the same lexer terminal.
+3. Take advantage of stateful lexing to return a different lexer terminal ID for the same lexer terminal.
 
 For example:
 
