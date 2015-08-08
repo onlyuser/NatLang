@@ -109,6 +109,7 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_ADV_ADJ:          return "Adv_Adj";
         case ID_ADV_GERUND:       return "Adv_Gerund";
         case ID_ADV_PASTPART:     return "Adv_PastPart";
+        case ID_ADV_PREP:         return "Adv_Prep";
         case ID_ADV:              return "Adv";
         case ID_ADV_V:            return "Adv_V";
         case ID_AUX_BE:           return "Aux_Be";
@@ -143,7 +144,9 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_PASTPARTX:        return "PastPartX";
         case ID_PASTPART:         return "PastPart";
         case ID_PREP_N:           return "Prep_N";
+        case ID_PREPXX_N:         return "PrepXX_N";
         case ID_PREPX_N:          return "PrepX_N";
+        case ID_PREPXX_S:         return "PrepXX_S";
         case ID_PREPX_S:          return "PrepX_S";
         case ID_PREP:             return "Prep";
         case ID_PREP_S:           return "Prep_S";
@@ -169,6 +172,7 @@ uint32_t name_to_id(std::string name)
     if(name == "Adv_Adj")          return ID_ADV_ADJ;
     if(name == "Adv_Gerund")       return ID_ADV_GERUND;
     if(name == "Adv_PastPart")     return ID_ADV_PASTPART;
+    if(name == "Adv_Prep")         return ID_ADV_PREP;
     if(name == "Adv")              return ID_ADV;
     if(name == "Adv_V")            return ID_ADV_V;
     if(name == "Aux_Be")           return ID_AUX_BE;
@@ -205,7 +209,9 @@ uint32_t name_to_id(std::string name)
     if(name == "PastPartX")        return ID_PASTPARTX;
     if(name == "PastPart")         return ID_PASTPART;
     if(name == "Prep_N")           return ID_PREP_N;
+    if(name == "PrepXX_N")         return ID_PREPXX_N;
     if(name == "PrepX_N")          return ID_PREPX_N;
+    if(name == "PrepXX_S")         return ID_PREPXX_S;
     if(name == "PrepX_S")          return ID_PREPX_S;
     if(name == "Prep")             return ID_PREP;
     if(name == "Prep_S")           return ID_PREP_S;
@@ -283,10 +289,10 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %type<symbol_value> S NP VP
 
 // local constructs
-%type<symbol_value> Infin VX GerundX PastPartX VXX GerundXX PastPartXX AdjXXX NX AdjX
+%type<symbol_value> Infin VX GerundX GerundXX PastPartX VXX PastPartXX AdjXXX NX AdjX
 
 // lists
-%type<symbol_value> SX NPX VPX AdjXX PrepX_N PrepX_S DetX DetSuffixX
+%type<symbol_value> SX NPX VPX AdjXX PrepX_N PrepXX_N PrepX_S PrepXX_S DetX DetSuffixX
 
 //=============================================================================
 // non-terminal lvalue lexer IDs
@@ -296,10 +302,10 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %nonassoc ID_S ID_NP ID_VP
 
 // local constructs
-%nonassoc ID_INFIN ID_VX ID_GERUNDPX ID_PASTPARTX ID_VXX ID_GERUNDXX ID_PASTPARTXX ID_ADJXXX ID_NX ID_ADJX
+%nonassoc ID_INFIN ID_VX ID_GERUNDPX ID_GERUNDXX ID_PASTPARTX ID_VXX ID_PASTPARTXX ID_ADJXXX ID_NX ID_ADJX
 
 // lists
-%nonassoc ID_SX ID_NPX ID_VPX ID_ADJXX ID_PREPX_N ID_PREPX_S ID_DETX ID_DETSUFFIXX
+%nonassoc ID_SX ID_NPX ID_VPX ID_ADJXX ID_PREPX_N ID_PREPXX_N ID_PREPX_S ID_PREPXX_S ID_DETX ID_DETSUFFIXX
 
 //=============================================================================
 // terminal lvalues
@@ -315,7 +321,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // ambiguous terminals
 %type<symbol_value> Conj_S Conj_NP Conj_VP Conj_Adj
-%type<symbol_value> Adv_V Adv_Gerund Adv_PastPart Adv_Adj
+%type<symbol_value> Adv_V Adv_Gerund Adv_PastPart Adv_Prep Adv_Adj
 
 //=============================================================================
 // terminal rvalues
@@ -335,7 +341,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 %token<ident_value> ID_CONJ
 %token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_ADJ
 %token<ident_value> ID_ADV
-%token<ident_value> ID_ADV_V ID_ADV_GERUND ID_ADV_PASTPART ID_ADV_ADJ
+%token<ident_value> ID_ADV_V ID_ADV_GERUND ID_ADV_PASTPART ID_ADV_PREP ID_ADV_ADJ
 
 %%
 
@@ -350,8 +356,8 @@ root:
     ;
 
 S:
-      NPX VPX                    { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
-    | PrepX_S Comma_Prep NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
+      NPX VPX                     { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
+    | PrepXX_S Comma_Prep NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
@@ -405,7 +411,7 @@ VX:
     | V NPX NPX     { $$ = MAKE_SYMBOL(ID_VX, @$, 3, $1, $2, $3); } // bring me it
     | V NPX PrepX_N { $$ = MAKE_SYMBOL(ID_VX, @$, 3, $1, $2, $3); } // bring it to me
     | V AdjXXX      { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // be mad about you
-    | V PrepX_N     { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // beat around the bush
+    | V PrepXX_N    { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // beat around the bush
     | V AdjXX       { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // be happy
     ;
 
@@ -415,7 +421,7 @@ GerundX:
     | Gerund NPX NPX     { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 3, $1, $2, $3); } // bringing me it
     | Gerund NPX PrepX_N { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 3, $1, $2, $3); } // bringing it to me
     | Gerund AdjXXX      { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // being mad about you
-    | Gerund PrepX_N     { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // beating around the bush
+    | Gerund PrepXX_N    { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // beating around the bush
     | Gerund AdjXX       { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // being happy
     ;
 
@@ -425,7 +431,7 @@ PastPartX:
     | PastPart NPX NPX     { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 3, $1, $2, $3); } // brought me it
     | PastPart NPX PrepX_N { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 3, $1, $2, $3); } // brought it to me
     | PastPart AdjXXX      { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // been mad about you
-    | PastPart PrepX_N     { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // beaten around the bush
+    | PastPart PrepXX_N    { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // beaten around the bush
     | PastPart AdjXX       { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // been happy
     ;
 
@@ -465,6 +471,16 @@ AdjXX:
       AdjX                 { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 1, $1); }         // big
     | AdjXX AdjXX          { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 2, $1, $2); }     // big red
     | AdjXX Conj_Adj AdjXX { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 3, $1, $2, $3); } // big and red
+    ;
+
+PrepXX_N:
+      PrepX_N          { $$ = MAKE_SYMBOL(ID_PREPXX_N, @$, 1, $1); }     // from here
+    | Adv_Prep PrepX_N { $$ = MAKE_SYMBOL(ID_PREPXX_N, @$, 2, $1, $2); } // not from here
+    ;
+
+PrepXX_S:
+      PrepX_S          { $$ = MAKE_SYMBOL(ID_PREPXX_S, @$, 1, $1); }     // from here
+    | Adv_Prep PrepX_S { $$ = MAKE_SYMBOL(ID_PREPXX_S, @$, 2, $1, $2); } // not from here
     ;
 
 PrepX_N:
@@ -593,6 +609,10 @@ Adv_PastPart:
 
 Adv_Adj:
       ID_ADV_ADJ { $$ = MAKE_SYMBOL(ID_ADV_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+    ;
+
+Adv_Prep:
+      ID_ADV_PREP { $$ = MAKE_SYMBOL(ID_ADV_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 Comma_Prep:
