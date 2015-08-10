@@ -1,5 +1,5 @@
 /* NatLang
- * -- A parser framework for natural language processing
+ * -- An English parser with an extensible grammar
  * Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
