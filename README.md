@@ -75,7 +75,7 @@ It works as follows:
 
 1. Identify lexer terminal with ambiguous meaning.
 2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign to each use case a different lexer terminal ID.
-3. Take advantage of stateful lexing to return a different lexer terminal ID for the same lexer terminal.
+3. Take advantage of stateful lexing to return a different lexer terminal ID for the same lexer terminal while in different lexer states.
 
 For example:
 
