@@ -71,11 +71,11 @@ That means the same word used in different contexts can have different meanings.
 But Yacc cannot interpret the same lexer terminal differently if it is represented using the same lexer terminal ID.
 When this happens, it is necessary to split ambiguous terminals.
 
-It works as follows:
+To do so:
 
 1. Identify lexer terminal with ambiguous meaning.
 2. Identify parser rules that use the lexer terminals with ambiguous meaning, and assign to each use case a different lexer terminal ID.
-3. Take advantage of stateful lexing to return a different lexer terminal ID for the same lexer terminal while in different lexer states.
+3. Take advantage of stateful lexing to return a different lexer terminal ID for the same lexer terminal.
 
 For example:
 
@@ -162,7 +162,7 @@ Limitations
 
 * Only supports English.
 * Only supports present, present progressive, and past tense statements in the active voice (for now).
-* WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer for these words.
+* WordNet doesn't provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer for some words.
 * A brute force algorithm tries all possibilities. This is slow for long sentences.
 * BNF rules are suitable for specifying constituent-based phrase structure grammars, but are a poor fit for expressing non-local dependencies.
 
