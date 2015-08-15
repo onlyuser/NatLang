@@ -62,6 +62,9 @@ the quick brown fox jumps over the lazy dog
 output:
 
 ![picture alt](https://sites.google.com/site/onlyuser/files/ast_fox_all.png "ast_for_all")
+
+best solution (human selected):
+
 ![picture alt](https://sites.google.com/site/onlyuser/files/ast_fox.png "ast_fox")
 
 Strategy for Eliminating Grammar Ambiguity
