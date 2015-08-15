@@ -63,7 +63,7 @@ output:
 
 ![picture alt](https://sites.google.com/site/onlyuser/files/ast_fox_all.png "ast_for_all")
 
-best solution (human selected):
+best solution (5th tree from left to right):
 
 ![picture alt](https://sites.google.com/site/onlyuser/files/ast_fox.png "ast_fox")
 
