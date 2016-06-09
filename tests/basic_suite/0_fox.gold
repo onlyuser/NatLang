@@ -1,39 +1,37 @@
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
             (N
-                (Adj
-                    quick
-                )
-                (Noun
-                    brown
-                )
+                quick
             )
         )
-        (VP
-            (Verb
+        (VX
+            (V
+                brown
+            )
+            (N
                 fox
             )
             (NP
-                (Noun
+                (N
                     jumps
                 )
-                (PP
-                    (Prep
+                (PrepX_N
+                    (Prep_N
                         over
                     )
-                    (NP
+                    (DetX
                         (Det
                             the
                         )
-                        (N
+                        (NX
                             (Adj
                                 lazy
                             )
-                            (Noun
+                            (N
                                 dog
                             )
                         )
@@ -43,41 +41,131 @@
         )
     )
 )
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (N
+            (NX
                 (Adj
                     quick
                 )
-                (Noun
+                (N
                     brown
                 )
             )
         )
-        (VP
-            (Verb
+        (VX
+            (V
                 fox
             )
-            (Noun
+            (NP
+                (N
+                    jumps
+                )
+                (PrepX_N
+                    (Prep_N
+                        over
+                    )
+                    (DetX
+                        (Det
+                            the
+                        )
+                        (NX
+                            (Adj
+                                lazy
+                            )
+                            (N
+                                dog
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+(SX
+    (S
+        (DetX
+            (Det
+                the
+            )
+            (NX
+                (AdjXX
+                    (Adj
+                        quick
+                    )
+                    (Adj
+                        brown
+                    )
+                )
+                (N
+                    fox
+                )
+            )
+        )
+        (VX
+            (V
                 jumps
             )
-            (PP_VP
-                (Prep_VP
+            (N
+                over
+            )
+            (DetX
+                (Det
+                    the
+                )
+                (NX
+                    (Adj
+                        lazy
+                    )
+                    (N
+                        dog
+                    )
+                )
+            )
+        )
+    )
+)
+(SX
+    (S
+        (DetX
+            (Det
+                the
+            )
+            (NX
+                (AdjXX
+                    (Adj
+                        quick
+                    )
+                    (Adj
+                        brown
+                    )
+                )
+                (N
+                    fox
+                )
+            )
+        )
+        (VX
+            (V
+                jumps
+            )
+            (PrepX_N
+                (Prep_N
                     over
                 )
-                (NP
+                (DetX
                     (Det
                         the
                     )
-                    (N
+                    (NX
                         (Adj
                             lazy
                         )
-                        (Noun
+                        (N
                             dog
                         )
                     )
@@ -86,88 +174,86 @@
         )
     )
 )
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (N
-                (A'
-                    (Adj
+            (NX
+                (AdjX
+                    (Adv_Adj
                         quick
                     )
                     (Adj
                         brown
                     )
                 )
-                (Noun
+                (N
                     fox
                 )
             )
         )
-        (VP
-            (Verb
+        (VX
+            (V
                 jumps
             )
-            (PP_VP
-                (Prep_VP
-                    over
+            (N
+                over
+            )
+            (DetX
+                (Det
+                    the
                 )
-                (NP
-                    (Det
-                        the
+                (NX
+                    (Adj
+                        lazy
                     )
                     (N
-                        (Adj
-                            lazy
-                        )
-                        (Noun
-                            dog
-                        )
+                        dog
                     )
                 )
             )
         )
     )
 )
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (N
-                (A
-                    (Adv
+            (NX
+                (AdjX
+                    (Adv_Adj
                         quick
                     )
                     (Adj
                         brown
                     )
                 )
-                (Noun
+                (N
                     fox
                 )
             )
         )
-        (VP
-            (Verb
+        (VX
+            (V
                 jumps
             )
-            (PP_VP
-                (Prep_VP
+            (PrepX_N
+                (Prep_N
                     over
                 )
-                (NP
+                (DetX
                     (Det
                         the
                     )
-                    (N
+                    (NX
                         (Adj
                             lazy
                         )
-                        (Noun
+                        (N
                             dog
                         )
                     )

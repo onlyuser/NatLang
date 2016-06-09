@@ -1,21 +1,21 @@
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (Noun
+            (N
                 dog
             )
         )
-        (VP
-            (Verb
+        (VPX
+            (V
                 runs
             )
             (Conj_VP
                 and
             )
-            (Verb
+            (V
                 jumps
             )
         )

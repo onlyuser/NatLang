@@ -1,14 +1,14 @@
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (Noun
+            (N
                 dog
             )
         )
-        (Verb
+        (V
             runs
         )
     )

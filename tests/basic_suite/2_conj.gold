@@ -1,23 +1,27 @@
-(S'
+(SX
     (S
-        (NP
-            (Det
-                the
+        (NPX
+            (DetX
+                (Det
+                    the
+                )
+                (N
+                    dog
+                )
             )
-            (Noun
-                dog
-            )
-            (Conj
+            (Conj_NP
                 and
             )
-            (Det
-                the
-            )
-            (Noun
-                cat
+            (DetX
+                (Det
+                    the
+                )
+                (N
+                    cat
+                )
             )
         )
-        (Verb
+        (V
             run
         )
     )

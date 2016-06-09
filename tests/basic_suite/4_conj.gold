@@ -1,14 +1,14 @@
-(S'
+(SX
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (Noun
+            (N
                 dog
             )
         )
-        (Verb
+        (V
             runs
         )
     )
@@ -16,15 +16,15 @@
         and
     )
     (S
-        (NP
+        (DetX
             (Det
                 the
             )
-            (Noun
+            (N
                 cat
             )
         )
-        (Verb
+        (V
             jumps
         )
     )
