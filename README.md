@@ -173,7 +173,6 @@ Limitations
 Known Issues
 ------------
 
-* Fails to parse "he has quickly come here", whereas "he quickly comes here" works. Why?
 * No passive voice statement support.
 * No imperitive mood support.
 * No question support.

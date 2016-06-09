@@ -141,6 +141,9 @@ bool get_pos_values(
                     pos_values->push_back("Adv_PastPart");
                     pos_values->push_back("Adv_Adj");
                     pos_values->push_back("Adv_Prep");
+                } else if(*q == "V") {
+                    pos_values->push_back("V");
+                    pos_values->push_back("PastPart");
                 } else {
                     pos_values->push_back(*q);
                 }
