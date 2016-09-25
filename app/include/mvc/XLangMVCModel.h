@@ -23,7 +23,7 @@
 #include "node/XLangNode.h" // node::TermNode
 #include "XLangTreeContext.h" // TreeContext
 #include "XLangType.h" // uint32_t
-#include "NatLang.tab.h" // YYLTYPE
+#include "NatLangLexerIDWrapper.h" // YYLTYPE
 #include <string> // std::string
 
 namespace xl { namespace mvc {

@@ -21,7 +21,7 @@
 #include "XLangType.h" // uint32_t
 #include "XLangAlloc.h" // Allocator
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "NatLang.tab.h" // YYLTYPE (generated)
+#include "NatLangLexerIDWrapper.h" // YYLTYPE (generated)
 #include "XLangTreeContext.h" // TreeContext
 #include <vector> // std::vector
 #include <list> // std::list

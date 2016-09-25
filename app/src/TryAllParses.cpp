@@ -18,7 +18,7 @@
 #include "TryAllParses.h"
 #include "NatLang.h"
 #include "node/XLangNodeIFace.h" // node::NodeIdentIFace
-#include "NatLang.tab.h" // ID_XXX (yacc generated)
+#include "NatLangLexerIDWrapper.h" // ID_XXX (yacc generated)
 #include "XLangAlloc.h" // Allocator
 #include "XLangString.h" // xl::tokenize
 #include "XLangSystem.h" // xl::system::shell_capture
