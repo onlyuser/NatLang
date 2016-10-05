@@ -172,6 +172,9 @@ void exNode
         case node::NodeIdentIFace::FLOAT:
             sprintf(word, "%f", dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::FLOAT>*>(p)->value());
             break;
+        case node::NodeIdentIFace::STRING:
+            sprintf(word, "\"%s\"", dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::STRING>*>(p)->value()->c_str());
+            break;
         case typeId:
             sprintf(word, "%s", dynamic_cast<const node::TermNodeIFace<node::NodeIdentIFace::IDENT>*>(p)->value()->c_str());
             break;

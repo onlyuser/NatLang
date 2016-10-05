@@ -4,49 +4,6 @@
             (Det
                 the
             )
-            (N
-                quick
-            )
-        )
-        (VX
-            (V
-                brown
-            )
-            (N
-                fox
-            )
-            (NP
-                (N
-                    jumps
-                )
-                (PrepX_N
-                    (Prep_N
-                        over
-                    )
-                    (DetX
-                        (Det
-                            the
-                        )
-                        (NX
-                            (Adj
-                                lazy
-                            )
-                            (N
-                                dog
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
-(SX
-    (S
-        (DetX
-            (Det
-                the
-            )
             (NX
                 (Adj
                     quick
@@ -167,6 +124,49 @@
                         )
                         (N
                             dog
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+(SX
+    (S
+        (DetX
+            (Det
+                the
+            )
+            (N
+                quick
+            )
+        )
+        (VX
+            (V
+                brown
+            )
+            (N
+                fox
+            )
+            (NP
+                (N
+                    jumps
+                )
+                (PrepX_N
+                    (Prep_N
+                        over
+                    )
+                    (DetX
+                        (Det
+                            the
+                        )
+                        (NX
+                            (Adj
+                                lazy
+                            )
+                            (N
+                                dog
+                            )
                         )
                     )
                 )
