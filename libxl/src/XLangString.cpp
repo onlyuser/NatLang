@@ -192,8 +192,12 @@ bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_
         return false;
     }
     regfree(&preg);
-    for(int i = 0; i<nmatch && cap_groups[i]; i++)
+    for(int i = 0; i<nmatch; i++) {
+        if(!cap_groups[i]) {
+            continue;
+        }
         *(cap_groups[i]) = rest.substr(pmatch[i].rm_so, pmatch[i].rm_eo-pmatch[i].rm_so);
+    }
     if(start_pos)
         *start_pos = _start_pos+pmatch[0].rm_so;
     delete[] pmatch;
