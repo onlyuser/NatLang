@@ -16,7 +16,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 //%output="NatLang.tab.c"
-%name-prefix="_NATLANG_"
+%name-prefix "_NATLANG_"
 
 %{
 
