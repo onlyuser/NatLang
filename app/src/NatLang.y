@@ -394,16 +394,19 @@ VXX:
       VX       { $$ = MAKE_SYMBOL(ID_VXX, @$, 1, $1); }     // bring it
     | Adv_V VX { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); } // quickly bring it
     | VX Adv_V { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); } // bring it quickly
+    ;
 
 GerundXX:
       GerundX            { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 1, $1); }     // bringing it
     | Adv_Gerund GerundX { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 2, $1, $2); } // quickly bringing it
     | GerundX Adv_Gerund { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 2, $1, $2); } // bringing it quickly
+    ;
 
 PastPartXX:
       PastPartX              { $$ = MAKE_SYMBOL(ID_PASTPARTXX, @$, 1, $1); }     // brought it
     | Adv_PastPart PastPartX { $$ = MAKE_SYMBOL(ID_PASTPARTXX, @$, 2, $1, $2); } // quickly brought it
     | PastPartX Adv_PastPart { $$ = MAKE_SYMBOL(ID_PASTPARTXX, @$, 2, $1, $2); } // brought it quickly
+    ;
 
 VX:
       V             { $$ = MAKE_SYMBOL(ID_VX, @$, 1, $1); }         // bring
