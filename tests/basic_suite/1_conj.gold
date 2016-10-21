@@ -1,6 +1,6 @@
-(SX
+(S_list
     (S
-        (DetX
+        (NXX
             (Det
                 the
             )
@@ -9,6 +9,21 @@
             )
         )
         (V
+            runs
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (PastPart
             runs
         )
     )

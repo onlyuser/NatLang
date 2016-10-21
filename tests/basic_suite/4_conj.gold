@@ -1,6 +1,6 @@
-(SX
+(S_list
     (S
-        (DetX
+        (NXX
             (Det
                 the
             )
@@ -16,7 +16,7 @@
         and
     )
     (S
-        (DetX
+        (NXX
             (Det
                 the
             )
@@ -25,6 +25,165 @@
             )
         )
         (V
+            jumps
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (V
+            runs
+        )
+    )
+    (Conj_S
+        and
+    )
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                cat
+            )
+        )
+        (PastPart
+            jumps
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (PastPart
+            runs
+        )
+    )
+    (Conj_S
+        and
+    )
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                cat
+            )
+        )
+        (V
+            jumps
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (PastPart
+            runs
+        )
+    )
+    (Conj_S
+        and
+    )
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                cat
+            )
+        )
+        (PastPart
+            jumps
+        )
+    )
+)
+(S_list
+    (S
+        (NP_list
+            (NP
+                (NXX
+                    (Det
+                        the
+                    )
+                    (N
+                        dog
+                    )
+                )
+                (N
+                    runs
+                )
+            )
+            (Conj_NP
+                and
+            )
+            (NXX
+                (Det
+                    the
+                )
+                (N
+                    cat
+                )
+            )
+        )
+        (V
+            jumps
+        )
+    )
+)
+(S_list
+    (S
+        (NP_list
+            (NP
+                (NXX
+                    (Det
+                        the
+                    )
+                    (N
+                        dog
+                    )
+                )
+                (N
+                    runs
+                )
+            )
+            (Conj_NP
+                and
+            )
+            (NXX
+                (Det
+                    the
+                )
+                (N
+                    cat
+                )
+            )
+        )
+        (PastPart
             jumps
         )
     )

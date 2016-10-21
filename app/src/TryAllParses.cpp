@@ -138,9 +138,8 @@ bool get_pos_values(
                 if(*q == "Adv") {
                     pos_values->push_back("Adv_V");
                     pos_values->push_back("Adv_Gerund");
-                    pos_values->push_back("Adv_PastPart");
                     pos_values->push_back("Adv_Adj");
-                    pos_values->push_back("Adv_Prep");
+                    pos_values->push_back("Adv_Modal");
                 } else if(*q == "V") {
                     pos_values->push_back("V");
                     pos_values->push_back("PastPart");
@@ -177,25 +176,22 @@ bool get_pos_values(
                 unique_pos_values.insert(*p);
                 // consider conjugations at the S/NP/VP/A level
                 if(*p == "Conj") {
+                    pos_values->push_back("Conj_S");
                     pos_values->push_back("Conj_NP");
                     pos_values->push_back("Conj_VP");
-                    pos_values->push_back("Conj_S");
                     pos_values->push_back("Conj_Adj");
+                    pos_values->push_back("Conj_Prep");
                 } else if(*p == "Prep") {
-                    pos_values->push_back("Prep_N");
                     pos_values->push_back("Prep_S");
+                    pos_values->push_back("Prep_N");
+                    pos_values->push_back("Prep_V");
                 } else if(*p == "Adv") {
                     pos_values->push_back("Adv_V");
                     pos_values->push_back("Adv_Gerund");
-                    pos_values->push_back("Adv_PastPart");
                     pos_values->push_back("Adv_Adj");
-                    pos_values->push_back("Adv_Prep");
+                    pos_values->push_back("Adv_Modal");
                 } else if(*p == "Comma") {
-                    pos_values->push_back("Comma_Prep");
-                    pos_values->push_back("Comma_Prep2");
-                    pos_values->push_back("Comma_N");
-                    pos_values->push_back("Comma_QWord");
-                    pos_values->push_back("Comma_V");
+                    pos_values->push_back("Comma_S");
                 } else {
                     pos_values->push_back(*p);
                 }

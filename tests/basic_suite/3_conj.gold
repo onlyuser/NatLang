@@ -1,6 +1,6 @@
-(SX
+(S_list
     (S
-        (DetX
+        (NXX
             (Det
                 the
             )
@@ -8,7 +8,7 @@
                 dog
             )
         )
-        (VPX
+        (VP_list
             (V
                 runs
             )
@@ -16,6 +16,75 @@
                 and
             )
             (V
+                jumps
+            )
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (VP_list
+            (V
+                runs
+            )
+            (Conj_VP
+                and
+            )
+            (PastPart
+                jumps
+            )
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (VP_list
+            (PastPart
+                runs
+            )
+            (Conj_VP
+                and
+            )
+            (V
+                jumps
+            )
+        )
+    )
+)
+(S_list
+    (S
+        (NXX
+            (Det
+                the
+            )
+            (N
+                dog
+            )
+        )
+        (VP_list
+            (PastPart
+                runs
+            )
+            (Conj_VP
+                and
+            )
+            (PastPart
                 jumps
             )
         )

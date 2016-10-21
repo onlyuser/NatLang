@@ -102,129 +102,126 @@ std::string id_to_name(uint32_t lexer_id)
         return _id_to_name[index];
     switch(lexer_id)
     {
-        case ID_ADJXXX:           return "AdjXXX";
+        //case ID_FLOAT:            return "float";
+        //case ID_IDENT:            return "ident";
+        //case ID_INT:              return "int";
         case ID_ADJ:              return "Adj";
         case ID_ADJX:             return "AdjX";
-        case ID_ADJXX:            return "AdjXX";
+        case ID_ADJ_LIST:         return "Adj_list";
+        case ID_ADV:              return "Adv";
         case ID_ADV_ADJ:          return "Adv_Adj";
         case ID_ADV_GERUND:       return "Adv_Gerund";
-        case ID_ADV_PASTPART:     return "Adv_PastPart";
-        case ID_ADV_PREP:         return "Adv_Prep";
-        case ID_ADV:              return "Adv";
+        case ID_ADV_MODAL:        return "Adv_Modal";
         case ID_ADV_V:            return "Adv_V";
         case ID_AUX_BE:           return "Aux_Be";
-        case ID_AUX_DO:           return "Aux_Do";
+        case ID_AUX_BEX:          return "Aux_BeX";
         case ID_AUX_HAVE:         return "Aux_Have";
-        case ID_COMMA_N:          return "Comma_N";
-        case ID_COMMA_PREP:       return "Comma_Prep";
-        case ID_COMMA_PREP2:      return "Comma_Prep2";
-        case ID_COMMA_QWORD:      return "Comma_QWord";
         case ID_COMMA:            return "Comma";
-        case ID_COMMA_V:          return "Comma_V";
+        case ID_COMMA_S:          return "Comma_S";
+        case ID_CONJ:             return "Conj";
         case ID_CONJ_ADJ:         return "Conj_Adj";
         case ID_CONJ_NP:          return "Conj_NP";
-        case ID_CONJ:             return "Conj";
+        case ID_CONJ_PREP:        return "Conj_Prep";
         case ID_CONJ_S:           return "Conj_S";
         case ID_CONJ_VP:          return "Conj_VP";
-        case ID_DETSUFFIX:        return "DetSuffix";
-        case ID_DETSUFFIXX:       return "DetSuffixX";
-        case ID_DETX:             return "DetX";
         case ID_DET:              return "Det";
         case ID_EOS:              return "$";
-        case ID_GERUNDXX:         return "GerundXX";
-        case ID_GERUNDPX:         return "GerundX";
         case ID_GERUND:           return "Gerund";
+        case ID_GERUNDX:          return "GerundX";
+        case ID_GERUNDXX:         return "GerundXX";
         case ID_INFIN:            return "Infin";
         case ID_MODAL:            return "Modal";
-        case ID_NP:               return "NP";
-        case ID_NPX:              return "NPX";
+        case ID_MODALX:           return "ModalX";
+        case ID_MODALXX:          return "ModalXX";
         case ID_N:                return "N";
+        case ID_NP:               return "NP";
+        case ID_NP_LIST:          return "NP_list";
         case ID_NX:               return "NX";
-        case ID_PASTPARTXX:       return "PastPartXX";
-        case ID_PASTPARTX:        return "PastPartX";
+        case ID_NXX:              return "NXX";
         case ID_PASTPART:         return "PastPart";
-        case ID_PREP_N:           return "Prep_N";
-        case ID_PREPXX_N:         return "PrepXX_N";
-        case ID_PREPX_N:          return "PrepX_N";
-        case ID_PREPXX_S:         return "PrepXX_S";
-        case ID_PREPX_S:          return "PrepX_S";
+        case ID_PREDICATE_COMPL:  return "Predicate_Compl";
         case ID_PREP:             return "Prep";
+        case ID_PREP_N:           return "Prep_N";
+        case ID_PREP_NX:          return "Prep_NX";
         case ID_PREP_S:           return "Prep_S";
+        case ID_PREP_SX:          return "Prep_SX";
+        case ID_PREP_SX_LIST:     return "Prep_SX_list";
+        case ID_PREP_V:           return "Prep_V";
+        case ID_PREP_VX:          return "Prep_VX";
+        case ID_PREP_VX_LIST:     return "Prep_VX_list";
         case ID_QWORD_PRON:       return "QWord_Pron";
         case ID_S:                return "S";
-        case ID_SX:               return "SX";
+        case ID_S_LIST:           return "S_list";
         case ID_TO:               return "To";
-        case ID_VXX:              return "VXX";
-        case ID_VX:               return "VX";
-        case ID_VP:               return "VP";
-        case ID_VPX:              return "VPX";
+        case ID_TRANSITIVE_COMPL: return "Transitive_Compl";
         case ID_V:                return "V";
+        case ID_VP:               return "VP";
+        case ID_VP_LIST:          return "VP_list";
+        case ID_VX:               return "VX";
+        case ID_VXX:              return "VXX";
     }
     throw ERROR_LEXER_ID_NOT_FOUND;
     return "";
 }
 uint32_t name_to_id(std::string name)
 {
-    if(name == "AdjXXX")           return ID_ADJXXX;
+    if(name == "$")                return ID_EOS;
     if(name == "Adj")              return ID_ADJ;
     if(name == "AdjX")             return ID_ADJX;
-    if(name == "AdjXX")            return ID_ADJXX;
+    if(name == "Adj_list")         return ID_ADJ_LIST;
+    if(name == "Adv")              return ID_ADV;
     if(name == "Adv_Adj")          return ID_ADV_ADJ;
     if(name == "Adv_Gerund")       return ID_ADV_GERUND;
-    if(name == "Adv_PastPart")     return ID_ADV_PASTPART;
-    if(name == "Adv_Prep")         return ID_ADV_PREP;
-    if(name == "Adv")              return ID_ADV;
+    if(name == "Adv_Modal")        return ID_ADV_MODAL;
     if(name == "Adv_V")            return ID_ADV_V;
     if(name == "Aux_Be")           return ID_AUX_BE;
-    if(name == "Aux_Do")           return ID_AUX_DO;
+    if(name == "Aux_BeX")          return ID_AUX_BEX;
     if(name == "Aux_Have")         return ID_AUX_HAVE;
-    if(name == "Comma_N")          return ID_COMMA_N;
-    if(name == "Comma_Prep")       return ID_COMMA_PREP;
-    if(name == "Comma_Prep2")      return ID_COMMA_PREP2;
-    if(name == "Comma_QWord")      return ID_COMMA_QWORD;
     if(name == "Comma")            return ID_COMMA;
-    if(name == "Comma_V")          return ID_COMMA_V;
+    if(name == "Comma_S")          return ID_COMMA_S;
+    if(name == "Conj")             return ID_CONJ;
     if(name == "Conj_Adj")         return ID_CONJ_ADJ;
     if(name == "Conj_NP")          return ID_CONJ_NP;
-    if(name == "Conj")             return ID_CONJ;
+    if(name == "Conj_Prep")        return ID_CONJ_PREP;
     if(name == "Conj_S")           return ID_CONJ_S;
     if(name == "Conj_VP")          return ID_CONJ_VP;
-    if(name == "DetSuffix")        return ID_DETSUFFIX;
-    if(name == "DetSuffixX")       return ID_DETSUFFIXX;
-    if(name == "DetX")             return ID_DETX;
     if(name == "Det")              return ID_DET;
-    if(name == "float")            return ID_FLOAT;
-    if(name == "GerundXX")         return ID_GERUNDXX;
-    if(name == "GerundX")          return ID_GERUNDPX;
     if(name == "Gerund")           return ID_GERUND;
-    if(name == "ident")            return ID_IDENT;
+    if(name == "GerundX")          return ID_GERUNDX;
+    if(name == "GerundXX")         return ID_GERUNDXX;
     if(name == "Infin")            return ID_INFIN;
-    if(name == "int")              return ID_INT;
     if(name == "Modal")            return ID_MODAL;
-    if(name == "NP")               return ID_NP;
-    if(name == "NPX")              return ID_NPX;
+    if(name == "ModalX")           return ID_MODALX;
+    if(name == "ModalXX")          return ID_MODALXX;
     if(name == "N")                return ID_N;
+    if(name == "NP")               return ID_NP;
+    if(name == "NP_list")          return ID_NP_LIST;
     if(name == "NX")               return ID_NX;
-    if(name == "PastPartXX")       return ID_PASTPARTXX;
-    if(name == "PastPartX")        return ID_PASTPARTX;
+    if(name == "NXX")              return ID_NXX;
     if(name == "PastPart")         return ID_PASTPART;
-    if(name == "Prep_N")           return ID_PREP_N;
-    if(name == "PrepXX_N")         return ID_PREPXX_N;
-    if(name == "PrepX_N")          return ID_PREPX_N;
-    if(name == "PrepXX_S")         return ID_PREPXX_S;
-    if(name == "PrepX_S")          return ID_PREPX_S;
+    if(name == "Predicate_Compl")  return ID_PREDICATE_COMPL;
     if(name == "Prep")             return ID_PREP;
+    if(name == "Prep_N")           return ID_PREP_N;
+    if(name == "Prep_NX")          return ID_PREP_NX;
     if(name == "Prep_S")           return ID_PREP_S;
+    if(name == "Prep_SX")          return ID_PREP_SX;
+    if(name == "Prep_SX_list")     return ID_PREP_SX_LIST;
+    if(name == "Prep_V")           return ID_PREP_V;
+    if(name == "Prep_VX")          return ID_PREP_VX;
+    if(name == "Prep_VX_list")     return ID_PREP_VX_LIST;
     if(name == "QWord_Pron")       return ID_QWORD_PRON;
-    if(name == "$")                return ID_EOS;
     if(name == "S")                return ID_S;
-    if(name == "SX")               return ID_SX;
+    if(name == "S_list")           return ID_S_LIST;
     if(name == "To")               return ID_TO;
-    if(name == "VXX")              return ID_VXX;
-    if(name == "VX")               return ID_VX;
-    if(name == "VP")               return ID_VP;
-    if(name == "VPX")              return ID_VPX;
+    if(name == "Transitive_Compl") return ID_TRANSITIVE_COMPL;
     if(name == "V")                return ID_V;
+    if(name == "VP")               return ID_VP;
+    if(name == "VP_list")          return ID_VP_LIST;
+    if(name == "VX")               return ID_VX;
+    if(name == "VXX")              return ID_VXX;
+    if(name == "float")            return ID_FLOAT;
+    if(name == "ident")            return ID_IDENT;
+    if(name == "int")              return ID_INT;
     std::cout << name << std::endl;
     throw ERROR_LEXER_NAME_NOT_FOUND;
     return 0;
@@ -286,62 +283,180 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 //=============================================================================
 
 // high-level constructs
-%type<symbol_value> S NP VP
+%type<symbol_value>
+    NP
+    S
+    VP
 
 // local constructs
-%type<symbol_value> Infin VX GerundX GerundXX PastPartX VXX PastPartXX AdjXXX NX AdjX
+%type<symbol_value>
+    AdjX
+    GerundX
+    GerundXX
+    Infin
+    ModalX
+    ModalXX
+    NX
+    NXX
+    Prep_NX
+    Prep_SX
+    Prep_VX
+    VX
+    VXX
 
 // lists
-%type<symbol_value> SX NPX VPX AdjXX PrepX_N PrepXX_N PrepX_S PrepXX_S DetX DetSuffixX
+%type<symbol_value>
+    Adj_list
+    NP_list
+    Prep_SX_list
+    Prep_VX_list
+    S_list
+    VP_list
 
 //=============================================================================
 // non-terminal lvalue lexer IDs
 //=============================================================================
 
 // high-level constructs
-%nonassoc ID_S ID_NP ID_VP
+%nonassoc
+    ID_NP
+    ID_S
+    ID_VP
 
 // local constructs
-%nonassoc ID_INFIN ID_VX ID_GERUNDPX ID_GERUNDXX ID_PASTPARTX ID_VXX ID_PASTPARTXX ID_ADJXXX ID_NX ID_ADJX
+%nonassoc
+    ID_ADJX
+    ID_ADJXXX
+    ID_GERUNDPX
+    ID_GERUNDX
+    ID_GERUNDXX
+    ID_INFIN
+    ID_MODALX
+    ID_MODALXX
+    ID_NX
+    ID_NXX
+    ID_PASTPARTX
+    ID_PASTPARTXX
+    ID_PREP_NX
+    ID_PREP_SX
+    ID_PREP_VX
+    ID_VX
+    ID_VXX
 
 // lists
-%nonassoc ID_SX ID_NPX ID_VPX ID_ADJXX ID_PREPX_N ID_PREPXX_N ID_PREPX_S ID_PREPXX_S ID_DETX ID_DETSUFFIXX
+%nonassoc
+    ID_ADJ_LIST
+    ID_DETSUFFIXX
+    ID_DETX
+    ID_NP_LIST
+    ID_PREP_SX_LIST
+    ID_PREP_VX_LIST
+    ID_PREPXX_N
+    ID_PREPXX_S
+    ID_PREPX_N
+    ID_PREPX_S
+    ID_S_LIST
+    ID_VP_LIST
 
 //=============================================================================
 // terminal lvalues
 //=============================================================================
 
 // descriptive words
-%type<symbol_value> N V PastPart Gerund Adj
-%type<symbol_value> Prep_N Prep_S
+%type<symbol_value>
+    Adj
+    Gerund
+    N
+    PastPart
+    Prep_N
+    Prep_S
+    Prep_V
+    V
 
 // functional words
-%type<symbol_value> Det DetSuffix Aux_Be Aux_Do Aux_Have Modal To QWord_Pron EOS
-%type<symbol_value> Comma_Prep Comma_Prep2 Comma_N Comma_QWord Comma_V
+%type<symbol_value>
+    Aux_Be
+    Aux_BeX
+    Aux_Have
+    Comma_S
+    Det
+    EOS
+    Modal
+    Predicate_Compl
+    Transitive_Compl
+    QWord_Pron
+    To
 
 // ambiguous terminals
-%type<symbol_value> Conj_S Conj_NP Conj_VP Conj_Adj
-%type<symbol_value> Adv_V Adv_Gerund Adv_PastPart Adv_Prep Adv_Adj
+%type<symbol_value>
+    Adv_Adj
+    Adv_Gerund
+    Adv_Modal
+    Adv_V
+    Conj_Adj
+    Conj_NP
+    Conj_Prep
+    Conj_S
+    Conj_VP
 
 //=============================================================================
 // terminal rvalues
 //=============================================================================
 
 // descriptive words
-%token<ident_value> ID_N ID_V ID_PASTPART ID_GERUND ID_ADJ
+%token<ident_value>
+    ID_ADJ
+    ID_GERUND
+    ID_N
+    ID_PASTPART
+    ID_V
+
 %token<ident_value> ID_PREP
-%token<ident_value> ID_PREP_N ID_PREP_S
+%token<ident_value>
+    ID_PREP_N
+    ID_PREP_S
+    ID_PREP_V
 
 // functional words
-%token<ident_value> ID_DET ID_DETSUFFIX ID_AUX_BE ID_AUX_DO ID_AUX_HAVE ID_MODAL ID_TO ID_QWORD_PRON ID_EOS
+%token<ident_value>
+    ID_AUX_BE
+    ID_AUX_BEX
+    ID_AUX_DO
+    ID_AUX_HAVE
+    ID_DET
+    ID_DETSUFFIX
+    ID_EOS
+    ID_MODAL ID
+    ID_PREDICATE_COMPL
+    ID_TRANSITIVE_COMPL
+    ID_QWORD_PRON
+    ID_TO
+
 %token<ident_value> ID_COMMA
-%token<ident_value> ID_COMMA_PREP ID_COMMA_PREP2 ID_COMMA_N ID_COMMA_QWORD ID_COMMA_V
+%token<ident_value>
+    ID_COMMA_PREP
+    ID_COMMA_PREP2
+    ID_COMMA_QWORD
+    ID_COMMA_S
+    ID_COMMA_V
 
 // ambiguous terminals
 %token<ident_value> ID_CONJ
-%token<ident_value> ID_CONJ_S ID_CONJ_NP ID_CONJ_VP ID_CONJ_ADJ
+%token<ident_value>
+    ID_CONJ_ADJ
+    ID_CONJ_NP
+    ID_CONJ_PREP
+    ID_CONJ_S
+    ID_CONJ_VP
+
 %token<ident_value> ID_ADV
-%token<ident_value> ID_ADV_V ID_ADV_GERUND ID_ADV_PASTPART ID_ADV_PREP ID_ADV_ADJ
+%token<ident_value>
+    ID_ADV_ADJ
+    ID_ADV_GERUND
+    ID_ADV_MODAL
+    ID_ADV_PASTPART
+    ID_ADV_PREP
+    ID_ADV_V
 
 %%
 
@@ -351,160 +466,148 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // high-level constructs
 
 root:
-      SX EOS { pc->tree_context().root() = $1; YYACCEPT; }
-    | error  { yyclearin; /* yyerrok; YYABORT; */ }
+      S_list EOS { pc->tree_context().root() = $1; YYACCEPT; }
+    | error      { yyclearin; /* yyerrok; YYABORT; */ }
     ;
 
 S:
-      NPX VPX                     { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
-    | PrepXX_S Comma_Prep NPX VPX { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
+      NP_list VP_list                      { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }     // he goes
+    | Prep_SX_list Comma_S NP_list VP_list { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here he goes
     ;
 
 NP:
-      NX                                          { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // john
-    | DetX                                        { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // the teacher
-    | NX Comma_N DetX Comma_N                     { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, the teacher,
-    | DetX Comma_N NX                             { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // the teacher, john
-    | NX Comma_N GerundXX Comma_V                 { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // john, reading a book,
-    | GerundXX Comma_V NX                         { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); }             // reading a book, john
-    | NP PrepX_N                                  { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }                 // john from work
-    | NP Comma_Prep2 PrepX_N Comma_Prep           { $$ = MAKE_SYMBOL(ID_NP, @$, 4, $1, $2, $3, $4); }         // john, from work,
-    | NP Comma_QWord QWord_Pron VP Comma_QWord    { $$ = MAKE_SYMBOL(ID_NP, @$, 5, $1, $2, $3, $4, $5); }     // john, who is here,
-    | NP Comma_QWord QWord_Pron NP VP Comma_QWord { $$ = MAKE_SYMBOL(ID_NP, @$, 6, $1, $2, $3, $4, $5, $6); } // john, who we know,
-    | Infin                                       { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // to bring it
-    | GerundXX                                    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }                     // bringing it
+      GerundXX               { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // going
+    | Infin                  { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // to be
+    | NXX                    { $$ = MAKE_SYMBOL(ID_NP, @$, 1, $1); }         // john
+    | NXX Prep_NX            { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john from cali
+    | NXX QWord_Pron VP_list { $$ = MAKE_SYMBOL(ID_NP, @$, 3, $1, $2, $3); } // john who is here
+    | NP NP                  { $$ = MAKE_SYMBOL(ID_NP, @$, 2, $1, $2); }     // john the doctor <==> the doctor john
     ;
 
 VP:
-      VXX                 { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // bring it
-    | Aux_Be GerundXX     { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is bringing it
-    | Aux_Do VXX          { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // do bring it
-    | Aux_Have PastPartXX { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // has brought it
-    | Modal VP            { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // could bring it
+      VXX                     { $$ = MAKE_SYMBOL(ID_VP, @$, 1, $1); }     // bring it
+    | ModalXX VXX             { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // can bring it
+    | Aux_BeX Predicate_Compl { $$ = MAKE_SYMBOL(ID_VP, @$, 2, $1, $2); } // is a dog
     ;
 
 //=============================================================================
 // local constructs
 
-Infin:
-      To VXX { $$ = MAKE_SYMBOL(ID_INFIN, @$, 2, $1, $2); } // to give
-    ;
-
 VXX:
-      VX       { $$ = MAKE_SYMBOL(ID_VXX, @$, 1, $1); }     // bring it
-    | Adv_V VX { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); } // quickly bring it
-    | VX Adv_V { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); } // bring it quickly
-    ;
-
-GerundXX:
-      GerundX            { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 1, $1); }     // bringing it
-    | Adv_Gerund GerundX { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 2, $1, $2); } // quickly bringing it
-    | GerundX Adv_Gerund { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 2, $1, $2); } // bringing it quickly
-    ;
-
-PastPartXX:
-      PastPartX              { $$ = MAKE_SYMBOL(ID_PASTPARTXX, @$, 1, $1); }     // brought it
-    | Adv_PastPart PastPartX { $$ = MAKE_SYMBOL(ID_PASTPARTXX, @$, 2, $1, $2); } // quickly brought it
-    | PastPartX Adv_PastPart { $$ = MAKE_SYMBOL(ID_PASTPARTXX, @$, 2, $1, $2); } // brought it quickly
+      VX                  { $$ = MAKE_SYMBOL(ID_VXX, @$, 1, $1); }         // bring
+    | VX Predicate_Compl  { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); }     // bring it
+    | VX Transitive_Compl { $$ = MAKE_SYMBOL(ID_GERUNDX, @$, 2, $1, $2); } // bring it to you
     ;
 
 VX:
-      V             { $$ = MAKE_SYMBOL(ID_VX, @$, 1, $1); }         // bring
-    | V NPX         { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // bring it
-    | V NPX NPX     { $$ = MAKE_SYMBOL(ID_VX, @$, 3, $1, $2, $3); } // bring me it
-    | V NPX PrepX_N { $$ = MAKE_SYMBOL(ID_VX, @$, 3, $1, $2, $3); } // bring it to me
-    | V AdjXXX      { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // be mad about you
-    | V PrepXX_N    { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // beat around the bush
-    | V AdjXX       { $$ = MAKE_SYMBOL(ID_VX, @$, 2, $1, $2); }     // be happy
+      V        { $$ = MAKE_SYMBOL(ID_VX, @$, 1, $1); } // bring
+    | PastPart { $$ = MAKE_SYMBOL(ID_VX, @$, 1, $1); } // brought
+    ;
+
+GerundXX:
+      GerundX            { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 1, $1); }     // running
+    | Adv_Gerund GerundX { $$ = MAKE_SYMBOL(ID_GERUNDXX, @$, 2, $1, $2); } // not running
     ;
 
 GerundX:
-      Gerund             { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 1, $1); }         // bringing
-    | Gerund NPX         { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // bringing it
-    | Gerund NPX NPX     { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 3, $1, $2, $3); } // bringing me it
-    | Gerund NPX PrepX_N { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 3, $1, $2, $3); } // bringing it to me
-    | Gerund AdjXXX      { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // being mad about you
-    | Gerund PrepXX_N    { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // beating around the bush
-    | Gerund AdjXX       { $$ = MAKE_SYMBOL(ID_GERUNDPX, @$, 2, $1, $2); }     // being happy
+      Gerund                  { $$ = MAKE_SYMBOL(ID_GERUNDX, @$, 1, $1); }     // bringing
+    | Gerund Predicate_Compl  { $$ = MAKE_SYMBOL(ID_GERUNDX, @$, 2, $1, $2); } // bringing it
+    | Gerund Transitive_Compl { $$ = MAKE_SYMBOL(ID_GERUNDX, @$, 2, $1, $2); } // bringing it to you
     ;
 
-PastPartX:
-      PastPart             { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 1, $1); }         // brought
-    | PastPart NPX         { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // brought it
-    | PastPart NPX NPX     { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 3, $1, $2, $3); } // brought me it
-    | PastPart NPX PrepX_N { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 3, $1, $2, $3); } // brought it to me
-    | PastPart AdjXXX      { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // been mad about you
-    | PastPart PrepXX_N    { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // beaten around the bush
-    | PastPart AdjXX       { $$ = MAKE_SYMBOL(ID_PASTPARTX, @$, 2, $1, $2); }     // been happy
+ModalXX:
+      ModalX          { $$ = MAKE_SYMBOL(ID_MODALXX, @$, 1, $1); }     // will
+    | ModalX Aux_Have { $$ = MAKE_SYMBOL(ID_MODALXX, @$, 2, $1, $2); } // will have
     ;
 
-AdjXXX:
-      AdjXX PrepX_N { $$ = MAKE_SYMBOL(ID_ADJXXX, @$, 2, $1, $2); } // mad about you
+ModalX:
+      Modal           { $$ = MAKE_SYMBOL(ID_MODALX, @$, 1, $1); }     // will
+    | Modal Adv_Modal { $$ = MAKE_SYMBOL(ID_MODALX, @$, 2, $1, $2); } // will not
+    ;
+
+Predicate_Compl:
+      NP_list      { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // john
+    | Prep_VX_list { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // from here
+    | Adj_list     { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // red
+    ;
+
+Transitive_Compl:
+      NP_list NP_list      { $$ = MAKE_SYMBOL(ID_TRANSITIVE_COMPL, @$, 2, $1, $2); } // (bring) me it
+    | NP_list Prep_VX_list { $$ = MAKE_SYMBOL(ID_TRANSITIVE_COMPL, @$, 2, $1, $2); } // (bring) it to me
+    ;
+
+NXX:
+      NX     { $$ = MAKE_SYMBOL(ID_NXX, @$, 1, $1); }     // dog
+    | Det NX { $$ = MAKE_SYMBOL(ID_NXX, @$, 2, $1, $2); } // the dog
     ;
 
 NX:
-      N       { $$ = MAKE_SYMBOL(ID_NX, @$, 1, $1); }     // dog
-    | AdjXX N { $$ = MAKE_SYMBOL(ID_NX, @$, 2, $1, $2); } // big and red dog
+      N      { $$ = MAKE_SYMBOL(ID_NX, @$, 1, $1); }     // dog
+    | AdjX N { $$ = MAKE_SYMBOL(ID_NX, @$, 2, $1, $2); } // big dog
+    ;
+
+Prep_SX:
+      Prep_S NP_list { $$ = MAKE_SYMBOL(ID_PREP_SX, @$, 2, $1, $2); } // from here
+    ;
+
+Prep_NX:
+      Prep_N NP_list { $$ = MAKE_SYMBOL(ID_PREP_NX, @$, 2, $1, $2); } // from here
+    ;
+
+Prep_VX:
+      Prep_V NP_list { $$ = MAKE_SYMBOL(ID_PREP_VX, @$, 2, $1, $2); } // from here
     ;
 
 AdjX:
       Adj         { $$ = MAKE_SYMBOL(ID_ADJX, @$, 1, $1); }     // red
-    | Adv_Adj Adj { $$ = MAKE_SYMBOL(ID_ADJX, @$, 2, $1, $2); } // very red
+    | Adv_Adj Adj { $$ = MAKE_SYMBOL(ID_ADJX, @$, 2, $1, $2); } // not red
+    ;
+
+Infin:
+      To VXX       { $$ = MAKE_SYMBOL(ID_INFIN, @$, 2, $1, $2); }     // to be
+    | To Adv_V VXX { $$ = MAKE_SYMBOL(ID_INFIN, @$, 3, $1, $2, $3); } // to not be
+    | Adv_V To VXX { $$ = MAKE_SYMBOL(ID_INFIN, @$, 3, $1, $2, $3); } // not to be
+    ;
+
+Aux_BeX:
+      Aux_Be       { $$ = MAKE_SYMBOL(ID_AUX_BEX, @$, 1, $1); }     // is
+    | Aux_Be Adv_V { $$ = MAKE_SYMBOL(ID_AUX_BEX, @$, 2, $1, $2); } // is not
     ;
 
 //=============================================================================
 // lists
 
-SX:
-      S            { $$ = MAKE_SYMBOL(ID_SX, @$, 1, $1); }         // i jump
-    | SX Conj_S SX { $$ = MAKE_SYMBOL(ID_SX, @$, 3, $1, $2, $3); } // i jump and you jump
+S_list:
+      S                    { $$ = MAKE_SYMBOL(ID_S_LIST, @$, 1, $1); }         // i jump
+    | S_list Conj_S S_list { $$ = MAKE_SYMBOL(ID_S_LIST, @$, 3, $1, $2, $3); } // i jump and you jump
     ;
 
-NPX:
-      NP              { $$ = MAKE_SYMBOL(ID_NPX, @$, 1, $1); }         // jack
-    | NPX Conj_NP NPX { $$ = MAKE_SYMBOL(ID_NPX, @$, 3, $1, $2, $3); } // jack and jill
+NP_list:
+      NP                      { $$ = MAKE_SYMBOL(ID_NP_LIST, @$, 1, $1); }         // jack
+    | NP_list Conj_NP NP_list { $$ = MAKE_SYMBOL(ID_NP_LIST, @$, 3, $1, $2, $3); } // jack and jill
     ;
 
-VPX:
-      VP              { $$ = MAKE_SYMBOL(ID_VPX, @$, 1, $1); }         // hit
-    | VPX Conj_VP VPX { $$ = MAKE_SYMBOL(ID_VPX, @$, 3, $1, $2, $3); } // hit and run
+VP_list:
+      VP                      { $$ = MAKE_SYMBOL(ID_VP_LIST, @$, 1, $1); }         // hit
+    | VP_list Conj_VP VP_list { $$ = MAKE_SYMBOL(ID_VP_LIST, @$, 3, $1, $2, $3); } // hit and run
     ;
 
-AdjXX:
-      AdjX                 { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 1, $1); }         // big
-    | AdjXX AdjXX          { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 2, $1, $2); }     // big red
-    | AdjXX Conj_Adj AdjXX { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 3, $1, $2, $3); } // big and red
+Adj_list:
+      AdjX               { $$ = MAKE_SYMBOL(ID_ADJ_LIST, @$, 1, $1); }         // big
+    | AdjX AdjX          { $$ = MAKE_SYMBOL(ID_ADJ_LIST, @$, 2, $1, $2); }     // big red
+    | AdjX Conj_Adj AdjX { $$ = MAKE_SYMBOL(ID_ADJ_LIST, @$, 3, $1, $2, $3); } // big and red
     ;
 
-PrepXX_N:
-      PrepX_N          { $$ = MAKE_SYMBOL(ID_PREPXX_N, @$, 1, $1); }     // from here
-    | Adv_Prep PrepX_N { $$ = MAKE_SYMBOL(ID_PREPXX_N, @$, 2, $1, $2); } // not from here
+Prep_SX_list:
+      Prep_SX                             { $$ = MAKE_SYMBOL(ID_PREP_SX_LIST, @$, 1, $1); }         // from here
+    | Prep_SX_list Prep_SX_list           { $$ = MAKE_SYMBOL(ID_PREP_SX_LIST, @$, 2, $1, $2); }     // from here to there
+    | Prep_SX_list Conj_Prep Prep_SX_list { $$ = MAKE_SYMBOL(ID_PREP_SX_LIST, @$, 3, $1, $2, $3); } // from here and to there
     ;
 
-PrepXX_S:
-      PrepX_S          { $$ = MAKE_SYMBOL(ID_PREPXX_S, @$, 1, $1); }     // from here
-    | Adv_Prep PrepX_S { $$ = MAKE_SYMBOL(ID_PREPXX_S, @$, 2, $1, $2); } // not from here
-    ;
-
-PrepX_N:
-      Prep_N NPX      { $$ = MAKE_SYMBOL(ID_PREPX_N, @$, 2, $1, $2); } // around the corner
-    | PrepX_N PrepX_N { $$ = MAKE_SYMBOL(ID_PREPX_N, @$, 2, $1, $2); } // around the corner across the street
-    ;
-
-PrepX_S:
-      Prep_S NPX      { $$ = MAKE_SYMBOL(ID_PREPX_S, @$, 2, $1, $2); } // around the corner
-    | PrepX_S PrepX_S { $$ = MAKE_SYMBOL(ID_PREPX_S, @$, 2, $1, $2); } // around the corner across the street
-    ;
-
-DetX:
-      Det NX            { $$ = MAKE_SYMBOL(ID_DETX, @$, 2, $1, $2); }     // the man
-    | Det NX DetSuffixX { $$ = MAKE_SYMBOL(ID_DETX, @$, 3, $1, $2, $3); } // the man's wife
-    | NX DetSuffixX     { $$ = MAKE_SYMBOL(ID_DETX, @$, 2, $1, $2); }     // john's wife
-    ;
-
-DetSuffixX:
-      DetSuffix NX            { $$ = MAKE_SYMBOL(ID_DETSUFFIXX, @$, 2, $1, $2); }     // 's wife
-    | DetSuffix NX DetSuffixX { $$ = MAKE_SYMBOL(ID_DETSUFFIXX, @$, 3, $1, $2, $3); } // 's wife's sister
+Prep_VX_list:
+      Prep_VX                             { $$ = MAKE_SYMBOL(ID_PREP_VX_LIST, @$, 1, $1); }         // from here
+    | Prep_VX_list Prep_VX_list           { $$ = MAKE_SYMBOL(ID_PREP_VX_LIST, @$, 2, $1, $2); }     // from here to there
+    | Prep_VX_list Conj_Prep Prep_VX_list { $$ = MAKE_SYMBOL(ID_PREP_VX_LIST, @$, 3, $1, $2, $3); } // from here and to there
     ;
 
 //=============================================================================
@@ -517,27 +620,19 @@ N:
     ;
 
 V:
-      ID_V { $$ = MAKE_SYMBOL(ID_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // run
+      ID_V { $$ = MAKE_SYMBOL(ID_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // bring
     ;
 
 Gerund:
-      ID_GERUND { $$ = MAKE_SYMBOL(ID_GERUND, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // running
+      ID_GERUND { $$ = MAKE_SYMBOL(ID_GERUND, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // bringing
     ;
 
 PastPart:
-      ID_PASTPART { $$ = MAKE_SYMBOL(ID_PASTPART, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // run
+      ID_PASTPART { $$ = MAKE_SYMBOL(ID_PASTPART, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // brought
     ;
 
 Adj:
       ID_ADJ { $$ = MAKE_SYMBOL(ID_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // big
-    ;
-
-Prep_N:
-      ID_PREP_N { $$ = MAKE_SYMBOL(ID_PREP_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Prep_S:
-      ID_PREP_S { $$ = MAKE_SYMBOL(ID_PREP_S, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 //=============================================================================
@@ -547,20 +642,12 @@ Det:
       ID_DET { $$ = MAKE_SYMBOL(ID_DET, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // the
     ;
 
-DetSuffix:
-      ID_DETSUFFIX { $$ = MAKE_SYMBOL(ID_DETSUFFIX, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // 's
-    ;
-
 Aux_Be:
-      ID_AUX_BE { $$ = MAKE_SYMBOL(ID_AUX_BE, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Aux_Do:
-      ID_AUX_DO { $$ = MAKE_SYMBOL(ID_AUX_DO, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_AUX_BE { $$ = MAKE_SYMBOL(ID_AUX_BE, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // be
     ;
 
 Aux_Have:
-      ID_AUX_HAVE { $$ = MAKE_SYMBOL(ID_AUX_HAVE, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_AUX_HAVE { $$ = MAKE_SYMBOL(ID_AUX_HAVE, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // have
     ;
 
 Modal:
@@ -573,6 +660,10 @@ To:
 
 QWord_Pron:
       ID_QWORD_PRON { $$ = MAKE_SYMBOL(ID_QWORD_PRON, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // who/which/that
+    ;
+
+Comma_S:
+      ID_COMMA_S { $$ = MAKE_SYMBOL(ID_COMMA_S, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
     ;
 
 EOS:
@@ -595,47 +686,39 @@ Conj_VP:
     ;
 
 Conj_Adj:
-      ID_CONJ_ADJ { $$ = MAKE_SYMBOL(ID_CONJ_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for AdjX)
+      ID_CONJ_ADJ { $$ = MAKE_SYMBOL(ID_CONJ_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for Adj)
+    ;
+
+Conj_Prep:
+      ID_CONJ_PREP { $$ = MAKE_SYMBOL(ID_CONJ_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // and (for Prep)
     ;
 
 Adv_V:
-      ID_ADV_V { $$ = MAKE_SYMBOL(ID_ADV_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_ADV_V { $$ = MAKE_SYMBOL(ID_ADV_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // not (for V)
     ;
 
 Adv_Gerund:
-      ID_ADV_GERUND { $$ = MAKE_SYMBOL(ID_ADV_GERUND, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Adv_PastPart:
-      ID_ADV_PASTPART { $$ = MAKE_SYMBOL(ID_ADV_PASTPART, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_ADV_GERUND { $$ = MAKE_SYMBOL(ID_ADV_GERUND, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // not (for Gerund)
     ;
 
 Adv_Adj:
-      ID_ADV_ADJ { $$ = MAKE_SYMBOL(ID_ADV_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+      ID_ADV_ADJ { $$ = MAKE_SYMBOL(ID_ADV_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // not (for Adj)
     ;
 
-Adv_Prep:
-      ID_ADV_PREP { $$ = MAKE_SYMBOL(ID_ADV_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Adv_Modal:
+      ID_ADV_MODAL { $$ = MAKE_SYMBOL(ID_ADV_MODAL, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // not (for Modal)
     ;
 
-Comma_Prep:
-      ID_COMMA_PREP { $$ = MAKE_SYMBOL(ID_COMMA_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Prep_S:
+      ID_PREP_S { $$ = MAKE_SYMBOL(ID_PREP_S, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // from
     ;
 
-Comma_Prep2:
-      ID_COMMA_PREP2 { $$ = MAKE_SYMBOL(ID_COMMA_PREP2, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Prep_N:
+      ID_PREP_N { $$ = MAKE_SYMBOL(ID_PREP_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // from
     ;
 
-Comma_N:
-      ID_COMMA_N { $$ = MAKE_SYMBOL(ID_COMMA_N, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Comma_QWord:
-      ID_COMMA_QWORD { $$ = MAKE_SYMBOL(ID_COMMA_QWORD, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
-    ;
-
-Comma_V:
-      ID_COMMA_V { $$ = MAKE_SYMBOL(ID_COMMA_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); }
+Prep_V:
+      ID_PREP_V { $$ = MAKE_SYMBOL(ID_PREP_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // from
     ;
 
 //=============================================================================

@@ -103,7 +103,7 @@ verb_communicate "said"|"told"|"spoke"|"listened"
 verb_commerce    "bought"|"sold"|"rented"
 verb             {verb_basic}|{verb_life}|{verb_motion}|{verb_ownership}|{verb_container}|{verb_communicate}|{verb_commerce}
 
-pastpart "been"|"done"|"had"
+pastpart "been"|"done"|"had"|"gone"
 
 prep_basic              "to"|"from"|"of"|"for"|"in"|"on"|"at"|"by"|"as"|"than"|"about"
 prep_spatial_distance   "near"|"far"
@@ -115,7 +115,7 @@ prep_spatial            {prep_spatial_distance}|{prep_spatial_transition}|{prep_
 prep                    {prep_basic}|{prep_spatial}
 
 adv       "quickly"|"slowly"|"always"|"never"|"sometimes"|"not"
-modal     "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"
+modal     "can"|"could"|"may"|"might"|"must"|"ought"|"shall"|"should"|"will"|"would"|{aux}
 det       "a"|"an"|"the"|{det_pron}
 detsuffix "'s"
 conj      "for"|"and"|"nor"|"but"|"or"|"yet"|"so"|"because"|"notwithstanding"
