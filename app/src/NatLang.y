@@ -107,7 +107,8 @@ std::string id_to_name(uint32_t lexer_id)
         //case ID_INT:              return "int";
         case ID_ADJ:              return "Adj";
         case ID_ADJX:             return "AdjX";
-        case ID_ADJX_LIST:        return "AdjX_list";
+        case ID_ADJXX:            return "AdjXX";
+        case ID_ADJXX_LIST:       return "AdjXX_list";
         case ID_ADV:              return "Adv";
         case ID_ADV_ADJ:          return "Adv_Adj";
         case ID_ADV_GERUND:       return "Adv_Gerund";
@@ -142,6 +143,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_PASTPART:         return "PastPart";
         case ID_PREDICATE_COMPL:  return "Predicate_Compl";
         case ID_PREP:             return "Prep";
+        case ID_PREP_ADJ:         return "Prep_Adj";
+        case ID_PREP_ADJX:        return "Prep_AdjX";
         case ID_PREP_N:           return "Prep_N";
         case ID_PREP_NX:          return "Prep_NX";
         case ID_PREP_S:           return "Prep_S";
@@ -170,7 +173,8 @@ uint32_t name_to_id(std::string name)
     if(name == "$")                return ID_EOS;
     if(name == "Adj")              return ID_ADJ;
     if(name == "AdjX")             return ID_ADJX;
-    if(name == "AdjX_list")        return ID_ADJX_LIST;
+    if(name == "AdjXX")            return ID_ADJXX;
+    if(name == "AdjXX_list")       return ID_ADJXX_LIST;
     if(name == "Adv")              return ID_ADV;
     if(name == "Adv_Adj")          return ID_ADV_ADJ;
     if(name == "Adv_Gerund")       return ID_ADV_GERUND;
@@ -204,6 +208,8 @@ uint32_t name_to_id(std::string name)
     if(name == "PastPart")         return ID_PASTPART;
     if(name == "Predicate_Compl")  return ID_PREDICATE_COMPL;
     if(name == "Prep")             return ID_PREP;
+    if(name == "Prep_Adj")         return ID_PREP_ADJ;
+    if(name == "Prep_AdjX")        return ID_PREP_ADJX;
     if(name == "Prep_N")           return ID_PREP_N;
     if(name == "Prep_NX")          return ID_PREP_NX;
     if(name == "Prep_S")           return ID_PREP_S;
@@ -295,6 +301,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // local constructs
 %type<symbol_value>
     AdjX
+    AdjXX
     GerundX
     GerundXX
     Infin
@@ -302,6 +309,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     ModalXX
     NX
     NXX
+    Prep_AdjX
     Prep_NX
     Prep_SX
     Prep_VX
@@ -311,7 +319,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // lists
 %type<symbol_value>
-    AdjX_list
+    AdjXX_list
     NP_list
     Prep_SX_list
     Prep_VXX_list
@@ -331,6 +339,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // local constructs
 %nonassoc
     ID_ADJX
+    ID_ADJXX
     ID_GERUNDX
     ID_GERUNDXX
     ID_INFIN
@@ -338,6 +347,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     ID_MODALXX
     ID_NX
     ID_NXX
+    ID_PREP_ADJX
     ID_PREP_NX
     ID_PREP_SX
     ID_PREP_VX
@@ -347,7 +357,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 
 // lists
 %nonassoc
-    ID_ADJX_LIST
+    ID_ADJXX_LIST
     ID_NP_LIST
     ID_PREP_SX_LIST
     ID_PREP_VXX_LIST
@@ -364,6 +374,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     Gerund
     N
     PastPart
+    Prep_Adj
     Prep_N
     Prep_S
     Prep_V
@@ -407,6 +418,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     ID_N
     ID_PASTPART
     ID_PREP
+    ID_PREP_ADJ
     ID_PREP_N
     ID_PREP_S
     ID_PREP_V
@@ -515,7 +527,7 @@ ModalX:
 Predicate_Compl:
       NP_list       { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // john
     | Prep_VXX_list { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // from here
-    | AdjX_list     { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // red
+    | AdjXX_list    { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // red
     ;
 
 Transitive_Compl:
@@ -545,6 +557,10 @@ Prep_VX:
       Prep_V NP_list { $$ = MAKE_SYMBOL(ID_PREP_VX, @$, 2, $1, $2); } // from here
     ;
 
+Prep_AdjX:
+      Prep_Adj NP_list { $$ = MAKE_SYMBOL(ID_PREP_ADJX, @$, 2, $1, $2); } // from here
+    ;
+
 Prep_VXX:
       Prep_VX          { $$ = MAKE_SYMBOL(ID_PREP_VXX, @$, 1, $1); }     // from here
     | Adv_Prep Prep_VX { $$ = MAKE_SYMBOL(ID_PREP_VXX, @$, 2, $1, $2); } // not from here
@@ -553,6 +569,11 @@ Prep_VXX:
 AdjX:
       Adj         { $$ = MAKE_SYMBOL(ID_ADJX, @$, 1, $1); }     // red
     | Adv_Adj Adj { $$ = MAKE_SYMBOL(ID_ADJX, @$, 2, $1, $2); } // not red
+    ;
+
+AdjXX:
+      AdjX           { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 1, $1); }     // mad
+    | AdjX Prep_AdjX { $$ = MAKE_SYMBOL(ID_ADJXX, @$, 2, $1, $2); } // mad about you
     ;
 
 Infin:
@@ -584,10 +605,10 @@ VP_list:
     | VP_list Conj_VP VP_list { $$ = MAKE_SYMBOL(ID_VP_LIST, @$, 3, $1, $2, $3); } // hit and run
     ;
 
-AdjX_list:
-      AdjX               { $$ = MAKE_SYMBOL(ID_ADJX_LIST, @$, 1, $1); }         // big
-    | AdjX AdjX          { $$ = MAKE_SYMBOL(ID_ADJX_LIST, @$, 2, $1, $2); }     // big red
-    | AdjX Conj_Adj AdjX { $$ = MAKE_SYMBOL(ID_ADJX_LIST, @$, 3, $1, $2, $3); } // big and red
+AdjXX_list:
+      AdjXX                { $$ = MAKE_SYMBOL(ID_ADJXX_LIST, @$, 1, $1); }         // big
+    | AdjXX AdjXX          { $$ = MAKE_SYMBOL(ID_ADJXX_LIST, @$, 2, $1, $2); }     // big red
+    | AdjXX Conj_Adj AdjXX { $$ = MAKE_SYMBOL(ID_ADJXX_LIST, @$, 3, $1, $2, $3); } // big and red
     ;
 
 Prep_SX_list:
@@ -715,6 +736,10 @@ Prep_N:
 
 Prep_V:
       ID_PREP_V { $$ = MAKE_SYMBOL(ID_PREP_V, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // from
+    ;
+
+Prep_Adj:
+      ID_PREP_ADJ { $$ = MAKE_SYMBOL(ID_PREP_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // from
     ;
 
 //=============================================================================

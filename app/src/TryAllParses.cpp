@@ -186,6 +186,7 @@ bool get_pos_values(
                     pos_values->push_back("Prep_S");
                     pos_values->push_back("Prep_N");
                     pos_values->push_back("Prep_V");
+                    pos_values->push_back("Prep_Adj");
                 } else if(*p == "Adv") {
                     pos_values->push_back("Adv_V");
                     pos_values->push_back("Adv_Gerund");
