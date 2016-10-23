@@ -107,11 +107,12 @@ std::string id_to_name(uint32_t lexer_id)
         //case ID_INT:              return "int";
         case ID_ADJ:              return "Adj";
         case ID_ADJX:             return "AdjX";
-        case ID_ADJ_LIST:         return "Adj_list";
+        case ID_ADJX_LIST:        return "AdjX_list";
         case ID_ADV:              return "Adv";
         case ID_ADV_ADJ:          return "Adv_Adj";
         case ID_ADV_GERUND:       return "Adv_Gerund";
         case ID_ADV_MODAL:        return "Adv_Modal";
+        case ID_ADV_PREP:         return "Adv_Prep";
         case ID_ADV_V:            return "Adv_V";
         case ID_AUX_BE:           return "Aux_Be";
         case ID_AUX_BEX:          return "Aux_BeX";
@@ -148,7 +149,8 @@ std::string id_to_name(uint32_t lexer_id)
         case ID_PREP_SX_LIST:     return "Prep_SX_list";
         case ID_PREP_V:           return "Prep_V";
         case ID_PREP_VX:          return "Prep_VX";
-        case ID_PREP_VX_LIST:     return "Prep_VX_list";
+        case ID_PREP_VXX:         return "Prep_VXX";
+        case ID_PREP_VXX_LIST:    return "Prep_VXX_list";
         case ID_QWORD_PRON:       return "QWord_Pron";
         case ID_S:                return "S";
         case ID_S_LIST:           return "S_list";
@@ -168,11 +170,12 @@ uint32_t name_to_id(std::string name)
     if(name == "$")                return ID_EOS;
     if(name == "Adj")              return ID_ADJ;
     if(name == "AdjX")             return ID_ADJX;
-    if(name == "Adj_list")         return ID_ADJ_LIST;
+    if(name == "AdjX_list")        return ID_ADJX_LIST;
     if(name == "Adv")              return ID_ADV;
     if(name == "Adv_Adj")          return ID_ADV_ADJ;
     if(name == "Adv_Gerund")       return ID_ADV_GERUND;
     if(name == "Adv_Modal")        return ID_ADV_MODAL;
+    if(name == "Adv_Prep")         return ID_ADV_PREP;
     if(name == "Adv_V")            return ID_ADV_V;
     if(name == "Aux_Be")           return ID_AUX_BE;
     if(name == "Aux_BeX")          return ID_AUX_BEX;
@@ -208,7 +211,8 @@ uint32_t name_to_id(std::string name)
     if(name == "Prep_SX_list")     return ID_PREP_SX_LIST;
     if(name == "Prep_V")           return ID_PREP_V;
     if(name == "Prep_VX")          return ID_PREP_VX;
-    if(name == "Prep_VX_list")     return ID_PREP_VX_LIST;
+    if(name == "Prep_VXX")         return ID_PREP_VXX;
+    if(name == "Prep_VXX_list")    return ID_PREP_VXX_LIST;
     if(name == "QWord_Pron")       return ID_QWORD_PRON;
     if(name == "S")                return ID_S;
     if(name == "S_list")           return ID_S_LIST;
@@ -301,15 +305,16 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     Prep_NX
     Prep_SX
     Prep_VX
+    Prep_VXX
     VX
     VXX
 
 // lists
 %type<symbol_value>
-    Adj_list
+    AdjX_list
     NP_list
     Prep_SX_list
-    Prep_VX_list
+    Prep_VXX_list
     S_list
     VP_list
 
@@ -326,8 +331,6 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
 // local constructs
 %nonassoc
     ID_ADJX
-    ID_ADJXXX
-    ID_GERUNDPX
     ID_GERUNDX
     ID_GERUNDXX
     ID_INFIN
@@ -335,26 +338,19 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     ID_MODALXX
     ID_NX
     ID_NXX
-    ID_PASTPARTX
-    ID_PASTPARTXX
     ID_PREP_NX
     ID_PREP_SX
     ID_PREP_VX
+    ID_PREP_VXX
     ID_VX
     ID_VXX
 
 // lists
 %nonassoc
-    ID_ADJ_LIST
-    ID_DETSUFFIXX
-    ID_DETX
+    ID_ADJX_LIST
     ID_NP_LIST
     ID_PREP_SX_LIST
-    ID_PREP_VX_LIST
-    ID_PREPXX_N
-    ID_PREPXX_S
-    ID_PREPX_N
-    ID_PREPX_S
+    ID_PREP_VXX_LIST
     ID_S_LIST
     ID_VP_LIST
 
@@ -392,6 +388,7 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     Adv_Adj
     Adv_Gerund
     Adv_Modal
+    Adv_Prep
     Adv_V
     Conj_Adj
     Conj_NP
@@ -409,13 +406,11 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     ID_GERUND
     ID_N
     ID_PASTPART
-    ID_V
-
-%token<ident_value> ID_PREP
-%token<ident_value>
+    ID_PREP
     ID_PREP_N
     ID_PREP_S
     ID_PREP_V
+    ID_V
 
 // functional words
 %token<ident_value>
@@ -423,40 +418,32 @@ static bool filter_singleton(const xl::node::NodeIdentIFace* _node)
     ID_AUX_BEX
     ID_AUX_DO
     ID_AUX_HAVE
+    ID_COMMA
+    ID_COMMA_S
     ID_DET
     ID_DETSUFFIX
     ID_EOS
-    ID_MODAL ID
+    ID_MODAL
     ID_PREDICATE_COMPL
     ID_TRANSITIVE_COMPL
     ID_QWORD_PRON
     ID_TO
 
-%token<ident_value> ID_COMMA
-%token<ident_value>
-    ID_COMMA_PREP
-    ID_COMMA_PREP2
-    ID_COMMA_QWORD
-    ID_COMMA_S
-    ID_COMMA_V
-
 // ambiguous terminals
-%token<ident_value> ID_CONJ
 %token<ident_value>
-    ID_CONJ_ADJ
-    ID_CONJ_NP
-    ID_CONJ_PREP
-    ID_CONJ_S
-    ID_CONJ_VP
-
-%token<ident_value> ID_ADV
-%token<ident_value>
+    ID_ADV
     ID_ADV_ADJ
     ID_ADV_GERUND
     ID_ADV_MODAL
     ID_ADV_PASTPART
     ID_ADV_PREP
     ID_ADV_V
+    ID_CONJ
+    ID_CONJ_ADJ
+    ID_CONJ_NP
+    ID_CONJ_PREP
+    ID_CONJ_S
+    ID_CONJ_VP
 
 %%
 
@@ -471,7 +458,7 @@ root:
     ;
 
 S:
-      NP_list VP_list                      { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }     // he goes
+      NP_list VP_list                      { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
     | Prep_SX_list Comma_S NP_list VP_list { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here he goes
     ;
 
@@ -526,14 +513,14 @@ ModalX:
     ;
 
 Predicate_Compl:
-      NP_list      { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // john
-    | Prep_VX_list { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // from here
-    | Adj_list     { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // red
+      NP_list       { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // john
+    | Prep_VXX_list { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // from here
+    | AdjX_list     { $$ = MAKE_SYMBOL(ID_PREDICATE_COMPL, @$, 1, $1); } // red
     ;
 
 Transitive_Compl:
-      NP_list NP_list      { $$ = MAKE_SYMBOL(ID_TRANSITIVE_COMPL, @$, 2, $1, $2); } // (bring) me it
-    | NP_list Prep_VX_list { $$ = MAKE_SYMBOL(ID_TRANSITIVE_COMPL, @$, 2, $1, $2); } // (bring) it to me
+      NP_list NP_list       { $$ = MAKE_SYMBOL(ID_TRANSITIVE_COMPL, @$, 2, $1, $2); } // (bring) me it
+    | NP_list Prep_VXX_list { $$ = MAKE_SYMBOL(ID_TRANSITIVE_COMPL, @$, 2, $1, $2); } // (bring) it to me
     ;
 
 NXX:
@@ -556,6 +543,11 @@ Prep_NX:
 
 Prep_VX:
       Prep_V NP_list { $$ = MAKE_SYMBOL(ID_PREP_VX, @$, 2, $1, $2); } // from here
+    ;
+
+Prep_VXX:
+      Prep_VX          { $$ = MAKE_SYMBOL(ID_PREP_VXX, @$, 1, $1); }     // from here
+    | Adv_Prep Prep_VX { $$ = MAKE_SYMBOL(ID_PREP_VXX, @$, 2, $1, $2); } // not from here
     ;
 
 AdjX:
@@ -592,10 +584,10 @@ VP_list:
     | VP_list Conj_VP VP_list { $$ = MAKE_SYMBOL(ID_VP_LIST, @$, 3, $1, $2, $3); } // hit and run
     ;
 
-Adj_list:
-      AdjX               { $$ = MAKE_SYMBOL(ID_ADJ_LIST, @$, 1, $1); }         // big
-    | AdjX AdjX          { $$ = MAKE_SYMBOL(ID_ADJ_LIST, @$, 2, $1, $2); }     // big red
-    | AdjX Conj_Adj AdjX { $$ = MAKE_SYMBOL(ID_ADJ_LIST, @$, 3, $1, $2, $3); } // big and red
+AdjX_list:
+      AdjX               { $$ = MAKE_SYMBOL(ID_ADJX_LIST, @$, 1, $1); }         // big
+    | AdjX AdjX          { $$ = MAKE_SYMBOL(ID_ADJX_LIST, @$, 2, $1, $2); }     // big red
+    | AdjX Conj_Adj AdjX { $$ = MAKE_SYMBOL(ID_ADJX_LIST, @$, 3, $1, $2, $3); } // big and red
     ;
 
 Prep_SX_list:
@@ -604,10 +596,10 @@ Prep_SX_list:
     | Prep_SX_list Conj_Prep Prep_SX_list { $$ = MAKE_SYMBOL(ID_PREP_SX_LIST, @$, 3, $1, $2, $3); } // from here and to there
     ;
 
-Prep_VX_list:
-      Prep_VX                             { $$ = MAKE_SYMBOL(ID_PREP_VX_LIST, @$, 1, $1); }         // from here
-    | Prep_VX_list Prep_VX_list           { $$ = MAKE_SYMBOL(ID_PREP_VX_LIST, @$, 2, $1, $2); }     // from here to there
-    | Prep_VX_list Conj_Prep Prep_VX_list { $$ = MAKE_SYMBOL(ID_PREP_VX_LIST, @$, 3, $1, $2, $3); } // from here and to there
+Prep_VXX_list:
+      Prep_VXX                              { $$ = MAKE_SYMBOL(ID_PREP_VXX_LIST, @$, 1, $1); }         // from here
+    | Prep_VXX_list Prep_VXX_list           { $$ = MAKE_SYMBOL(ID_PREP_VXX_LIST, @$, 2, $1, $2); }     // from here to there
+    | Prep_VXX_list Conj_Prep Prep_VXX_list { $$ = MAKE_SYMBOL(ID_PREP_VXX_LIST, @$, 3, $1, $2, $3); } // from here and to there
     ;
 
 //=============================================================================
@@ -703,6 +695,10 @@ Adv_Gerund:
 
 Adv_Adj:
       ID_ADV_ADJ { $$ = MAKE_SYMBOL(ID_ADV_ADJ, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // not (for Adj)
+    ;
+
+Adv_Prep:
+      ID_ADV_PREP { $$ = MAKE_SYMBOL(ID_ADV_PREP, @$, 1, MAKE_TERM(ID_IDENT, @$, $1)); } // not (for Adj)
     ;
 
 Adv_Modal:

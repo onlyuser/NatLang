@@ -139,6 +139,7 @@ bool get_pos_values(
                     pos_values->push_back("Adv_V");
                     pos_values->push_back("Adv_Gerund");
                     pos_values->push_back("Adv_Adj");
+                    pos_values->push_back("Adv_Prep");
                     pos_values->push_back("Adv_Modal");
                 } else if(*q == "V") {
                     pos_values->push_back("V");
@@ -189,6 +190,7 @@ bool get_pos_values(
                     pos_values->push_back("Adv_V");
                     pos_values->push_back("Adv_Gerund");
                     pos_values->push_back("Adv_Adj");
+                    pos_values->push_back("Adv_Prep");
                     pos_values->push_back("Adv_Modal");
                 } else if(*p == "Comma") {
                     pos_values->push_back("Comma_S");
