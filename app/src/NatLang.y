@@ -493,9 +493,9 @@ VP:
 // local constructs
 
 VXX:
-      VX                  { $$ = MAKE_SYMBOL(ID_VXX, @$, 1, $1); }         // bring
-    | VX Predicate_Compl  { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); }     // bring it
-    | VX Transitive_Compl { $$ = MAKE_SYMBOL(ID_GERUNDX, @$, 2, $1, $2); } // bring it to you
+      VX                  { $$ = MAKE_SYMBOL(ID_VXX, @$, 1, $1); }     // bring
+    | VX Predicate_Compl  { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); } // bring it
+    | VX Transitive_Compl { $$ = MAKE_SYMBOL(ID_VXX, @$, 2, $1, $2); } // bring it to you
     ;
 
 VX:
