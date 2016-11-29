@@ -471,7 +471,7 @@ root:
 
 S:
       NP_list VP_list                      { $$ = MAKE_SYMBOL(ID_S, @$, 2, $1, $2); }         // he goes
-    | Prep_SX_list Comma_S NP_list VP_list { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here he goes
+    | Prep_SX_list Comma_S NP_list VP_list { $$ = MAKE_SYMBOL(ID_S, @$, 4, $1, $2, $3, $4); } // from here, he goes
     ;
 
 NP:
