@@ -154,7 +154,7 @@ Requirements
 
 Unix tools and 3rd party components (accessible from $PATH):
 
-    gcc (with -std=c++0x support), flex, bison, wordnet, valgrind, cppcheck, doxygen, graphviz, ticpp
+    gcc flex bison wordnet valgrind cppcheck doxygen graphviz ticpp
 
 **Environment variables:**
 
@@ -201,13 +201,10 @@ References
 <dl>
     <dt>"Part-of-speech tagging"</dt>
     <dd>http://en.wikipedia.org/wiki/Part-of-speech_tagging</dd>
-
     <dt>"Princeton WordNet"</dt>
     <dd>http://wordnet.princeton.edu/</dd>
-
     <dt>"Syntactic Theory: A Unified Approach"</dt>
     <dd>ISBN: 0340706104</dd>
-
     <dt>"Enju - A fast, accurate, and deep parser for English"</dt>
     <dd>http://www.nactem.ac.uk/enju/</dd>
 </dl>
