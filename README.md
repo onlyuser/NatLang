@@ -3,7 +3,7 @@
 NatLang
 =======
 
-Copyright (C) 2011-2015 Jerry Chen <mailto:onlyuser@gmail.com>
+Copyright (C) 2011-2017 <mailto:onlyuser@gmail.com>
 
 About
 -----
