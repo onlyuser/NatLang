@@ -1,6 +1,6 @@
 // NatLang
 // -- An English parser with an extensible grammar
-// Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
+// Copyright (C) 2011 onlyuser <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 //%output="NatLang.tab.c"
-%name-prefix "_NATLANG_"
 
 %{
 
@@ -51,7 +50,7 @@
 #define ERROR_LEXER_NAME_NOT_FOUND "Missing lexer name handler. Did you forgot to register one?"
 
 // report error
-void _nl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s)
+void yyerror(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s)
 {
     if(loc)
     {
@@ -74,9 +73,9 @@ void _nl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s
     }
     error_messages() << s;
 }
-void _nl(error)(const char* s)
+void yyerror(const char* s)
 {
-    _nl(error)(NULL, NULL, NULL, s);
+    yyerror(NULL, NULL, NULL, s);
 }
 
 // get resource
@@ -767,12 +766,12 @@ uint32_t quick_lex(const char* s)
     xl::Allocator alloc(__FILE__);
     ParserContext parser_context(alloc, s);
     yyscan_t scanner = parser_context.scanner_context().m_scanner;
-    _nl(lex_init)(&scanner);
-    _nl(set_extra)(&parser_context, scanner);
+    yylex_init(&scanner);
+    yyset_extra(&parser_context, scanner);
     YYSTYPE dummy_sa;
     YYLTYPE dummy_loc;
-    uint32_t lexer_id = _nl(lex)(&dummy_sa, &dummy_loc, scanner); // scanner entry point
-    _nl(lex_destroy)(scanner);
+    uint32_t lexer_id = yylex(&dummy_sa, &dummy_loc, scanner); // scanner entry point
+    yylex_destroy(scanner);
     return lexer_id;
 }
 
@@ -784,10 +783,10 @@ xl::node::NodeIdentIFace* make_ast(
     ParserContext parser_context(alloc, s);
     parser_context.scanner_context().m_pos_lexer_id_path = &pos_lexer_id_path;
     yyscan_t scanner = parser_context.scanner_context().m_scanner;
-    _nl(lex_init)(&scanner);
-    _nl(set_extra)(&parser_context, scanner);
-    int error_code = _nl(parse)(&parser_context, scanner); // parser entry point
-    _nl(lex_destroy)(scanner);
+    yylex_init(&scanner);
+    yyset_extra(&parser_context, scanner);
+    int error_code = yyparse(&parser_context, scanner); // parser entry point
+    yylex_destroy(scanner);
     return (!error_code && error_messages().str().empty()) ? parser_context.tree_context().root() : NULL;
 }
 

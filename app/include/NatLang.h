@@ -1,6 +1,6 @@
 // NatLang
 // -- An English parser with an extensible grammar
-// Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
+// Copyright (C) 2011 onlyuser <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -93,16 +93,14 @@ private:
 
 // forward declaration of lexer/parser functions
 // so the compiler shuts up about warnings
-#define _nl(x) _NATLANG_##x
-int _nl(lex)(YYSTYPE*, YYLTYPE*, yyscan_t);
-int _nl(lex_init)(yyscan_t*);
-int _nl(lex_destroy)(yyscan_t);
-void _nl(set_extra)(YY_EXTRA_TYPE, yyscan_t);
-int _nl(parse)(ParserContext*, yyscan_t);
-void _nl(error)(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s);
-void _nl(error)(const char* s);
-int _nl(lex)(YYSTYPE* yylval_param, YYLTYPE* yylloc_param, yyscan_t yyscanner);
-//#undef _nl
+int yylex(YYSTYPE*, YYLTYPE*, yyscan_t);
+int yylex_init(yyscan_t*);
+int yylex_destroy(yyscan_t);
+void yyset_extra(YY_EXTRA_TYPE, yyscan_t);
+int yyparse(ParserContext*, yyscan_t);
+void yyerror(YYLTYPE* loc, ParserContext* pc, yyscan_t scanner, const char* s);
+void yyerror(const char* s);
+int yylex(YYSTYPE* yylval_param, YYLTYPE* yylloc_param, yyscan_t yyscanner);
 
 std::stringstream &error_messages();
 std::string id_to_name(uint32_t lexer_id);

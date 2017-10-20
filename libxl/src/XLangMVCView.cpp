@@ -1,6 +1,6 @@
 // XLang
 // -- A parser framework for language modeling
-// Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
+// Copyright (C) 2011 onlyuser <mailto:onlyuser@gmail.com>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include <sstream> // std::stringstream
 
 /* source code courtesy of Frank Thomas Braun */
-/* minimally altered by Jerry Chen <mailto:onlyuser@gmail.com> */
+/* minimally altered by onlyuser <mailto:onlyuser@gmail.com> */
 
 /* calc3d.c: Generation of the graph of the syntax tree */
 

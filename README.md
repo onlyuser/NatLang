@@ -12,6 +12,8 @@ NatLang is an English parser with an extensible grammar.
 It generates abstract syntax trees for all possible interpretations of an English sentence accepted by a grammar.
 The algorithm is completely deterministic. No training data is required.
 
+See sister project "A minimum viable English parser": [parse-english](https://github.com/onlyuser/parse-english)
+
 It works as follows:
 
 1. The user inputs a sentence.
@@ -167,7 +169,7 @@ Limitations
 * Only supports English.
 * Only supports present, present progressive, past tense, and past perfect tense statements in the active voice (for now).
 * WordNet does not provide POS look-up for inflected verb forms and mechanical words such as prepositions, leading to a reliance on hard-coded POS definitions in the lexer for some words.
-* A brute force algorithm tries all possibilities accepted by a grammar. This is slow for long sentences.
+* A brute force algorithm tries all supported interpretations of a sentence. This is slow for long sentences.
 * BNF rules are suitable for specifying constituent-based phrase structure grammars, but are a poor fit for expressing non-local dependencies.
 
 Known Issues

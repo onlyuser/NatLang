@@ -1,6 +1,6 @@
 /* NatLang
  * -- An English parser with an extensible grammar
- * Copyright (C) 2011 Jerry Chen <mailto:onlyuser@gmail.com>
+ * Copyright (C) 2011 onlyuser <mailto:onlyuser@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
  */
 
 %option outfile="lex.NatLang.c"
-%option prefix="_NATLANG_"
 
 %{
 
@@ -330,7 +329,7 @@ suffix_adv      "ly"
  /* OTHER CATCH-ALL */
 
 .           {LOC;
-                _nl(error)("unknown character");
+                yyerror("unknown character");
                 YY_FLUSH_BUFFER;
             }
 
